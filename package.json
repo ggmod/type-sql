@@ -1,0 +1,22 @@
+{
+  "name": "ts-query",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "keywords": [],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "ggmod",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf dist/* && tsc -v && tsc",
+    "prepublish": "npm run build",
+    "test": "rm -rf build-test; cd test; tsc; cd ..; node --harmony --harmony-default-parameters --harmony-destructuring ./node_modules/.bin/jasmine-node --captureExceptions --matchall ./build-test/test/*.js"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "devDependencies": {
+    "typescript": "^2.0.2"
+  }
+}
