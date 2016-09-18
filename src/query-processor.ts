@@ -6,7 +6,7 @@ export function processQuery(query: any) {
         s += 'SELECT ';
         s += query._columns.map(column => processColumn(column)).join(', ');
     }
-    s += ' FROM ' + query._table.name;
+    s += ' FROM ' + query._table.$name;
     if (query._conditions) {
         s += ' WHERE ';
         let where = query._conditions.map(condition => processConditions(condition));

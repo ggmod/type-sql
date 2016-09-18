@@ -1,13 +1,14 @@
-import DatabaseTableColumn from "./database-table-column";
+import QueryColumn from "./query-column";
+import QueryTable from "./query-table";
 
 
-export default class QueryOrdering {
+export default class QueryOrdering<Table extends QueryTable> {
 
-    private _column: DatabaseTableColumn<any>;
+    private _column: QueryColumn<any, Table>;
     private _direction: 'ASC' | 'DESC';
     private _nullsPosition: 'FIRST' | 'LAST';
 
-    constructor(column: DatabaseTableColumn<any>, direction: 'ASC' | 'DESC') {
+    constructor(column: QueryColumn<any, Table>, direction: 'ASC' | 'DESC') {
         this._column = column;
         this._direction = direction;
     }

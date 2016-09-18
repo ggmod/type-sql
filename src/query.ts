@@ -1,7 +1,7 @@
 import QueryCondition from "./query-condition";
 import QueryOrdering from "./query-ordering";
-import DatabaseTable from "./database-table";
-import DatabaseTableColumn from "./database-table-column";
+import QueryTable from "./query-table";
+import QueryColumn from "./query-column";
 import { processQuery } from "./query-processor";
 import QueryResult from "./query-result";
 
@@ -12,9 +12,9 @@ function createResult(query: Query<any>) {
     return new QueryResult(() => Promise.resolve(), processedQuery);
 }
 
-export default class Query<T> {
+export default class Query<Table extends QueryTable> {
 
-    constructor(table: DatabaseTable) {
+    constructor(table: Table) {
         this._table = table;
     }
 
@@ -41,17 +41,17 @@ export default class Query<T> {
         return this;
     }
 
-    where(...conditions: QueryCondition<any>[]): this {
+    where(...conditions: QueryCondition<any, Table>[]): this {
         this._conditions = conditions;
         return this;
     }
 
-    orderBy(...orderings: QueryOrdering[]): this {
+    orderBy(...orderings: QueryOrdering<Table>[]): this {
         this._orderings = orderings;
         return this;
     }
 
-    select(...columns: DatabaseTableColumn<any>[]): QueryResult<any> {
+    select(...columns: QueryColumn<any, Table>[]): QueryResult<any> {
         this._columns = columns;
         return createResult(this);
     }

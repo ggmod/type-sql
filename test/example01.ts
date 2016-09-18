@@ -1,7 +1,11 @@
 import Book from './book';
-import Database from "../src/database";
+import Author from './author';
+import QueryDatabase from "../src/query-database";
 
-let db = new Database();
+let db = new QueryDatabase();
+
+//let x = Book.author.eq('xy');
+//let y = Book.title.asc();
 
 let q1 = db.from(Book)
     .where(Book.author.eq('xy'))

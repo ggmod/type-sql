@@ -1,35 +1,28 @@
-import DatabaseTableColumn from "./database-table-column";
 import QueryCondition from "./query-condition";
+import QueryTable from "./query-table";
+import QueryColumn from "./query-column";
 
 
-export default class NumberColumn extends DatabaseTableColumn<number> {
+export default class NumberColumn<Table extends QueryTable> extends QueryColumn<number, Table> {
 
-    constructor(params, modifiers?) {
-        super(params, modifiers);
+    constructor(table: Table, params, modifiers?) {
+        super(table, params, modifiers);
     }
 
-    lt(value: number) { return this.lessThan(value); }
-
-    lessThan(value: number) {
-        return new QueryCondition(this, 'lt', value);
+    lt(value: number) {
+        return new QueryCondition<number, Table>(this, 'lt', value);
     }
 
-    gt(value: number) { return this.greaterThan(value); }
-
-    greaterThan(value: number) {
-        return new QueryCondition(this, 'gt', value);
+    gt(value: number) {
+        return new QueryCondition<number, Table>(this, 'gt', value);
     }
 
-    lte(value: number) { return this.lessThanOrEquals(value); }
-
-    lessThanOrEquals(value: number) {
-        return new QueryCondition(this, 'lte', value);
+    lte(value: number) {
+        return new QueryCondition<number, Table>(this, 'lte', value);
     }
 
-    gte(value: number) { return this.greaterThanOrEquals(value); }
-
-    greaterThanOrEquals(value: number) {
-        return new QueryCondition(this, 'gte', value);
+    gte(value: number) {
+        return new QueryCondition<number, Table>(this, 'gte', value);
     }
 
 }
