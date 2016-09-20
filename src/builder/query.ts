@@ -2,23 +2,19 @@ import QueryCondition from "./query-condition";
 import QueryOrdering from "./query-ordering";
 import QueryTable from "./query-table";
 import QueryColumn from "./query-column";
-import { processQuery } from "./query-processor";
 import QueryResult from "./query-result";
+import QueryProcessor from "../query-processor";
 
-
-function createResult(query: Query<any>) {
-    let processedQuery = processQuery(query);
-    // TODO send to query to the DB.
-    return new QueryResult(() => Promise.resolve(), processedQuery);
-}
 
 export default class Query<Table extends QueryTable> {
 
-    constructor(table: Table) {
+    constructor(queryProcessor: QueryProcessor, table: Table) {
         this._table = table;
+        this._queryProcessor = queryProcessor;
     }
 
     private _table;
+    private _queryProcessor;
     private _distinct = false;
     private _offset;
     private _limit;
@@ -53,6 +49,6 @@ export default class Query<Table extends QueryTable> {
 
     select(...columns: QueryColumn<any, Table>[]): QueryResult<any> {
         this._columns = columns;
-        return createResult(this);
+        return new QueryResult(this._queryProcessor, this);
     }
 }

@@ -1,7 +1,7 @@
 
 
-export function createUnsafeSQL(processedQuery) {
-    let {sql, params} = processedQuery;
+export function substituteQueryParams(convertedQuery) {
+    let {sql, params} = convertedQuery;
     let result = '';
     let paramIndex = 0;
 

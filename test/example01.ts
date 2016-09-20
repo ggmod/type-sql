@@ -1,8 +1,9 @@
 import Book from './book';
 import Author from './author';
-import QueryDatabase from "../src/query-database";
+import QuerySource from "../src/builder/query-source";
+import DefaultQueryProcessor from "../src/defeault-processor";
 
-let db = new QueryDatabase();
+let db = new QuerySource(new DefaultQueryProcessor());
 
 //let x = Book.author.eq('xy');
 //let y = Book.title.asc();
@@ -14,4 +15,4 @@ let q1 = db.from(Book)
     .orderBy(Book.title.asc())
     .select(Book.id, Book.title.lower());
 
-console.log(q1.toUnsafeSQL());
+console.log(q1.toSQL());
