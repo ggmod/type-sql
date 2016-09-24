@@ -10,7 +10,7 @@ export function convertQuery(query: any) {
            s += query._columns.map(column => convertColumn(column)).join(', ');
         }
     }
-    s += ' FROM ' + query._table.$name;
+    s += ' FROM ' + query._tables.map(table => convertTable(table)).join(', ');
     if (query._conditions.length > 0) {
         s += ' WHERE ';
         let where = query._conditions.map(condition => convertConditions(condition));
@@ -48,8 +48,12 @@ function convertOrdering(ordering: any) {
     }
 }
 
+function convertTable(table: any) {
+    return '"' + table.$name + '"';
+}
+
 function convertColumn(column: any) {
-    let s = '"' + column._table.$name + '"."' + column._params.name + '"';
+    let s = convertTable(column._table) + '."' + column._params.name + '"';
     if (column._modifiers) {
         column._modifiers.forEach(modifier => {
             if (modifier === 'lower') s = 'LOWER(' + s + ')';

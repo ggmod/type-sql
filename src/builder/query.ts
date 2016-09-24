@@ -8,12 +8,12 @@ import QueryProcessor from "../query-processor";
 
 export default class Query<Table extends QueryTable> {
 
-    constructor(queryProcessor: QueryProcessor, table: Table) {
-        this._table = table;
+    constructor(queryProcessor: QueryProcessor, tables: Table[]) {
+        this._tables = tables;
         this._queryProcessor = queryProcessor;
     }
 
-    private _table;
+    private _tables;
     private _queryProcessor;
     private _distinct = false;
     private _offset;
