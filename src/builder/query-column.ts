@@ -3,7 +3,7 @@ import QueryOrdering from "./query-ordering";
 import QueryTable from "./query-table";
 
 
-export default class QueryColumn<T, Table extends QueryTable> {
+export default class QueryColumn<Table extends QueryTable, T> {
 
     protected _params;
     protected _modifiers;
@@ -24,10 +24,10 @@ export default class QueryColumn<T, Table extends QueryTable> {
     }
 
     eq(value: T) {
-        return new QueryCondition<T, Table>(this, 'eq', value);
+        return new QueryCondition<Table, T>(this, 'eq', value);
     }
 
     ne(value: T) {
-        return new QueryCondition<T, Table>(this, 'ne', value);
+        return new QueryCondition<Table, T>(this, 'ne', value);
     }
 }

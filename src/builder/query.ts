@@ -37,17 +37,17 @@ export default class Query<Table extends QueryTable> {
         return this;
     }
 
-    where(...conditions: QueryCondition<any, Table>[]): this {
+    where(...conditions: QueryCondition<Table, any>[]): this {
         this._conditions = conditions;
         return this;
     }
 
-    orderBy(...orderings: QueryOrdering<Table>[]): this {
+    orderBy(...orderings: (QueryColumn<Table, any> | QueryOrdering<Table>)[]): this {
         this._orderings = orderings;
         return this;
     }
 
-    select(...columns: QueryColumn<any, Table>[]): QueryResult<any> {
+    select(...columns: QueryColumn<Table, any>[]): QueryResult<any> {
         this._columns = columns;
         return new QueryResult(this._queryProcessor, this);
     }

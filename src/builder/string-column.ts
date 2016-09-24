@@ -2,7 +2,7 @@ import QueryColumn from "./query-column";
 import QueryTable from "./query-table";
 
 
-export default class StringColumn<Table extends QueryTable> extends QueryColumn<string, Table> {
+export default class StringColumn<Table extends QueryTable> extends QueryColumn<Table, string> {
 
     constructor(table: Table, params, modifiers?) {
         super(table, params, modifiers);
