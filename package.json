@@ -17,6 +17,7 @@
     "type": "git"
   },
   "devDependencies": {
-    "typescript": "^2.0.2"
+    "@types/jasmine": "^2.2.34",
+    "typescript": "^2.0.3"
   }
 }

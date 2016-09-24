@@ -4,16 +4,20 @@ export function convertQuery(query: any) {
     let params = [];
     if (query._columns) {
         s += 'SELECT ';
-        s += query._columns.map(column => convertColumn(column)).join(', ');
+        if (query._columns.length === 0) {
+            s += '*'
+        } else {
+           s += query._columns.map(column => convertColumn(column)).join(', ');
+        }
     }
     s += ' FROM ' + query._table.$name;
-    if (query._conditions) {
+    if (query._conditions.length > 0) {
         s += ' WHERE ';
         let where = query._conditions.map(condition => convertConditions(condition));
         s += where.map(w => w.sql).join(' AND ');
         params = params.concat(...where.map(w => w.params)); // flatMap
     }
-    if (query._orderings) {
+    if (query._orderings.length > 0) {
         s += ' ORDER BY ';
         s += query._orderings.map(ordering => convertOrdering(ordering)).join(', ');
     }
@@ -30,18 +34,22 @@ export function convertQuery(query: any) {
 }
 
 function convertOrdering(ordering: any) {
-    let s = convertColumn(ordering._column);
+    if (ordering._column) {
+        let s = convertColumn(ordering._column);
 
-    if (ordering._direction === 'ASC') s += ' ASC';
-    if (ordering._direction === 'DESC') s += ' DESC';
-    if (ordering._nullsPosition === 'FIRST') s += ' NULLS FIRST';
-    if (ordering._nullsPosition === 'LAST') s += ' NULLS LAST';
+        if (ordering._direction === 'ASC') s += ' ASC';
+        if (ordering._direction === 'DESC') s += ' DESC';
+        if (ordering._nullsPosition === 'FIRST') s += ' NULLS FIRST';
+        if (ordering._nullsPosition === 'LAST') s += ' NULLS LAST';
 
-    return s;
+        return s;
+    } else {
+        return convertColumn(ordering);
+    }
 }
 
 function convertColumn(column: any) {
-    let s = column._params.name;
+    let s = '"' + column._table.$name + '"."' + column._params.name + '"';
     if (column._modifiers) {
         column._modifiers.forEach(modifier => {
             if (modifier === 'lower') s = 'LOWER(' + s + ')';
