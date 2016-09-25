@@ -1,7 +1,7 @@
 import QueryColumn from "./query-column";
 import QueryTable from "./query-table";
 
-export default class QueryCondition<Table extends QueryTable, T> {
+export default class QueryCondition<Table extends QueryTable<any>, T> {
 
     private _column: QueryColumn<Table, T>;
     private _type: string;

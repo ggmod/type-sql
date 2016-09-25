@@ -4,7 +4,7 @@ import QueryTable from "./query-table";
 import QueryColumn from "./query-column";
 
 
-abstract class ValueColumn<Table extends QueryTable, T> extends QueryColumn<Table, T> {
+abstract class ValueColumn<Table extends QueryTable<any>, T> extends QueryColumn<Table, T> {
 
     constructor(table: Table, params, modifiers = []) {
         super(table, params, modifiers);

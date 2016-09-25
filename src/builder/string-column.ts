@@ -3,7 +3,7 @@ import ValueColumn from "./value-column";
 import NumberColumn from "./number-column";
 
 
-export default class StringColumn<Table extends QueryTable> extends ValueColumn<Table, string> {
+export default class StringColumn<Table extends QueryTable<any>> extends ValueColumn<Table, string> {
 
     constructor(table: Table, params, modifiers?) {
         super(table, params, modifiers);

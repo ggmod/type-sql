@@ -2,8 +2,11 @@ import NumberColumn from "../src/builder/number-column";
 import StringColumn from "../src/builder/string-column";
 import QueryTable from '../src/builder/query-table';
 
+export interface Author {
+    name: string
+}
 
-class AuthorTable extends QueryTable {
+export class AuthorTable extends QueryTable<Author> {
     $name = "Author";
 
     name = new StringColumn(this, {
@@ -11,6 +14,6 @@ class AuthorTable extends QueryTable {
     });
 }
 
-const Author = new AuthorTable();
+export const AUTHOR = new AuthorTable();
 
-export default Author;
+export default AUTHOR;

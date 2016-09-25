@@ -6,7 +6,7 @@ import QueryResult from "./query-result";
 import QueryProcessor from "../query-processor";
 
 
-export default class Query<Table extends QueryTable> {
+export default class Query<Entity, Table extends QueryTable<Entity>> {
 
     constructor(queryProcessor: QueryProcessor, tables: Table[]) {
         this._tables = tables;
@@ -47,7 +47,10 @@ export default class Query<Table extends QueryTable> {
         return this;
     }
 
-    select(...columns: QueryColumn<Table, any>[]): QueryResult<any> {
+    select(): QueryResult<Entity[]>
+    select<T>(column: QueryColumn<Table, T>): QueryResult<T[]>
+    select(...columns: QueryColumn<Table, any>[]): QueryResult<any[]>
+    select(...columns: QueryColumn<Table, any>[]): QueryResult<any[]> {
         this._columns = columns;
         return new QueryResult(this._queryProcessor, this);
     }

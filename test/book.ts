@@ -2,8 +2,14 @@ import NumberColumn from "../src/builder/number-column";
 import StringColumn from "../src/builder/string-column";
 import QueryTable from '../src/builder/query-table';
 
+export interface Book {
+    id: number,
+    title: string,
+    author: string,
+    price: number
+}
 
-class BookTable extends QueryTable {
+export class BookTable extends QueryTable<Book> {
 
     $name = 'Book';
 
@@ -24,6 +30,6 @@ class BookTable extends QueryTable {
     });
 }
 
-const Book = new BookTable();
+export const BOOK = new BookTable();
 
-export default Book;
+export default BOOK;

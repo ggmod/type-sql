@@ -1,9 +1,11 @@
 import QueryTable from "./query-table";
 import NumberColumn from "./number-column";
+import GenericsHelper from "./generics-helper";
 
 
-abstract class QueryColumn<Table extends QueryTable, T> {
+abstract class QueryColumn<Table extends QueryTable<any>, T> {
 
+    private _$type: GenericsHelper<T>;
     protected _params;
     protected _modifiers;
     protected _table: Table;
