@@ -18,6 +18,10 @@ class BookTable extends QueryTable {
     author = new StringColumn(this, {
         name: 'author'
     });
+
+    price = new NumberColumn(this, {
+        name: 'price'
+    });
 }
 
 const Book = new BookTable();

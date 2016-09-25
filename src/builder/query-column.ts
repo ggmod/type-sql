@@ -1,9 +1,8 @@
-import QueryCondition from "./query-condition";
-import QueryOrdering from "./query-ordering";
 import QueryTable from "./query-table";
+import NumberColumn from "./number-column";
 
 
-export default class QueryColumn<Table extends QueryTable, T> {
+abstract class QueryColumn<Table extends QueryTable, T> {
 
     protected _params;
     protected _modifiers;
@@ -15,19 +14,7 @@ export default class QueryColumn<Table extends QueryTable, T> {
         this._modifiers = modifiers;
     }
 
-    asc() {
-        return new QueryOrdering<Table>(this, "ASC");
-    }
-
-    desc() {
-        return new QueryOrdering<Table>(this, "DESC");
-    }
-
-    eq(value: T) {
-        return new QueryCondition<Table, T>(this, 'eq', value);
-    }
-
-    ne(value: T) {
-        return new QueryCondition<Table, T>(this, 'ne', value);
-    }
+    abstract count(): NumberColumn<Table>; // TODO I had to copy-paste the implementation to every child class to avoid a circular dependency
 }
+
+export default QueryColumn;

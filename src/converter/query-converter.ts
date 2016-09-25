@@ -53,11 +53,17 @@ function convertTable(table: any) {
 }
 
 function convertColumn(column: any) {
-    let s = convertTable(column._table) + '."' + column._params.name + '"';
+    let s = convertTable(column._table) + '.';
+    s += column._params.special ? column._params.special : '"' + column._params.name + '"';
     if (column._modifiers) {
         column._modifiers.forEach(modifier => {
             if (modifier === 'lower') s = 'LOWER(' + s + ')';
             else if (modifier === 'upper') s = 'UPPER(' + s + ')';
+            else if (modifier === 'count') s = 'COUNT(' + s + ')';
+            else if (modifier === 'sum') s = 'SUM(' + s + ')';
+            else if (modifier === 'avg') s = 'AVG(' + s + ')';
+            else if (modifier === 'min') s = 'MIN(' + s + ')';
+            else if (modifier === 'max') s = 'MAX(' + s + ')';
         });
     }
     return s + '';
