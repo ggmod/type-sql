@@ -1,6 +1,5 @@
 import BOOK from './book';
-import {Book, BookTable} from './book';
-import Author from './author';
+import AUTHOR from './author';
 import QuerySource from "../src/builder/query-source";
 import DefaultQueryProcessor from "../src/defeault-processor";
 
