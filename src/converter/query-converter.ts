@@ -1,7 +1,6 @@
 
-export function convertQuery(query: any) {
+export function convertQuery(query: any, paramConverter) {
     let s = '';
-    let params = [];
     if (query._columns) {
         s += 'SELECT ';
         if (query._columns.length === 0) {
@@ -13,9 +12,7 @@ export function convertQuery(query: any) {
     s += ' FROM ' + query._tables.map(table => convertTable(table)).join(', ');
     if (query._conditions.length > 0) {
         s += ' WHERE ';
-        let where = query._conditions.map(condition => convertConditions(condition));
-        s += where.map(w => w.sql).join(' AND ');
-        params = params.concat(...where.map(w => w.params)); // flatMap
+        s += query._conditions.map(condition => convertCondition(condition, paramConverter)).join(' AND ');
     }
     if (query._orderings.length > 0) {
         s += ' ORDER BY ';
@@ -27,10 +24,7 @@ export function convertQuery(query: any) {
     if (query._limit != null) {
         s += ' LIMIT ' + Number(query._limit);
     }
-    return {
-        sql: s,
-        params
-    };
+    return s;
 }
 
 function convertOrdering(ordering: any) {
@@ -69,18 +63,40 @@ function convertColumn(column: any) {
     return s + '';
 }
 
-function convertConditions(condition) {
+function convertCondition(condition, paramConverter) {
+    let s = '';
+    if (!condition._sibling && !condition._child) {
+        return s + convertColumnCondition(condition, paramConverter);
+    }
+    if (condition._child) {
+        let child = convertCondition(condition._child, paramConverter);
+        if (condition._child._sibling || condition._child._child) {
+            child = '( ' + child + ' )';
+        }
+        s += child;
+    }
+    if (condition._sibling) {
+        s = convertCondition(condition._sibling, paramConverter) + ' ' + condition._chainType + ' ' + s;
+    }
+    return s;
+}
+
+function convertColumnCondition(condition, paramConverter) {
     let s = convertColumn(condition._column);
 
-    if (condition._type === 'eq') s += ' = ?';
-    else if (condition._type === 'ne') s += ' <> ?';
-    else if (condition._type === 'lt') s += ' < ?';
-    else if (condition._type === 'gt') s += ' > ?';
-    else if (condition._type === 'lte') s += ' <= ?';
-    else if (condition._type === 'gte') s += ' >= ?';
+    let param = '';
+    if (condition._type !== 'is-null' && condition._type !== 'is-not-null') {
+        param = paramConverter(condition._value);
+    }
 
-    return {
-        sql: s,
-        params: [condition._value]
-    };
+    if (condition._type === 'eq') s += ' = ' + param;
+    else if (condition._type === 'ne') s += ' <> ' + param;
+    else if (condition._type === 'lt') s += ' < ' + param;
+    else if (condition._type === 'gt') s += ' > ' + param;
+    else if (condition._type === 'lte') s += ' <= ' + param;
+    else if (condition._type === 'gte') s += ' >= ' + param;
+    else if (condition._type === 'is-null') s += ' IS NULL';
+    else if (condition._type === 'is-not-null') s += ' IS NOT NULL';
+
+    return s;
 }

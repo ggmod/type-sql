@@ -1,4 +1,4 @@
-import QueryCondition from "./query-condition";
+import QueryColumnCondition from "./query-column-condition";
 import QueryTable from "./query-table";
 import ValueColumn from "./value-column";
 
@@ -10,19 +10,19 @@ export default class NumberColumn<Table extends QueryTable<any>> extends ValueCo
     }
 
     lt(value: number) {
-        return new QueryCondition<Table, number>(this, 'lt', value);
+        return new QueryColumnCondition<Table, number>(this, 'lt', value);
     }
 
     gt(value: number) {
-        return new QueryCondition<Table, number>(this, 'gt', value);
+        return new QueryColumnCondition<Table, number>(this, 'gt', value);
     }
 
     lte(value: number) {
-        return new QueryCondition<Table, number>(this, 'lte', value);
+        return new QueryColumnCondition<Table, number>(this, 'lte', value);
     }
 
     gte(value: number) {
-        return new QueryCondition<Table, number>(this, 'gte', value);
+        return new QueryColumnCondition<Table, number>(this, 'gte', value);
     }
 
     sum(): NumberColumn<Table> {

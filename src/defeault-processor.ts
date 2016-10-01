@@ -1,6 +1,6 @@
 import QueryProcessor from "./query-processor";
-import { substituteQueryParams } from './converter/utils';
-import { convertQuery } from './converter/query-converter';
+import { convertQueryToParameterizedSQL } from './converter/parameterized-converter';
+import { convertQueryToSQL } from './converter/sql-converter';
 
 
 export default class DefaultQueryProcessor implements QueryProcessor {
@@ -10,10 +10,10 @@ export default class DefaultQueryProcessor implements QueryProcessor {
     executeAsStream<T>(query) { throw "Not supported"; }
 
     convertToSQL(query): string {
-        return substituteQueryParams(convertQuery(query));
+        return convertQueryToSQL(query);
     }
 
     convertToParameterizedSQL(query): { sql: string, params: any[] } {
-        return convertQuery(query);
+        return convertQueryToParameterizedSQL(query);
     }
 }

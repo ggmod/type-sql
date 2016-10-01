@@ -1,15 +1,23 @@
-import QueryColumn from "./query-column";
-import QueryTable from "./query-table";
 
-export default class QueryCondition<Table extends QueryTable<any>, T> {
+// TODO create abstract class and QueryConditionChain, but then the circular dependency error would appear here too
 
-    private _column: QueryColumn<Table, T>;
-    private _type: string;
-    private _value: T;
+export default class QueryCondition<Table> {
 
-    constructor(column: QueryColumn<Table, T>, type: string, value: T) {
-        this._column = column;
-        this._type = type;
-        this._value = value;
+    protected _sibling: QueryCondition<any>;
+    protected _child: QueryCondition<any>;
+    protected _chainType: string;
+
+    constructor(sibling?: QueryCondition<any>, child?: QueryCondition<any>, chainType?: string) {
+        this._sibling = sibling;
+        this._child = child;
+        this._chainType = chainType;
+    }
+
+    and(condition: QueryCondition<any>) {
+        return new QueryCondition(this, condition, 'AND');
+    }
+
+    or(condition: QueryCondition<any>) {
+        return new QueryCondition(this, condition, 'OR');
     }
 }

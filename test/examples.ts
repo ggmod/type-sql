@@ -13,7 +13,7 @@ describe('Random examples', () => {
             .orderBy(BOOK.title.asc())
             .select(BOOK.id, BOOK.title.lower());
 
-        let s1 = 'SELECT "Book"."id", LOWER("Book"."title") FROM "Book" WHERE "Book"."author" = xy ORDER BY "Book"."title" ASC OFFSET 10 LIMIT 2';
+        let s1 = `SELECT "Book"."id", LOWER("Book"."title") FROM "Book" WHERE "Book"."author" = 'xy' ORDER BY "Book"."title" ASC OFFSET 10 LIMIT 2`;
 
         expect(q1.toSQL()).toEqual(s1);
     });

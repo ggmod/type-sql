@@ -37,7 +37,7 @@ export default class Query<Entity, Table extends QueryTable<Entity>> {
         return this;
     }
 
-    where(...conditions: QueryCondition<Table, any>[]): this {
+    where(...conditions: QueryCondition<Table>[]): this {
         this._conditions = conditions;
         return this;
     }
