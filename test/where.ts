@@ -14,6 +14,17 @@ describe('WHERE', () => {
         expect(db.from(BOOK).where(BOOK.title.isNotNull()).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" IS NOT NULL`);
 
+        expect(db.from(BOOK).where(BOOK.title.like('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" LIKE 'asd'`);
+        expect(db.from(BOOK).where(BOOK.title.contains('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" LIKE '%asd%'`);
+        expect(db.from(BOOK).where(BOOK.title.startsWith('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" LIKE 'asd%'`);
+        expect(db.from(BOOK).where(BOOK.title.endsWith('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" LIKE '%asd'`);
+        expect(db.from(BOOK).where(BOOK.title.lower().like('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE LOWER("Book"."title") LIKE 'asd'`);
+
         expect(db.from(BOOK).where(BOOK.price.lt(100)).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."price" < 100`);
         expect(db.from(BOOK).where(BOOK.price.gt(100)).select().toSQL())

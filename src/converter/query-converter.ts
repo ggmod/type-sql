@@ -113,6 +113,7 @@ function convertColumnCondition(condition, paramConverter) {
     else if (condition._type === 'gte') s += ' >= ' + param;
     else if (condition._type === 'is-null') s += ' IS NULL';
     else if (condition._type === 'is-not-null') s += ' IS NOT NULL';
+    else if (condition._type === 'like') s += ' LIKE ' + param;
 
     return s;
 }
