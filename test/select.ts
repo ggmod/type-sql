@@ -1,9 +1,6 @@
 import BOOK from './book';
 import AUTHOR from './author';
-import QuerySource from "../src/builder/query-source";
-import DefaultQueryProcessor from "../src/defeault-processor";
-
-let db = new QuerySource(new DefaultQueryProcessor());
+import { db } from './utils';
 
 describe('SELECT', () => {
     it('single column', () => {
