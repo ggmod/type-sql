@@ -6,12 +6,14 @@ export function convertQuery(query: any, paramConverter) {
         if (query._columns.length === 0) {
             s += '*'
         } else {
-           s += query._columns.map(column => convertColumn(column)).join(', ');
+            s += query._columns.map(column => convertColumn(column)).join(', ');
         }
     }
     s += ' FROM ' + query._tables.map(table => convertTable(table)).join(', ');
+
     if (query._conditions.length > 0) {
         s += ' WHERE ';
+        preprocessConditions(query._conditions);
         s += query._conditions.map(condition => convertCondition(condition, paramConverter)).join(' AND ');
     }
     if (query._orderings.length > 0) {
@@ -63,11 +65,22 @@ function convertColumn(column: any) {
     return s + '';
 }
 
-function convertCondition(condition, paramConverter) {
-    let s = '';
-    if (!condition._sibling && !condition._child) {
-        return s + convertColumnCondition(condition, paramConverter);
+function preprocessConditions(conditions) {
+    if (conditions.length > 1) {
+        conditions.forEach(condition => {
+            if (condition._sibling) {
+                condition._parenthesis = true;
+            }
+        });
     }
+}
+
+function convertCondition(condition, paramConverter) {
+    if (!condition._sibling && !condition._child) {
+        return convertColumnCondition(condition, paramConverter);
+    }
+
+    let s = '';
     if (condition._child) {
         let child = convertCondition(condition._child, paramConverter);
         if (condition._child._sibling || condition._child._child) {
@@ -77,6 +90,9 @@ function convertCondition(condition, paramConverter) {
     }
     if (condition._sibling) {
         s = convertCondition(condition._sibling, paramConverter) + ' ' + condition._chainType + ' ' + s;
+        if (condition._parenthesis) {
+            s = '( ' + s + ' )';
+        }
     }
     return s;
 }

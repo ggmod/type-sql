@@ -6,6 +6,7 @@ export default class QueryCondition<Table> {
     protected _sibling: QueryCondition<any>;
     protected _child: QueryCondition<any>;
     protected _chainType: string;
+    protected _parenthesis = false;
 
     constructor(sibling?: QueryCondition<any>, child?: QueryCondition<any>, chainType?: string) {
         this._sibling = sibling;
@@ -19,5 +20,11 @@ export default class QueryCondition<Table> {
 
     or(condition: QueryCondition<any>) {
         return new QueryCondition(this, condition, 'OR');
+    }
+
+    // TODO how to call this
+    $() {
+        this._parenthesis = true;
+        return this;
     }
 }
