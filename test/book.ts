@@ -25,6 +25,10 @@ export class BookTable extends QueryTable<Book> {
         name: 'author'
     });
 
+    authorId = new NumberColumn(this, {
+        name: 'author_id'
+    });
+
     price = new NumberColumn(this, {
         name: 'price'
     });

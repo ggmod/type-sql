@@ -84,4 +84,11 @@ describe('WHERE', () => {
         expect(db.from(BOOK).where(BOOK.id.gt(100).or(BOOK.id.lte(50).and(BOOK.price.lt(100).or(BOOK.price.gt(200))))).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."id" > 100 OR ( "Book"."id" <= 50 AND ( "Book"."price" < 100 OR "Book"."price" > 200 ) )`);
     });
+
+    it('join condition', () => {
+        expect(db.from(BOOK, AUTHOR).where(BOOK.authorId.eq(AUTHOR.id)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book", "Author" WHERE "Book"."author_id" = "Author"."id"`);
+        expect(db.from(BOOK, AUTHOR).where(AUTHOR.id.eq(BOOK.authorId)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book", "Author" WHERE "Author"."id" = "Book"."author_id"`);
+    });
 });

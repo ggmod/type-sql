@@ -9,6 +9,10 @@ export interface Author {
 export class AuthorTable extends QueryTable<Author> {
     $name = "Author";
 
+    id = new NumberColumn(this, {
+        name: 'id'
+    });
+
     name = new StringColumn(this, {
         name: 'name'
     });

@@ -1,7 +1,8 @@
+import QueryTable from "./query-table";
 
 // TODO create abstract class and QueryConditionChain, but then the circular dependency error would appear here too
 
-export default class QueryCondition<Table> {
+export default class QueryCondition<Table extends QueryTable<any>> {
 
     protected _sibling: QueryCondition<any>;
     protected _child: QueryCondition<any>;
@@ -14,12 +15,12 @@ export default class QueryCondition<Table> {
         this._chainType = chainType;
     }
 
-    and(condition: QueryCondition<any>) {
-        return new QueryCondition(this, condition, 'AND');
+    and<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>) {
+        return new QueryCondition<Table | Table2>(this, condition, 'AND');
     }
 
-    or(condition: QueryCondition<any>) {
-        return new QueryCondition(this, condition, 'OR');
+    or<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>) {
+        return new QueryCondition<Table | Table2>(this, condition, 'OR');
     }
 
     // TODO how to call this

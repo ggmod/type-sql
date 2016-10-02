@@ -101,7 +101,9 @@ function convertColumnCondition(condition, paramConverter) {
     let s = convertColumn(condition._column);
 
     let param = '';
-    if (condition._type !== 'is-null' && condition._type !== 'is-not-null') {
+    if (condition._otherColumn) {
+        param = convertColumn(condition._otherColumn);
+    } else if (condition._type !== 'is-null' && condition._type !== 'is-not-null') {
         param = paramConverter(condition._value);
     }
 
