@@ -37,4 +37,8 @@ export default class StringColumn<Table extends QueryTable<any>> extends ValueCo
     like(value: string) {
         return new QueryColumnCondition<Table, string>(this, 'like', value);
     }
+
+    notLike(value: string) {
+        return new QueryColumnCondition<Table, string>(this, 'not-like', value);
+    }
 }

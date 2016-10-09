@@ -22,6 +22,8 @@ describe('WHERE', () => {
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" LIKE 'asd%'`);
         expect(db.from(BOOK).where(BOOK.title.endsWith('asd')).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" LIKE '%asd'`);
+        expect(db.from(BOOK).where(BOOK.title.notLike('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" NOT LIKE 'asd'`);
         expect(db.from(BOOK).where(BOOK.title.lower().like('asd')).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE LOWER("Book"."title") LIKE 'asd'`);
 
