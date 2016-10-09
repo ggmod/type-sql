@@ -43,6 +43,15 @@ describe('WHERE', () => {
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."price" IS NULL`);
         expect(db.from(BOOK).where(BOOK.price.isNotNull()).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."price" IS NOT NULL`);
+
+        expect(db.from(BOOK).where(BOOK.title.in(['ab', 'cd', 'ef'])).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" IN ('ab', 'cd', 'ef')`);
+        expect(db.from(BOOK).where(BOOK.title.notIn(['ab', 'cd', 'ef'])).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" NOT IN ('ab', 'cd', 'ef')`);
+        expect(db.from(BOOK).where(BOOK.id.in([1, 2, 3])).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."id" IN (1, 2, 3)`);
+        expect(db.from(BOOK).where(BOOK.id.notIn([1, 2, 3])).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."id" NOT IN (1, 2, 3)`);
     });
 
     it('multiple conditions', () => {

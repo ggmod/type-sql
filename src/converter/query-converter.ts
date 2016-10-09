@@ -116,6 +116,8 @@ function convertColumnCondition(condition, paramConverter) {
     else if (condition._type === 'is-not-null') s += ' IS NOT NULL';
     else if (condition._type === 'like') s += ' LIKE ' + param;
     else if (condition._type === 'not-like') s += ' NOT LIKE ' + param;
+    else if (condition._type === 'in') s += ' IN (' + param + ')';
+    else if (condition._type === 'not-in') s += ' NOT IN (' + param + ')';
 
     return s;
 }

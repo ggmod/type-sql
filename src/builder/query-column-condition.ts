@@ -8,9 +8,9 @@ export default class QueryColumnCondition<Table extends QueryTable<any>, T> exte
 
     protected _column: QueryColumn<Table, T>;
     protected _type: string;
-    protected _value: T;
+    protected _value: any; // T | T[] ?
 
-    constructor(column: QueryColumn<Table, T>, type: string, value: T) {
+    constructor(column: QueryColumn<Table, T>, type: string, value: any) {
         super();
         this._column = column;
         this._type = type;

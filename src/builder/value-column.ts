@@ -43,7 +43,11 @@ abstract class ValueColumn<Table extends QueryTable<any>, T> extends QueryColumn
     }
 
     in(values: T[]) {
-        return new QueryColumnCondition<Table, T[]>(this, 'in', values);
+        return new QueryColumnCondition<Table, T>(this, 'in', values);
+    }
+
+    notIn(values: T[]) {
+        return new QueryColumnCondition<Table, T>(this, 'not-in', values);
     }
 }
 
