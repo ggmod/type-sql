@@ -1,6 +1,7 @@
 import QueryColumn from "./query-column";
 import QueryTable from "./query-table";
 import QueryCondition from "./query-condition";
+import QueryConditionChain from "./query-condition-chain";
 
 
 export default class QueryJoinCondition<Table1 extends QueryTable<any>, Table2 extends QueryTable<any>, T> extends QueryCondition<Table1 | Table2> {
@@ -14,5 +15,13 @@ export default class QueryJoinCondition<Table1 extends QueryTable<any>, Table2 e
         this._column = column;
         this._type = type;
         this._otherColumn = otherColumn;
+    }
+
+    and<Table3 extends QueryTable<any>>(condition: QueryCondition<Table3>) {
+        return new QueryConditionChain<Table1 | Table2 | Table3>(this, condition, 'AND');
+    }
+
+    or<Table3 extends QueryTable<any>>(condition: QueryCondition<Table3>) {
+        return new QueryConditionChain<Table1 | Table2 | Table2>(this, condition, 'OR');
     }
 }

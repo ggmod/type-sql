@@ -1,39 +1,13 @@
 import QueryTable from "./query-table";
+import QueryConditionChain from "./query-condition-chain";
 
-// TODO create abstract class and QueryConditionChain, but then the circular dependency error would appear here too
+// TODO I had to copy-paste the method implementations to every child class to avoid circular dependencies
 
-export default class QueryCondition<Table extends QueryTable<any>> {
+abstract class QueryCondition<Table extends QueryTable<any>> {
 
-    protected _sibling: QueryCondition<any>;
-    protected _child: QueryCondition<any>;
-    protected _chainType: string;
-    protected _parenthesis = false;
-    protected _negation = false;
+    abstract and<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>): QueryConditionChain<Table | Table2>;
 
-    constructor(sibling?: QueryCondition<any>, child?: QueryCondition<any>, chainType?: string) {
-        this._sibling = sibling;
-        this._child = child;
-        this._chainType = chainType;
-    }
-
-    and<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>) {
-        return new QueryCondition<Table | Table2>(this, condition, 'AND');
-    }
-
-    or<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>) {
-        return new QueryCondition<Table | Table2>(this, condition, 'OR');
-    }
-
-    // these only make sense on a composite (not column) condition:
-
-    // TODO how to call this
-    $() {
-        this._parenthesis = true;
-        return this;
-    }
-
-    not() {
-        this._negation = true;
-        return this;
-    }
+    abstract or<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>): QueryConditionChain<Table | Table2>;
 }
+
+export default QueryCondition;
