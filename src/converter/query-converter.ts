@@ -14,7 +14,7 @@ export function convertQuery(query: any, paramConverter) {
     if (query._conditions.length > 0) {
         s += ' WHERE ';
         preprocessConditions(query._conditions);
-        s += query._conditions.map(condition => convertCondition(condition, paramConverter)).join(' AND ');
+        s += query._conditions.map(condition => convertCondition(condition, paramConverter, true)).join(' AND ');
     }
     if (query._orderings.length > 0) {
         s += ' ORDER BY ';
@@ -75,24 +75,23 @@ function preprocessConditions(conditions) {
     }
 }
 
-function convertCondition(condition, paramConverter) {
+function convertCondition(condition, paramConverter, root = false) {
     if (!condition._sibling && !condition._child) {
         return convertColumnCondition(condition, paramConverter);
     }
 
     let s = '';
     if (condition._child) {
-        let child = convertCondition(condition._child, paramConverter);
-        if (condition._child._sibling || condition._child._child) {
-            child = '( ' + child + ' )';
-        }
-        s += child;
+        s += convertCondition(condition._child, paramConverter);
     }
     if (condition._sibling) {
-        s = convertCondition(condition._sibling, paramConverter) + ' ' + condition._chainType + ' ' + s;
-        if (condition._parenthesis) {
-            s = '( ' + s + ' )';
-        }
+        s = convertCondition(condition._sibling, paramConverter, root) + ' ' + condition._chainType + ' ' + s;
+    }
+    if (condition._parenthesis || ((!root || condition._negation) && condition._child)) {
+        s = '( ' + s + ' )';
+    }
+    if (condition._negation) {
+        s = 'NOT ' + s;
     }
     return s;
 }

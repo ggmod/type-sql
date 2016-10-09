@@ -8,6 +8,7 @@ export default class QueryCondition<Table extends QueryTable<any>> {
     protected _child: QueryCondition<any>;
     protected _chainType: string;
     protected _parenthesis = false;
+    protected _negation = false;
 
     constructor(sibling?: QueryCondition<any>, child?: QueryCondition<any>, chainType?: string) {
         this._sibling = sibling;
@@ -23,9 +24,16 @@ export default class QueryCondition<Table extends QueryTable<any>> {
         return new QueryCondition<Table | Table2>(this, condition, 'OR');
     }
 
+    // these only make sense on a composite (not column) condition:
+
     // TODO how to call this
     $() {
         this._parenthesis = true;
+        return this;
+    }
+
+    not() {
+        this._negation = true;
         return this;
     }
 }
