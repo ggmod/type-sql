@@ -11,9 +11,6 @@ function convertSingleParam(param) {
 
 export function convertQueryToSQL(query) {
     return convertQuery(query, param => {
-        if (Array.isArray(param)) {
-            return param.map(p => convertSingleParam(p)).join(', ');
-        }
         return convertSingleParam(param);
     });
 }

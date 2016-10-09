@@ -102,8 +102,12 @@ function convertColumnCondition(condition, paramConverter) {
     let param = '';
     if (condition._otherColumn) {
         param = convertColumn(condition._otherColumn);
+    } else if (condition._type === 'in' || condition._type === 'not-in') {
+        param = condition._values.map(value => paramConverter(value)).join(', ');
+    } else if (condition._type === 'between' || condition._type === 'not-between') {
+        param = paramConverter(condition._values[0]) + ' AND ' + paramConverter(condition._values[1]);
     } else if (condition._type !== 'is-null' && condition._type !== 'is-not-null') {
-        param = paramConverter(condition._value);
+        param = paramConverter(condition._values[0]);
     }
 
     if (condition._type === 'eq') s += ' = ' + param;
@@ -118,6 +122,8 @@ function convertColumnCondition(condition, paramConverter) {
     else if (condition._type === 'not-like') s += ' NOT LIKE ' + param;
     else if (condition._type === 'in') s += ' IN (' + param + ')';
     else if (condition._type === 'not-in') s += ' NOT IN (' + param + ')';
+    else if (condition._type === 'between') s += ' BETWEEN ' + param;
+    else if (condition._type === 'not-between') s += ' NOT BETWEEN ' + param;
 
     return s;
 }

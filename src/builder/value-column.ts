@@ -43,11 +43,19 @@ abstract class ValueColumn<Table extends QueryTable<any>, T> extends QueryColumn
     }
 
     in(values: T[]) {
-        return new QueryColumnCondition<Table, T>(this, 'in', values);
+        return new QueryColumnCondition<Table, T>(this, 'in', ...values);
     }
 
     notIn(values: T[]) {
-        return new QueryColumnCondition<Table, T>(this, 'not-in', values);
+        return new QueryColumnCondition<Table, T>(this, 'not-in', ...values);
+    }
+
+    between(value1: T, value2: T) {
+        return new QueryColumnCondition<Table, T>(this, 'between', value1, value2);
+    }
+
+    notBetween(value1: T, value2: T) {
+        return new QueryColumnCondition<Table, T>(this, 'not-between', value1, value2);
     }
 }
 
