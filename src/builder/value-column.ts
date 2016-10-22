@@ -34,6 +34,22 @@ abstract class ValueColumn<Table extends QueryTable<any>, T> extends QueryColumn
         return new QueryColumnCondition<Table, T>(this, 'ne', value);
     }
 
+    lt(value: T) {
+        return new QueryColumnCondition<Table, T>(this, 'lt', value);
+    }
+
+    gt(value: T) {
+        return new QueryColumnCondition<Table, T>(this, 'gt', value);
+    }
+
+    lte(value: T) {
+        return new QueryColumnCondition<Table, T>(this, 'lte', value);
+    }
+
+    gte(value: T) {
+        return new QueryColumnCondition<Table, T>(this, 'gte', value);
+    }
+
     isNull() {
         return new QueryColumnCondition<Table, T>(this, 'is-null', null);
     }

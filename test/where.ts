@@ -27,6 +27,17 @@ describe('WHERE', () => {
         expect(db.from(BOOK).where(BOOK.title.lower().like('asd')).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE LOWER("Book"."title") LIKE 'asd'`);
 
+        expect(db.from(BOOK).where(BOOK.title.lt('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" < 'asd'`);
+        expect(db.from(BOOK).where(BOOK.title.gt('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" > 'asd'`);
+        expect(db.from(BOOK).where(BOOK.title.lte('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" <= 'asd'`);
+        expect(db.from(BOOK).where(BOOK.title.gte('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" >= 'asd'`);
+        expect(db.from(BOOK).where(BOOK.title.ne('asd')).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" <> 'asd'`);
+
         expect(db.from(BOOK).where(BOOK.price.lt(100)).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."price" < 100`);
         expect(db.from(BOOK).where(BOOK.price.gt(100)).select().toSQL())
