@@ -10,6 +10,6 @@ export default class DefaultQueryColumn<Table extends QueryTable<any>, T> extend
     }
 
     count(): NumberColumn<Table> {
-        return new NumberColumn(this._table, this._params, this._modifiers.concat('count'));
+        return new NumberColumn(this._table, this._params, this._modifiers.concat({ name: 'count' }));
     }
 }

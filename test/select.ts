@@ -30,5 +30,12 @@ describe('SELECT', () => {
             .toEqual('SELECT LOWER("Book"."title"), "Author"."name", "Book"."price" FROM "Book", "Author"');
         expect(db.from(BOOK, AUTHOR).select(AUTHOR.name.upper(), BOOK.$all.count(), BOOK.price.sum()).toSQL())
             .toEqual('SELECT UPPER("Author"."name"), COUNT("Book".*), SUM("Book"."price") FROM "Book", "Author"');
-    })
+    });
+
+    it('as keyword', () => {
+        expect(db.from(BOOK).select(BOOK.price.sum().as('sum')).toSQL())
+            .toEqual('SELECT SUM("Book"."price") AS "sum" FROM "Book"');
+        expect(db.from(BOOK).select(BOOK.author, BOOK.price.as('pr')).toSQL())
+            .toEqual('SELECT "Book"."author", "Book"."price" AS "pr" FROM "Book"');
+    });
 });

@@ -17,6 +17,10 @@ abstract class QueryColumn<Table extends QueryTable<any>, T> {
     }
 
     abstract count(): NumberColumn<Table>; // TODO I had to copy-paste the implementation to every child class to avoid a circular dependency
+
+    as(alias: string): this {
+        return new (<any>this.constructor)(this._table, this._params, this._modifiers.concat({ name: 'as', params: alias }));
+    }
 }
 
 export default QueryColumn;

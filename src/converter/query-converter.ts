@@ -53,13 +53,15 @@ function convertColumn(column: any) {
     s += column._params.special ? column._params.special : '"' + column._params.name + '"';
     if (column._modifiers) {
         column._modifiers.forEach(modifier => {
-            if (modifier === 'lower') s = 'LOWER(' + s + ')';
-            else if (modifier === 'upper') s = 'UPPER(' + s + ')';
-            else if (modifier === 'count') s = 'COUNT(' + s + ')';
-            else if (modifier === 'sum') s = 'SUM(' + s + ')';
-            else if (modifier === 'avg') s = 'AVG(' + s + ')';
-            else if (modifier === 'min') s = 'MIN(' + s + ')';
-            else if (modifier === 'max') s = 'MAX(' + s + ')';
+            let name = modifier.name;
+            if (name === 'lower') s = 'LOWER(' + s + ')';
+            else if (name === 'upper') s = 'UPPER(' + s + ')';
+            else if (name === 'count') s = 'COUNT(' + s + ')';
+            else if (name === 'sum') s = 'SUM(' + s + ')';
+            else if (name === 'avg') s = 'AVG(' + s + ')';
+            else if (name === 'min') s = 'MIN(' + s + ')';
+            else if (name === 'max') s = 'MAX(' + s + ')';
+            else if (name === 'as') s = s + ' AS "' + modifier.params + '"';
         });
     }
     return s + '';
