@@ -5,6 +5,9 @@ export function convertQuery(query: any, paramConverter, lineBreaks = false) {
     let s = '';
     if (query._columns) {
         s += 'SELECT ';
+        if (query._distinct) {
+            s += 'DISTINCT ';
+        }
         if (query._columns.length === 0) {
             s += '*'
         } else {

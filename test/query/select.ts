@@ -34,10 +34,17 @@ describe('SELECT', () => {
             .toEqual('SELECT UPPER("Author"."name"), "Book".* FROM "Book", "Author"');
     });
 
-    it('as keyword', () => {
+    it('"as" keyword', () => {
         expect(db.from(BOOK).select(BOOK.price.sum().as('sum')).toSQL())
             .toEqual('SELECT SUM("Book"."price") AS "sum" FROM "Book"');
         expect(db.from(BOOK).select(BOOK.author, BOOK.price.as('pr')).toSQL())
             .toEqual('SELECT "Book"."author", "Book"."price" AS "pr" FROM "Book"');
+    });
+
+    it('"distinct" keyword', () => {
+        expect(db.from(BOOK).distinct().select().toSQL())
+            .toEqual('SELECT DISTINCT * FROM "Book"');
+        expect(db.from(BOOK).distinct().select(BOOK.author).toSQL())
+            .toEqual('SELECT DISTINCT "Book"."author" FROM "Book"');
     });
 });
