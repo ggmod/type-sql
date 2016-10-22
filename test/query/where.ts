@@ -1,6 +1,6 @@
-import BOOK from './book';
-import AUTHOR from './author';
-import { db } from './utils';
+import BOOK from '../tables/book';
+import AUTHOR from '../tables/author';
+import { db } from '../utils';
 
 describe('WHERE', () => {
 
