@@ -1,5 +1,7 @@
 
-export function convertQuery(query: any, paramConverter) {
+export function convertQuery(query: any, paramConverter, lineBreaks = false) {
+    let separator = lineBreaks ? '\n' : ' ';
+
     let s = '';
     if (query._columns) {
         s += 'SELECT ';
@@ -9,22 +11,22 @@ export function convertQuery(query: any, paramConverter) {
             s += query._columns.map(column => convertColumn(column)).join(', ');
         }
     }
-    s += ' FROM ' + query._tables.map(table => convertTable(table)).join(', ');
+    s += separator + 'FROM ' + query._tables.map(table => convertTable(table)).join(', ');
 
     if (query._conditions.length > 0) {
-        s += ' WHERE ';
+        s += separator + 'WHERE ';
         preprocessConditions(query._conditions);
         s += query._conditions.map(condition => convertCondition(condition, paramConverter, true)).join(' AND ');
     }
     if (query._orderings.length > 0) {
-        s += ' ORDER BY ';
+        s += separator + 'ORDER BY ';
         s += query._orderings.map(ordering => convertOrdering(ordering)).join(', ');
     }
     if (query._offset != null) {
-        s += ' OFFSET ' + Number(query._offset);
+        s += separator + 'OFFSET ' + Number(query._offset);
     }
     if (query._limit != null) {
-        s += ' LIMIT ' + Number(query._limit);
+        s += separator + 'LIMIT ' + Number(query._limit);
     }
     return s;
 }

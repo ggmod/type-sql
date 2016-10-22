@@ -5,12 +5,14 @@ import { convertQueryToSQL } from './converter/sql-converter';
 
 export default class DefaultQueryProcessor implements QueryProcessor {
 
+    constructor(private _options = {}) {}
+
     execute<T>(query): Promise<T> { throw "Not supported"; }
 
     executeAsStream<T>(query) { throw "Not supported"; }
 
     convertToSQL(query): string {
-        return convertQueryToSQL(query);
+        return convertQueryToSQL(query, this._options.lineBreaks);
     }
 
     convertToParameterizedSQL(query): { sql: string, params: any[] } {
