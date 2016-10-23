@@ -82,6 +82,11 @@ describe('WHERE', () => {
         expect(db.from(BOOK).where(BOOK.available.isNotNull()).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."available" IS NOT NULL`);
 
+        expect(db.from(BOOK).where(BOOK.data.isNull()).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."data" IS NULL`);
+        expect(db.from(BOOK).where(BOOK.data.isNotNull()).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."data" IS NOT NULL`);
+
         let date = new Date('2016-10-23T19:11:25.342Z');
         let date2 = new Date('2016-10-24T20:10:10.100Z');
 
