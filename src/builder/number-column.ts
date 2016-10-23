@@ -1,12 +1,15 @@
-import QueryColumnCondition from "./query-column-condition";
 import QueryTable from "./query-table";
-import ValueColumn from "./value-column";
+import ComparableColumn from "./comparable-column";
 
 
-export default class NumberColumn<Table extends QueryTable<any>> extends ValueColumn<Table, number> {
+export default class NumberColumn<Table extends QueryTable<any>> extends ComparableColumn<Table, number> {
 
     constructor(table: Table, params, modifiers?) {
         super(table, params, modifiers);
+    }
+
+    count(): NumberColumn<Table> {
+        return new NumberColumn(this._table, this._params, this._modifiers.concat({ name: 'count' }));
     }
 
     sum(): NumberColumn<Table> {
@@ -23,9 +26,5 @@ export default class NumberColumn<Table extends QueryTable<any>> extends ValueCo
 
     max(): NumberColumn<Table> {
         return new NumberColumn<Table>(this._table, this._params, this._modifiers.concat({ name: 'max' }));
-    }
-
-    count(): NumberColumn<Table> {
-        return new NumberColumn(this._table, this._params, this._modifiers.concat({ name: 'count' }));
     }
 }

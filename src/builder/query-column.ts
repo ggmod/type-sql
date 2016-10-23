@@ -1,6 +1,7 @@
 import QueryTable from "./query-table";
 import NumberColumn from "./number-column";
 import GenericsHelper from "./generics-helper";
+import QueryColumnCondition from "./query-column-condition";
 
 
 abstract class QueryColumn<Table extends QueryTable<any>, T> {
@@ -20,6 +21,14 @@ abstract class QueryColumn<Table extends QueryTable<any>, T> {
 
     as(alias: string): this {
         return new (<any>this.constructor)(this._table, this._params, this._modifiers.concat({ name: 'as', params: alias }));
+    }
+
+    isNull() {
+        return new QueryColumnCondition<Table, T>(this, 'is-null', null);
+    }
+
+    isNotNull() {
+        return new QueryColumnCondition<Table, T>(this, 'is-not-null', null);
     }
 }
 

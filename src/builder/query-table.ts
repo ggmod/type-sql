@@ -1,4 +1,4 @@
-import DefaultQueryColumn from "./default-column";
+import BasicQueryColumn from "./basic-column";
 import GenericsHelper from "./generics-helper";
 
 
@@ -6,7 +6,7 @@ export default class QueryTable<Entity> {
 
     private _$type: GenericsHelper<Entity>;
 
-    $all = new DefaultQueryColumn<this, Entity>(this, {
+    $all = new BasicQueryColumn<this, Entity>(this, {
         special: '*'
     });
 }

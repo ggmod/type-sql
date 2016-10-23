@@ -33,46 +33,6 @@ abstract class ValueColumn<Table extends QueryTable<any>, T> extends QueryColumn
     ne(value: T) {
         return new QueryColumnCondition<Table, T>(this, 'ne', value);
     }
-
-    lt(value: T) {
-        return new QueryColumnCondition<Table, T>(this, 'lt', value);
-    }
-
-    gt(value: T) {
-        return new QueryColumnCondition<Table, T>(this, 'gt', value);
-    }
-
-    lte(value: T) {
-        return new QueryColumnCondition<Table, T>(this, 'lte', value);
-    }
-
-    gte(value: T) {
-        return new QueryColumnCondition<Table, T>(this, 'gte', value);
-    }
-
-    isNull() {
-        return new QueryColumnCondition<Table, T>(this, 'is-null', null);
-    }
-
-    isNotNull() {
-        return new QueryColumnCondition<Table, T>(this, 'is-not-null', null);
-    }
-
-    in(values: T[]) {
-        return new QueryColumnCondition<Table, T>(this, 'in', ...values);
-    }
-
-    notIn(values: T[]) {
-        return new QueryColumnCondition<Table, T>(this, 'not-in', ...values);
-    }
-
-    between(value1: T, value2: T) {
-        return new QueryColumnCondition<Table, T>(this, 'between', value1, value2);
-    }
-
-    notBetween(value1: T, value2: T) {
-        return new QueryColumnCondition<Table, T>(this, 'not-between', value1, value2);
-    }
 }
 
 export default ValueColumn;

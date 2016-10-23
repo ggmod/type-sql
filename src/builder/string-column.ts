@@ -1,13 +1,17 @@
 import QueryTable from "./query-table";
-import ValueColumn from "./value-column";
+import ComparableColumn from "./comparable-column";
 import NumberColumn from "./number-column";
 import QueryColumnCondition from "./query-column-condition";
 
 
-export default class StringColumn<Table extends QueryTable<any>> extends ValueColumn<Table, string> {
+export default class StringColumn<Table extends QueryTable<any>> extends ComparableColumn<Table, string> {
 
     constructor(table: Table, params, modifiers?) {
         super(table, params, modifiers);
+    }
+
+    count(): NumberColumn<Table> {
+        return new NumberColumn(this._table, this._params, this._modifiers.concat({ name: 'count' }));
     }
 
     lower(): this {
@@ -16,10 +20,6 @@ export default class StringColumn<Table extends QueryTable<any>> extends ValueCo
 
     upper(): this {
         return new (<any>this.constructor)(this._table, this._params, this._modifiers.concat({ name: 'upper' }));
-    }
-
-    count(): NumberColumn<Table> {
-        return new NumberColumn(this._table, this._params, this._modifiers.concat({ name: 'count' }));
     }
 
     contains(value: string) {
