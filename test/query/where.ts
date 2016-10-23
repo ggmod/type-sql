@@ -72,6 +72,15 @@ describe('WHERE', () => {
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."id" BETWEEN 1 AND 3`);
         expect(db.from(BOOK).where(BOOK.id.notBetween(1, 3)).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."id" NOT BETWEEN 1 AND 3`);
+
+        expect(db.from(BOOK).where(BOOK.available.eq(true)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."available" = TRUE`);
+        expect(db.from(BOOK).where(BOOK.available.ne(false)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."available" <> FALSE`);
+        expect(db.from(BOOK).where(BOOK.available.isNull()).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."available" IS NULL`);
+        expect(db.from(BOOK).where(BOOK.available.isNotNull()).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."available" IS NOT NULL`);
     });
 
     it('multiple conditions', () => {

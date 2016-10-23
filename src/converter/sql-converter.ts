@@ -5,6 +5,8 @@ import { convertQuery } from "./query-converter";
 function convertSingleParam(param) {
     if (typeof param === 'string' || param instanceof String) {
         return `'${param}'`;
+    } else if (typeof param === 'boolean' || param instanceof Boolean) {
+        return param ? 'TRUE': 'FALSE';
     }
     return param;
 }

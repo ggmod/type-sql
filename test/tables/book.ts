@@ -1,6 +1,8 @@
 import NumberColumn from "../../src/builder/number-column";
 import StringColumn from "../../src/builder/string-column";
 import QueryTable from '../../src/builder/query-table';
+import BooleanColumn from "../../src/builder/boolean-column";
+import DateColumn from "../../src/builder/date-column";
 
 export interface Book {
     id: number,
@@ -32,6 +34,14 @@ export class BookTable extends QueryTable<Book> {
     price = new NumberColumn(this, {
         name: 'price'
     });
+
+    date = new DateColumn(this, {
+        name: 'date'
+    });
+
+    available = new BooleanColumn(this, {
+        name: 'available'
+    })
 }
 
 export const BOOK = new BookTable();
