@@ -40,6 +40,16 @@ abstract class ComparableColumn<Table extends QueryTable<any>, T> extends ValueC
     notBetween(value1: T, value2: T) {
         return new QueryColumnCondition<Table, T>(this, 'not-between', value1, value2);
     }
+
+    // min/max exists for text columns too, not just numeric and date
+
+    min(): this {
+        return (<any>this.constructor)(this._table, this._params, this._modifiers.concat({ name: 'min' }));
+    }
+
+    max(): this {
+        return (<any>this.constructor)(this._table, this._params, this._modifiers.concat({ name: 'max' }));
+    }
 }
 
 export default ComparableColumn;
