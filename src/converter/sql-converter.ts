@@ -7,6 +7,8 @@ function convertSingleParam(param) {
         return `'${param}'`;
     } else if (typeof param === 'boolean' || param instanceof Boolean) {
         return param ? 'TRUE': 'FALSE';
+    } else if (param instanceof Date) {
+        return `'${param.toISOString()}'`;
     }
     return param;
 }

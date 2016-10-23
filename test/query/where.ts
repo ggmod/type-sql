@@ -81,6 +81,30 @@ describe('WHERE', () => {
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."available" IS NULL`);
         expect(db.from(BOOK).where(BOOK.available.isNotNull()).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."available" IS NOT NULL`);
+
+        let date = new Date('2016-10-23T19:11:25.342Z');
+        let date2 = new Date('2016-10-24T20:10:10.100Z');
+
+        expect(db.from(BOOK).where(BOOK.date.eq(date)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" = '2016-10-23T19:11:25.342Z'`);
+        expect(db.from(BOOK).where(BOOK.date.ne(date)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" <> '2016-10-23T19:11:25.342Z'`);
+        expect(db.from(BOOK).where(BOOK.date.isNull()).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" IS NULL`);
+        expect(db.from(BOOK).where(BOOK.date.isNotNull()).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" IS NOT NULL`);
+        expect(db.from(BOOK).where(BOOK.date.lt(date)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" < '2016-10-23T19:11:25.342Z'`);
+        expect(db.from(BOOK).where(BOOK.date.gt(date)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" > '2016-10-23T19:11:25.342Z'`);
+        expect(db.from(BOOK).where(BOOK.date.lte(date)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" <= '2016-10-23T19:11:25.342Z'`);
+        expect(db.from(BOOK).where(BOOK.date.gte(date)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" >= '2016-10-23T19:11:25.342Z'`);
+        expect(db.from(BOOK).where(BOOK.date.between(date, date2)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" BETWEEN '2016-10-23T19:11:25.342Z' AND '2016-10-24T20:10:10.100Z'`);
+        expect(db.from(BOOK).where(BOOK.date.notBetween(date, date2)).select().toSQL())
+            .toEqual(`SELECT * FROM "Book" WHERE "Book"."date" NOT BETWEEN '2016-10-23T19:11:25.342Z' AND '2016-10-24T20:10:10.100Z'`);
     });
 
     it('multiple conditions', () => {
