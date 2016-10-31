@@ -10,6 +10,7 @@ abstract class QueryColumn<Table extends QueryTable<any>, T> {
     protected _params;
     protected _modifiers;
     protected _table: Table;
+    protected _type: string;
 
     constructor(table: Table, params, modifiers = []) {
         this._table = table;

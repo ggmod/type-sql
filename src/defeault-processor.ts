@@ -5,7 +5,7 @@ import { convertQueryToSQL } from './converter/sql-converter';
 
 export default class DefaultQueryProcessor implements QueryProcessor {
 
-    constructor(private _options = {}) {}
+    constructor(private _options: any = {}) {}
 
     execute<T>(query): Promise<T> { throw "Not supported"; }
 

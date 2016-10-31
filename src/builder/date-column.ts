@@ -5,6 +5,8 @@ import NumberColumn from "./number-column";
 
 export default class DateColumn<Table extends QueryTable<any>> extends ComparableColumn<Table, Date> {
 
+    protected _type = 'date';
+
     constructor(table: Table, params, modifiers?) {
         super(table, params, modifiers);
     }

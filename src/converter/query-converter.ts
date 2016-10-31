@@ -1,3 +1,5 @@
+import { string, number, date, boolean } from './utils';
+
 
 export function convertQuery(query: any, paramConverter, lineBreaks = false) {
     let separator = lineBreaks ? '\n' : ' ';
@@ -26,10 +28,10 @@ export function convertQuery(query: any, paramConverter, lineBreaks = false) {
         s += query._orderings.map(ordering => convertOrdering(ordering)).join(', ');
     }
     if (query._offset != null) {
-        s += separator + 'OFFSET ' + Number(query._offset);
+        s += separator + 'OFFSET ' + number(query._offset);
     }
     if (query._limit != null) {
-        s += separator + 'LIMIT ' + Number(query._limit);
+        s += separator + 'LIMIT ' + number(query._limit);
     }
     return s;
 }
@@ -106,15 +108,17 @@ function convertCondition(condition, paramConverter, root = false) {
 function convertColumnCondition(condition, paramConverter) {
     let s = convertColumn(condition._column);
 
+    let convertParam = param => paramConverter(getTypedParam(condition._column._type, param));
+
     let param = '';
     if (condition._otherColumn) {
         param = convertColumn(condition._otherColumn);
     } else if (condition._type === 'in' || condition._type === 'not-in') {
-        param = condition._values.map(value => paramConverter(value)).join(', ');
+        param = condition._values.map(value => convertParam(value)).join(', ');
     } else if (condition._type === 'between' || condition._type === 'not-between') {
-        param = paramConverter(condition._values[0]) + ' AND ' + paramConverter(condition._values[1]);
+        param = convertParam(condition._values[0]) + ' AND ' + convertParam(condition._values[1]);
     } else if (condition._type !== 'is-null' && condition._type !== 'is-not-null') {
-        param = paramConverter(condition._values[0]);
+        param = convertParam(condition._values[0]);
     }
 
     if (condition._type === 'eq') s += ' = ' + param;
@@ -133,4 +137,12 @@ function convertColumnCondition(condition, paramConverter) {
     else if (condition._type === 'not-between') s += ' NOT BETWEEN ' + param;
 
     return s;
+}
+
+function getTypedParam(type, param) {
+    if (type === 'number') return number(param);
+    else if (type === 'boolean') return boolean(param);
+    else if (type === 'date') return date(param);
+    else if (type === 'string') return string(param);
+    return param;
 }

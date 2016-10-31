@@ -4,6 +4,8 @@ import ComparableColumn from "./comparable-column";
 
 export default class NumberColumn<Table extends QueryTable<any>> extends ComparableColumn<Table, number> {
 
+    protected _type = 'number';
+
     constructor(table: Table, params, modifiers?) {
         super(table, params, modifiers);
     }

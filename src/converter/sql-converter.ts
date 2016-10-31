@@ -1,10 +1,13 @@
 import { convertQuery } from "./query-converter";
 
-// TODO escaping sql injection
+
+function escapeString(param) {
+    return param.replace(/'/g, "''");
+}
 
 function convertSingleParam(param) {
     if (typeof param === 'string' || param instanceof String) {
-        return `'${param}'`;
+        return `'${escapeString(param)}'`;
     } else if (typeof param === 'boolean' || param instanceof Boolean) {
         return param ? 'TRUE': 'FALSE';
     } else if (param instanceof Date) {

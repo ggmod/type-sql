@@ -6,6 +6,8 @@ import QueryColumnCondition from "./query-column-condition";
 
 export default class StringColumn<Table extends QueryTable<any>> extends ComparableColumn<Table, string> {
 
+    protected _type = 'string';
+
     constructor(table: Table, params, modifiers?) {
         super(table, params, modifiers);
     }
