@@ -1,9 +1,8 @@
 
 export default class LazyPromise<T> extends Promise<T> {
 
-    private _isSent = false;
-
-    get isSent() { return this._isSent; }
+    private _sent = false;
+    get sent() { return this._sent; }
 
     private _resolve;
     private _reject;
@@ -16,17 +15,17 @@ export default class LazyPromise<T> extends Promise<T> {
     }
 
     then(onFulfilled?, onRejected?) {
-        if (!this._isSent) {
+        if (!this._sent) {
             this.send();
         }
         return super.then(onFulfilled, onRejected);
     }
 
     send() {
-        this._callback().then(
+        this._sent = true;
+        return this._callback().then(
             (...params) => this._resolve(...params),
             (...params) => this._reject(...params)
         );
-        this._isSent = true;
     }
 }
