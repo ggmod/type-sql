@@ -47,4 +47,9 @@ describe('SELECT', () => {
         expect(db.from(BOOK).distinct().select(BOOK.author).toSQL())
             .toEqual('SELECT DISTINCT "Book"."author" FROM "Book"');
     });
+
+    it('count', () => {
+        expect(db.from(BOOK).count().toSQL())
+            .toEqual('SELECT COUNT(*) FROM "Book"');
+    });
 });

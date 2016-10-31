@@ -5,15 +5,19 @@ export function convertQuery(query: any, paramConverter, lineBreaks = false) {
     let separator = lineBreaks ? '\n' : ' ';
 
     let s = '';
-    if (query._columns) {
+    if (query._columns || query._singleColumn) {
         s += 'SELECT ';
         if (query._distinct) {
             s += 'DISTINCT ';
         }
-        if (query._columns.length === 0) {
-            s += '*'
+        if (query._singleColumn === 'count') {
+            s += 'COUNT(*)';
         } else {
-            s += query._columns.map(column => convertColumn(column)).join(', ');
+            if (query._columns.length === 0) {
+                s += '*'
+            } else {
+                s += query._columns.map(column => convertColumn(column)).join(', ');
+            }
         }
     }
     s += separator + 'FROM ' + query._tables.map(table => convertTable(table)).join(', ');

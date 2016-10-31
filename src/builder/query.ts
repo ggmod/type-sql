@@ -9,18 +9,20 @@ import QueryProcessor from "../query-processor";
 export default class Query<Entity, Table extends QueryTable<Entity>> {
 
     constructor(queryProcessor: QueryProcessor, tables: Table[]) {
-        this._tables = tables;
         this._queryProcessor = queryProcessor;
+        this._tables = tables;
     }
 
-    private _tables;
     private _queryProcessor;
+
+    private _tables;
     private _distinct = false;
     private _offset;
     private _limit;
     private _conditions = [];
     private _orderings = [];
     private _columns = [];
+    private _singleColumn;
 
     offset(offset: number): this {
         this._offset = offset;
@@ -52,6 +54,11 @@ export default class Query<Entity, Table extends QueryTable<Entity>> {
     select(...columns: QueryColumn<Table, any>[]): QueryResult<any[]>
     select(...columns: QueryColumn<Table, any>[]): QueryResult<any[]> {
         this._columns = columns;
+        return new QueryResult(this._queryProcessor, this);
+    }
+
+    count(): QueryResult<number> {
+        this._singleColumn = 'count';
         return new QueryResult(this._queryProcessor, this);
     }
 }
