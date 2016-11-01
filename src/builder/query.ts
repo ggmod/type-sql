@@ -20,6 +20,8 @@ export default class Query<Entity, Table extends QueryTable<Entity>> {
     private _offset;
     private _limit;
     private _conditions = [];
+    private _groupBy = [];
+    private _having = [];
     private _orderings = [];
     private _columns = [];
     private _singleColumn;
@@ -41,6 +43,16 @@ export default class Query<Entity, Table extends QueryTable<Entity>> {
 
     where(...conditions: QueryCondition<Table>[]): this {
         this._conditions = conditions;
+        return this;
+    }
+
+    groupBy(...columns: QueryColumn<Table, any>[]): this {
+        this._groupBy = columns;
+        return this;
+    }
+
+    having(...conditions: QueryCondition<Table>[]): this {
+        this._having = conditions;
         return this;
     }
 

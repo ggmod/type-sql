@@ -27,6 +27,15 @@ export function convertQuery(query: any, paramConverter, lineBreaks = false) {
         preprocessConditions(query._conditions);
         s += query._conditions.map(condition => convertCondition(condition, paramConverter, true)).join(' AND ');
     }
+    if (query._groupBy.length > 0) {
+        s += separator + 'GROUP BY ';
+        s += query._groupBy.map(column => convertColumn(column)).join(', ');
+    }
+    if (query._having.length > 0) {
+        s += separator + 'HAVING ';
+        preprocessConditions(query._having);
+        s += query._having.map(condition => convertCondition(condition, paramConverter, true)).join(' AND ');
+    }
     if (query._orderings.length > 0) {
         s += separator + 'ORDER BY ';
         s += query._orderings.map(ordering => convertOrdering(ordering)).join(', ');
