@@ -19,6 +19,17 @@ describe('SQL injection', () => {
         expect(() => db.from(BOOK).where(BOOK.date.eq(<any>'\'2016-10-23T19:11:25.342Z\';DROP TABLE users')).select().toSQL()).toThrow();
     });
 
+    it('numeric condition parameters - having', () => {
+        expect(() => db.from(BOOK).having(BOOK.price.eq(<any>'1;DROP TABLE users')).select().toSQL()).toThrow();
+        expect(() => db.from(BOOK).having(BOOK.price.lte(<any>'1;DROP TABLE users')).select().toSQL()).toThrow();
+        expect(() => db.from(BOOK).having(BOOK.price.ne(<any>'1;DROP TABLE users')).select().toSQL()).toThrow();
+        expect(() => db.from(BOOK).having(BOOK.price.between(0, <any>'1;DROP TABLE users')).select().toSQL()).toThrow();
+        expect(() => db.from(BOOK).having(BOOK.price.in([0, 2, <any>'1;DROP TABLE users'])).select().toSQL()).toThrow();
+
+        expect(() => db.from(BOOK).having(BOOK.available.eq(<any>'TRUE;DROP TABLE users')).select().toSQL()).toThrow();
+        expect(() => db.from(BOOK).having(BOOK.date.eq(<any>'\'2016-10-23T19:11:25.342Z\';DROP TABLE users')).select().toSQL()).toThrow();
+    });
+
     it('string parameter', () => {
         expect(db.from(BOOK).where(BOOK.title.eq(`asdf' OR '1'='1'`)).select().toSQL())
             .toEqual(`SELECT * FROM "Book" WHERE "Book"."title" = 'asdf'' OR ''1''=''1'''`);
