@@ -24,8 +24,8 @@ export function convertQuery(query: any, paramConverter, lineBreaks = false) {
 
     if (query._conditions.length > 0) {
         s += separator + 'WHERE ';
-        preprocessConditions(query._conditions);
-        s += query._conditions.map(condition => convertCondition(condition, paramConverter, true)).join(' AND ');
+        preprocessConditions(query._conditions, paramConverter);
+        s += query._conditions.map(condition => convertCondition(condition, true)).join(' AND ');
     }
     if (query._groupBy.length > 0) {
         s += separator + 'GROUP BY ';
@@ -33,8 +33,8 @@ export function convertQuery(query: any, paramConverter, lineBreaks = false) {
     }
     if (query._having.length > 0) {
         s += separator + 'HAVING ';
-        preprocessConditions(query._having);
-        s += query._having.map(condition => convertCondition(condition, paramConverter, true)).join(' AND ');
+        preprocessConditions(query._having, paramConverter);
+        s += query._having.map(condition => convertCondition(condition, true)).join(' AND ');
     }
     if (query._orderings.length > 0) {
         s += separator + 'ORDER BY ';
@@ -87,27 +87,39 @@ function convertColumn(column: any) {
     return s + '';
 }
 
-function preprocessConditions(conditions) {
-    if (conditions.length > 1) {
-        conditions.forEach(condition => {
-            if (condition._sibling) {
-                condition._parenthesis = true;
-            }
-        });
+function preprocessConditions(conditions, paramConverter) {
+    conditions.forEach(condition => {
+        if (conditions.length > 1 && condition._sibling) {
+            condition._parenthesis = true;
+        }
+        preprocessParams(condition, paramConverter);
+    });
+}
+
+// this is only needed, so that the $1, $2... numbering is not reversed
+function preprocessParams(condition, paramConverter) {
+    if (condition._sibling) {
+        preprocessParams(condition._sibling, paramConverter);
+    }
+    if (!condition._sibling && !condition._child) {
+        condition.__param = getConditionParam(condition, paramConverter);
+    }
+    if (condition._child) {
+        preprocessParams(condition._child, paramConverter);
     }
 }
 
-function convertCondition(condition, paramConverter, root = false) {
+function convertCondition(condition, root = false) {
     if (!condition._sibling && !condition._child) {
-        return convertColumnCondition(condition, paramConverter);
+        return convertColumnCondition(condition);
     }
 
     let s = '';
     if (condition._child) {
-        s += convertCondition(condition._child, paramConverter);
+        s += convertCondition(condition._child);
     }
     if (condition._sibling) {
-        s = convertCondition(condition._sibling, paramConverter, root) + ' ' + condition._chainType + ' ' + s;
+        s = convertCondition(condition._sibling, root) + ' ' + condition._chainType + ' ' + s;
     }
     if (condition._parenthesis || ((!root || condition._negation) && condition._child)) {
         s = '( ' + s + ' )';
@@ -118,9 +130,34 @@ function convertCondition(condition, paramConverter, root = false) {
     return s;
 }
 
-function convertColumnCondition(condition, paramConverter) {
+function convertColumnCondition(condition) {
     let s = convertColumn(condition._column);
+    let param = condition.__param;
+    s += getConditionString(condition, param);
+    return s;
+}
 
+function getConditionString(condition, param) {
+    switch (condition._type) {
+        case 'eq': return ' = ' + param;
+        case 'ne': return ' <> ' + param;
+        case 'lt': return ' < ' + param;
+        case 'gt': return ' > ' + param;
+        case 'lte': return ' <= ' + param;
+        case 'gte': return ' >= ' + param;
+        case 'is-null': return ' IS NULL';
+        case 'is-not-null': return ' IS NOT NULL';
+        case 'like': return ' LIKE ' + param;
+        case 'not-like': return ' NOT LIKE ' + param;
+        case 'in': return ' IN (' + param + ')';
+        case 'not-in': return ' NOT IN (' + param + ')';
+        case 'between': return ' BETWEEN ' + param;
+        case 'not-between': return ' NOT BETWEEN ' + param;
+        default: return '';
+    }
+}
+
+function getConditionParam(condition, paramConverter) {
     let convertParam = param => paramConverter(getTypedParam(condition._column._type, param));
 
     let param = '';
@@ -133,23 +170,7 @@ function convertColumnCondition(condition, paramConverter) {
     } else if (condition._type !== 'is-null' && condition._type !== 'is-not-null') {
         param = convertParam(condition._values[0]);
     }
-
-    if (condition._type === 'eq') s += ' = ' + param;
-    else if (condition._type === 'ne') s += ' <> ' + param;
-    else if (condition._type === 'lt') s += ' < ' + param;
-    else if (condition._type === 'gt') s += ' > ' + param;
-    else if (condition._type === 'lte') s += ' <= ' + param;
-    else if (condition._type === 'gte') s += ' >= ' + param;
-    else if (condition._type === 'is-null') s += ' IS NULL';
-    else if (condition._type === 'is-not-null') s += ' IS NOT NULL';
-    else if (condition._type === 'like') s += ' LIKE ' + param;
-    else if (condition._type === 'not-like') s += ' NOT LIKE ' + param;
-    else if (condition._type === 'in') s += ' IN (' + param + ')';
-    else if (condition._type === 'not-in') s += ' NOT IN (' + param + ')';
-    else if (condition._type === 'between') s += ' BETWEEN ' + param;
-    else if (condition._type === 'not-between') s += ' NOT BETWEEN ' + param;
-
-    return s;
+    return param;
 }
 
 function getTypedParam(type, param) {

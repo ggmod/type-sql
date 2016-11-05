@@ -20,13 +20,16 @@ describe('Parameterized queries', () => {
     });
 
     it('nested conditions', () => {
-        // the parameters are in reverse order because of how the query is parsed TODO fix this?
-
         let q = db.from(BOOK).where(BOOK.id.gt(150).or(BOOK.id.lte(50).and(BOOK.price.lt(100).or(BOOK.price.gt(200))))).select().toParameterizedSQL();
-        let s = `SELECT * FROM "Book" WHERE "Book"."id" > $4 OR ( "Book"."id" <= $3 AND ( "Book"."price" < $2 OR "Book"."price" > $1 ) )`;
+        let s = `SELECT * FROM "Book" WHERE "Book"."id" > $1 OR ( "Book"."id" <= $2 AND ( "Book"."price" < $3 OR "Book"."price" > $4 ) )`;
 
         expect(q.sql).toEqual(s);
-        expect(q.params).toEqual([200, 100, 50, 150]);
+        expect(q.params).toEqual([150, 50, 100, 200]);
+
+        let q2 = db.from(BOOK).where(BOOK.id.gt(100).or(BOOK.id.lte(50)).$().not().and(BOOK.price.lt(100).or(BOOK.price.gt(200)))).select().toParameterizedSQL();
+        let s2 = `SELECT * FROM "Book" WHERE NOT ( "Book"."id" > $1 OR "Book"."id" <= $2 ) AND ( "Book"."price" < $3 OR "Book"."price" > $4 )`;
+        expect(q2.sql).toEqual(s2);
+        expect(q2.params).toEqual([100, 50, 100, 200]);
     });
 
     it('"IN" keyword', () => {
