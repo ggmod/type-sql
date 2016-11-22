@@ -10,3 +10,8 @@ let q3 = db.from(BOOK).select(BOOK.id, BOOK.title); // any[]
 let q4 = db.from(BOOK).select(BOOK.$all);           // Book[]
 let q5 = db.from(BOOK).select(BOOK.$all.count());   // number[]
 let q6 = db.from(BOOK).count();                     // number
+
+// "from" table and entity type
+let j0 = db.from(BOOK);
+let j1 = db.from(BOOK, AUTHOR);
+let j2 = db.from(BOOK.innerJoin(AUTHOR).on(BOOK.authorId.eq(AUTHOR.id)));

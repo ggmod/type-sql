@@ -20,7 +20,8 @@ export function convertQuery(query: any, paramConverter, lineBreaks = false) {
             }
         }
     }
-    s += separator + 'FROM ' + query._tables.map(table => convertTable(table)).join(', ');
+    s += separator + 'FROM ' + query._tables
+        .map(table => table._parent ? convertJoin(table) : convertTable(table)).join(', ');
 
     if (query._conditions.length > 0) {
         s += separator + 'WHERE ';
@@ -46,6 +47,28 @@ export function convertQuery(query: any, paramConverter, lineBreaks = false) {
     if (query._limit != null) {
         s += separator + 'LIMIT ' + number(query._limit);
     }
+    return s;
+}
+
+function convertJoin(joinChain) {
+    let items = [];
+    while (joinChain) {
+        items.push(joinChain);
+        joinChain = joinChain._parent;
+    }
+
+    let root = items[items.length - 1];
+    let s = convertTable(root);
+
+    for (let i = items.length - 2; i >= 0; i-= 2) {
+        let table = items[i]._table;
+        let modifier = items[i]._modifier;
+        let condition = items[i - 1]._condition;
+        let param = getConditionParam(condition, null);
+        s += ' ' + modifier.toUpperCase() + ' JOIN ' + convertTable(table) + ' ON ' +
+            convertColumnCondition(condition, param);
+    }
+
     return s;
 }
 
@@ -111,7 +134,7 @@ function preprocessParams(condition, paramConverter) {
 
 function convertCondition(condition, root = false) {
     if (!condition._sibling && !condition._child) {
-        return convertColumnCondition(condition);
+        return convertColumnCondition(condition, condition.__param);
     }
 
     let s = '';
@@ -130,9 +153,8 @@ function convertCondition(condition, root = false) {
     return s;
 }
 
-function convertColumnCondition(condition) {
+function convertColumnCondition(condition, param) {
     let s = convertColumn(condition._column);
-    let param = condition.__param;
     s += getConditionString(condition, param);
     return s;
 }
