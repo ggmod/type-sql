@@ -3,19 +3,29 @@ import { convertQueryToParameterizedSQL } from './converter/parameterized-conver
 import { convertQueryToSQL } from './converter/sql-converter';
 
 
+export interface QueryProcessorOptions {
+    lineBreaks?: boolean,
+    parameterized?: boolean
+}
+
 export default class DefaultQueryProcessor implements QueryProcessor {
 
-    constructor(private _options: any = {}) {}
+    constructor(private _options = <QueryProcessorOptions>{}) {}
 
-    execute<T>(query): Promise<T> { throw "Not supported"; }
+    private _sql: string;
+    get sql() { return this._sql; }
 
-    executeAsStream<T>(query) { throw "Not supported"; }
+    private _params: any[];
+    get params() { return this._params; }
 
-    convertToSQL(query): string {
-        return convertQueryToSQL(query, this._options.lineBreaks);
-    }
-
-    convertToParameterizedSQL(query): { sql: string, params: any[] } {
-        return convertQueryToParameterizedSQL(query);
+    execute<T>(query): Promise<T> {
+        if (this._options.parameterized) {
+            let result = convertQueryToParameterizedSQL(query, this._options.lineBreaks);
+            this._sql = result.sql;
+            this._params = result.params;
+        } else {
+            this._sql = convertQueryToSQL(query, this._options.lineBreaks);
+        }
+        return Promise.resolve();
     }
 }

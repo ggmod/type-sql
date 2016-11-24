@@ -6,7 +6,7 @@ import JoinedTables from "./joined-tables";
 
 export default class QuerySource {
 
-    constructor(private _queryProcessor: QueryProcessor) {}
+    constructor(protected _queryProcessor: QueryProcessor) {}
 
     from<Entity, Table1 extends QueryTable<Entity>>(table1: Table1 & QueryTable<Entity>): Query<Entity, Table1>
     from<Tables extends QueryTable<any>>(tables: JoinedTables<Tables>): Query<any, Tables>

@@ -2,7 +2,6 @@ import QueryCondition from "./query-condition";
 import QueryOrdering from "./query-ordering";
 import QueryTable from "./query-table";
 import QueryColumn from "./query-column";
-import QueryResult from "./query-result";
 import QueryProcessor from "../query-processor";
 
 
@@ -61,16 +60,16 @@ export default class Query<Entity, Table extends QueryTable<Entity>> {
         return this;
     }
 
-    select(): QueryResult<Entity[]>
-    select<T>(column: QueryColumn<Table, T>): QueryResult<T[]>
-    select(...columns: QueryColumn<Table, any>[]): QueryResult<any[]>
-    select(...columns: QueryColumn<Table, any>[]): QueryResult<any[]> {
+    select(): Promise<Entity[]>
+    select<T>(column: QueryColumn<Table, T>): Promise<T[]>
+    select(...columns: QueryColumn<Table, any>[]): Promise<any[]>
+    select(...columns: QueryColumn<Table, any>[]): Promise<any[]> {
         this._columns = columns;
-        return new QueryResult(this._queryProcessor, this);
+        return this._queryProcessor.execute(this);
     }
 
-    count(): QueryResult<number> {
+    count(): Promise<number> {
         this._singleColumn = 'count';
-        return new QueryResult(this._queryProcessor, this);
+        return this._queryProcessor.execute(this);
     }
 }

@@ -1,6 +1,11 @@
 import QuerySource from "../src/builder/query-source";
 import DefaultQueryProcessor from "../src/defeault-processor";
 
-let db = new QuerySource(new DefaultQueryProcessor());
+export class TestQuerySource extends QuerySource {
+    get sql() { return (<DefaultQueryProcessor>this._queryProcessor).sql; }
+    get params() { return (<DefaultQueryProcessor>this._queryProcessor).params; }
+}
+
+let db: any = new TestQuerySource(new DefaultQueryProcessor());
 
 export { db };

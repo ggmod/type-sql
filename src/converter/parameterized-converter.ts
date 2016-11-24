@@ -6,12 +6,12 @@ function convertSingleParam(param, params) {
     return '$' + params.length;
 }
 
-export function convertQueryToParameterizedSQL(query) {
+export function convertQueryToParameterizedSQL(query, lineBreaks: boolean) {
     let params = [];
 
     let sql = convertQuery(query, param => {
         return convertSingleParam(param, params);
-    });
+    }, lineBreaks);
 
     return { sql, params };
 }

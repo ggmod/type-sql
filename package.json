@@ -11,7 +11,7 @@
   "scripts": {
     "build": "rm -rf dist/* && tsc -v && tsc",
     "prepublish": "npm run build",
-    "test": "rm -rf build-test; cd test; tsc; cd ..; node --harmony --harmony-default-parameters --harmony-destructuring ./node_modules/.bin/jasmine-node --captureExceptions --matchall ./build-test/test/**/*.js"
+    "test": "rm -rf build-test; cd test; tsc; cd ..; node --harmony --harmony-default-parameters ./node_modules/.bin/jasmine-node --captureExceptions --matchall ./build-test/test/**/*.js"
   },
   "repository": {
     "type": "git"

@@ -1,11 +1,11 @@
-import QuerySource from "../../src/builder/query-source";
 import DefaultQueryProcessor from "../../src/defeault-processor";
 import BOOK from '../tables/book';
 import AUTHOR from '../tables/author';
+import { TestQuerySource} from "../utils";
 
-let db = new QuerySource(new DefaultQueryProcessor({ lineBreaks: true }));
+let db = new TestQuerySource(new DefaultQueryProcessor({ lineBreaks: true }));
 
-let q1 = db.from(BOOK)
+db.from(BOOK)
     .where(BOOK.author.eq('xy'))
     .offset(10)
     .limit(2)
@@ -22,7 +22,7 @@ LIMIT 2`;
 
 describe('Formatting', () => {
     it('examples', () => {
-        expect(q1.toSQL()).toEqual(s1);
+        expect(db.sql).toEqual(s1);
     });
 });
 
