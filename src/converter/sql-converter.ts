@@ -12,8 +12,10 @@ function convertSingleParam(param) {
         return param ? 'TRUE': 'FALSE';
     } else if (param instanceof Date) {
         return `'${param.toISOString()}'`;
+    } else if (typeof param === 'number' || param instanceof Number) {
+        return String(param);
     }
-    return param;
+    return `'${escapeString(JSON.stringify(param))}'`; // TODO should this remain a general fallback or create a json column type?
 }
 
 export function convertQueryToSQL(query, lineBreaks: boolean) {
