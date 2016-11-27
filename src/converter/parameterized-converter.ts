@@ -9,9 +9,7 @@ function convertSingleParam(param, params) {
 export function convertQueryToParameterizedSQL(query, lineBreaks: boolean) {
     let params = [];
 
-    let sql = convertQuery(query, param => {
-        return convertSingleParam(param, params);
-    }, lineBreaks);
+    let sql = convertQuery(query, param => convertSingleParam(param, params), lineBreaks);
 
     return { sql, params };
 }

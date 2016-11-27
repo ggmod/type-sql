@@ -9,7 +9,10 @@ export interface Book {
     id: number,
     title: string,
     author: string,
-    price: number
+    price: number,
+    available: boolean,
+    date: Date,
+    data: any
 }
 
 export class BookTable extends QueryTable<Book> {

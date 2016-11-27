@@ -5,3 +5,4 @@ typings
 build-test
 .idea
 npm-debug.log
+.vscode

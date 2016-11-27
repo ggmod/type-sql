@@ -6,6 +6,6 @@ export class TestQuerySource extends QuerySource {
     get params() { return (<DefaultQueryProcessor>this._queryProcessor).params; }
 }
 
-let db: any = new TestQuerySource(new DefaultQueryProcessor());
+let db = new TestQuerySource(new DefaultQueryProcessor());
 
 export { db };

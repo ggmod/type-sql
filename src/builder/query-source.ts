@@ -2,6 +2,7 @@ import QueryTable from './query-table';
 import Query from './query';
 import QueryProcessor from "../query-processor";
 import JoinedTables from "./joined-tables";
+import TableQuery from "./table-query";
 
 
 export default class QuerySource {
@@ -16,5 +17,9 @@ export default class QuerySource {
         if (table3 != null) return new Query<any, Table1 | Table2 | Table3>(this._queryProcessor, [table1, table2, table3]);
         else if (table2 != null) return new Query<any, Table1 | Table2>(this._queryProcessor, [table1, table2]);
         return new Query<Entity, Table1>(this._queryProcessor, [table1]);
+    }
+
+    table<Entity, Table extends QueryTable<Entity>>(table: Table & QueryTable<Entity>): TableQuery<Entity, Table> {
+        return new TableQuery<Entity, Table>(this._queryProcessor, table);
     }
 }

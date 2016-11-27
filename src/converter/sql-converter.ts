@@ -17,7 +17,5 @@ function convertSingleParam(param) {
 }
 
 export function convertQueryToSQL(query, lineBreaks: boolean) {
-    return convertQuery(query, param => {
-        return convertSingleParam(param);
-    }, lineBreaks);
+    return convertQuery(query, param => convertSingleParam(param), lineBreaks);
 }
