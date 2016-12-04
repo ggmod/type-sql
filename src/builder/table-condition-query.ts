@@ -1,6 +1,7 @@
 import QueryTable from "./query-table";
 import QueryProcessor from "../query-processor";
 import QueryCondition from "./query-condition";
+import QueryColumn from "./query-column";
 
 
 export default class TableConditionQuery<Entity, Table extends QueryTable<Entity, any>> {
@@ -14,6 +15,7 @@ export default class TableConditionQuery<Entity, Table extends QueryTable<Entity
     private _queryProcessor;
     private _table: Table;
     private _conditions = [];
+    private _columns: QueryColumn<Table, any>[] = [];
     private _action: string;
 
     protected _entity: Entity;
@@ -26,6 +28,12 @@ export default class TableConditionQuery<Entity, Table extends QueryTable<Entity
 
     delete() {
         this._action = 'delete';
+        return this._queryProcessor.execute(this);
+    }
+
+    count() {
+        this._columns = [this._table.$all.count()];
+        this._action = 'select';
         return this._queryProcessor.execute(this);
     }
 }

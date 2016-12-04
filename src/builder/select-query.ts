@@ -23,7 +23,6 @@ export default class SelectQuery<Entity, Table extends QueryTable<Entity, any>> 
     private _having = [];
     private _orderings = [];
     private _columns = [];
-    private _singleColumn;
     private _action: string;
 
     offset(offset: number): this {
@@ -67,12 +66,6 @@ export default class SelectQuery<Entity, Table extends QueryTable<Entity, any>> 
     select(...columns: QueryColumn<Table, any>[]): Promise<any[]> {
         this._columns = columns;
         this._action = 'select';
-        return this._queryProcessor.execute(this);
-    }
-
-    count(): Promise<number> {
-        this._action = 'select';
-        this._singleColumn = 'count';
         return this._queryProcessor.execute(this);
     }
 }

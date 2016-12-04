@@ -3,6 +3,7 @@ import TableConditionQuery from "./table-condition-query";
 import QueryCondition from "./query-condition";
 import QueryProcessor from "../query-processor";
 import ValueColumn from "./value-column";
+import QueryColumn from "./query-column";
 
 
 export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>> {
@@ -16,6 +17,7 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
     private _table: Table;
     private _entity: Entity | Entity[];
     private _action: string;
+    private _columns: QueryColumn<Table, any>[] = [];
 
     where(...conditions: QueryCondition<Table>[]): TableConditionQuery<Entity, Table> {
         return new TableConditionQuery<Entity, Table>(this._queryProcessor, this._table, conditions);
@@ -37,6 +39,12 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
     updateAll(entity: Entity) {
         this._entity = entity;
         this._action = 'update';
+        return this._queryProcessor.execute(this);
+    }
+
+    countAll() {
+        this._columns = [this._table.$all.count()];
+        this._action = 'select';
         return this._queryProcessor.execute(this);
     }
 

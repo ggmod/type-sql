@@ -58,14 +58,11 @@ function convertSelectQuery(query, paramConverter, separator) {
     if (query._distinct) {
         s += 'DISTINCT ';
     }
-    if (query._singleColumn === 'count') {
-        s += 'COUNT(*)';
+
+    if (query._columns == null || query._columns.length === 0) {
+        s += '*'
     } else {
-        if (query._columns == null || query._columns.length === 0) {
-            s += '*'
-        } else {
-            s += query._columns.map(column => convertColumn(column)).join(', ');
-        }
+        s += query._columns.map(column => convertColumn(column)).join(', ');
     }
 
     s += separator + 'FROM ';
