@@ -61,25 +61,29 @@ function convertSelectQuery(query, paramConverter, separator) {
     if (query._singleColumn === 'count') {
         s += 'COUNT(*)';
     } else {
-        if (query._columns.length === 0) {
+        if (query._columns == null || query._columns.length === 0) {
             s += '*'
         } else {
             s += query._columns.map(column => convertColumn(column)).join(', ');
         }
     }
 
-    s += separator + 'FROM ' + query._tables
-        .map(table => table._parent ? convertJoin(table) : convertTable(table)).join(', ');
+    s += separator + 'FROM ';
+    if (query._tables) {
+        s+= query._tables.map(table => table._parent ? convertJoin(table) : convertTable(table)).join(', ');
+    } else {
+        s+= convertTable(query._table);
+    }
 
     s += convertConditions(query._conditions, separator, paramConverter);
 
-    if (query._groupBy.length > 0) {
+    if (query._groupBy && query._groupBy.length > 0) {
         s += separator + 'GROUP BY ';
         s += query._groupBy.map(column => convertColumn(column)).join(', ');
     }
     s += convertConditions(query._having, separator, paramConverter, 'HAVING');
 
-    if (query._orderings.length > 0) {
+    if (query._orderings && query._orderings.length > 0) {
         s += separator + 'ORDER BY ';
         s += query._orderings.map(ordering => convertOrdering(ordering)).join(', ');
     }

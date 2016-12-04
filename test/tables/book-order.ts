@@ -1,4 +1,3 @@
-
 import QueryTable from "../../src/builder/query-table";
 import NumberColumn from "../../src/builder/number-column";
 
@@ -25,6 +24,11 @@ export class BookOrderTable extends QueryTable<BookOrder, BookOrderId> {
     count = new NumberColumn(this, {
         name: 'count'
     });
+
+    $id = {
+        bookId: this.bookId,
+        orderId: this.orderId
+    };
 }
 
 export const BOOK_ORDER = new BookOrderTable();

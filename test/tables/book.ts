@@ -9,6 +9,7 @@ export interface Book {
     id: number,
     title: string,
     author: string,
+    authorId: number,
     price: number,
     available: boolean,
     date: Date,
@@ -52,6 +53,8 @@ export class BookTable extends QueryTable<Book, BookId> {
     data = new BasicQueryColumn<this, any>(this, {
         name: 'data'
     });
+
+    $id = this.id
 }
 
 export const BOOK = new BookTable();

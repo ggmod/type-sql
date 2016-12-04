@@ -22,6 +22,6 @@ export default class QueryJoinCondition<Table1 extends QueryTable<any, any>, Tab
     }
 
     or<Table3 extends QueryTable<any, any>>(condition: QueryCondition<Table3>) {
-        return new QueryConditionChain<Table1 | Table2 | Table2>(this, condition, 'OR');
+        return new QueryConditionChain<Table1 | Table2 | Table3>(this, condition, 'OR');
     }
 }

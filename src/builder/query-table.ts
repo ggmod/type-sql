@@ -3,13 +3,17 @@ import GenericsHelper from "./generics-helper";
 import JoinedTablesChain from "./joined-tables-chain";
 
 
-export default class QueryTable<Entity, Id> {
+abstract class QueryTable<Entity, Id> {
 
     private _$type: GenericsHelper<Entity>;
+
+    abstract readonly $name: string;
+    // abstract readonly $id; // FIXME
 
     $all = new BasicQueryColumn<this, Entity>(this, {
         special: '*'
     });
+
 
     innerJoin<JoinTable extends QueryTable<any, any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
         return new JoinedTablesChain<this | JoinTable>(table, 'inner', this);
@@ -27,3 +31,5 @@ export default class QueryTable<Entity, Id> {
         return new JoinedTablesChain<this | JoinTable>(table, 'full', this);
     }
 }
+
+export default QueryTable;

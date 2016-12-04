@@ -3,6 +3,7 @@ import StringColumn from "../../src/builder/string-column";
 import QueryTable from '../../src/builder/query-table';
 
 export interface Author {
+    id: number,
     name: string
 }
 
@@ -18,6 +19,8 @@ export class AuthorTable extends QueryTable<Author, AuthorId> {
     name = new StringColumn(this, {
         name: 'name'
     });
+
+    $id = this.id
 }
 
 export const AUTHOR = new AuthorTable();
