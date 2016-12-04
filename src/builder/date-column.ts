@@ -3,7 +3,7 @@ import ComparableColumn from "./comparable-column";
 import NumberColumn from "./number-column";
 
 
-export default class DateColumn<Table extends QueryTable<any>> extends ComparableColumn<Table, Date> {
+export default class DateColumn<Table extends QueryTable<any, any>> extends ComparableColumn<Table, Date> {
 
     protected _type = 'date';
 

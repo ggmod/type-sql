@@ -3,7 +3,7 @@ import QueryTable from "./query-table";
 import ValueColumn from "./value-column";
 
 
-abstract class ComparableColumn<Table extends QueryTable<any>, T> extends ValueColumn<Table, T> {
+abstract class ComparableColumn<Table extends QueryTable<any, any>, T> extends ValueColumn<Table, T> {
 
     constructor(table: Table, params, modifiers = []) {
         super(table, params, modifiers);

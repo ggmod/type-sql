@@ -5,7 +5,7 @@ import QueryColumn from "./query-column";
 import QueryProcessor from "../query-processor";
 
 
-export default class SelectQuery<Entity, Table extends QueryTable<Entity>> {
+export default class SelectQuery<Entity, Table extends QueryTable<Entity, any>> {
 
     constructor(queryProcessor: QueryProcessor, tables: Table[]) {
         this._queryProcessor = queryProcessor;

@@ -3,7 +3,7 @@ import NumberColumn from "./number-column";
 import ValueColumn from "./value-column";
 
 
-export default class BooleanColumn<Table extends QueryTable<any>> extends ValueColumn<Table, boolean> {
+export default class BooleanColumn<Table extends QueryTable<any, any>> extends ValueColumn<Table, boolean> {
 
     protected _type = 'boolean';
 

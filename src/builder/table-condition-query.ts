@@ -3,7 +3,7 @@ import QueryProcessor from "../query-processor";
 import QueryCondition from "./query-condition";
 
 
-export default class TableConditionQuery<Entity, Table extends QueryTable<Entity>> {
+export default class TableConditionQuery<Entity, Table extends QueryTable<Entity, any>> {
 
     constructor(queryProcessor: QueryProcessor, table: Table, conditions: QueryCondition<Table>[]) {
         this._queryProcessor = queryProcessor;

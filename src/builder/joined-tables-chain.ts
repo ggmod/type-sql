@@ -3,12 +3,12 @@ import QueryJoinCondition from "./query-join-condition";
 import JoinedTables from "./joined-tables";
 
 
-export default class JoinedTablesChain<Tables extends QueryTable<any>> {
+export default class JoinedTablesChain<Tables extends QueryTable<any, any>> {
 
     constructor(
-        protected _table: QueryTable<any>,
+        protected _table: QueryTable<any, any>,
         protected _modifier = '',
-        protected _parent: JoinedTables<Tables> | QueryTable<any>
+        protected _parent: JoinedTables<Tables> | QueryTable<any, any>
     ) {}
 
     on(condition: QueryJoinCondition<Tables, Tables, any>): JoinedTables<Tables> {

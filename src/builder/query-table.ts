@@ -3,7 +3,7 @@ import GenericsHelper from "./generics-helper";
 import JoinedTablesChain from "./joined-tables-chain";
 
 
-export default class QueryTable<Entity> {
+export default class QueryTable<Entity, Id> {
 
     private _$type: GenericsHelper<Entity>;
 
@@ -11,19 +11,19 @@ export default class QueryTable<Entity> {
         special: '*'
     });
 
-    innerJoin<JoinTable extends QueryTable<any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
+    innerJoin<JoinTable extends QueryTable<any, any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
         return new JoinedTablesChain<this | JoinTable>(table, 'inner', this);
     }
 
-    leftJoin<JoinTable extends QueryTable<any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
+    leftJoin<JoinTable extends QueryTable<any, any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
         return new JoinedTablesChain<this | JoinTable>(table, 'left', this);
     }
 
-    rightJoin<JoinTable extends QueryTable<any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
+    rightJoin<JoinTable extends QueryTable<any, any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
         return new JoinedTablesChain<this | JoinTable>(table, 'right', this);
     }
 
-    fullJoin<JoinTable extends QueryTable<any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
+    fullJoin<JoinTable extends QueryTable<any, any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
         return new JoinedTablesChain<this | JoinTable>(table, 'full', this);
     }
 }

@@ -3,7 +3,7 @@ import QueryCondition from "./query-condition";
 import GenericsHelper from "./generics-helper";
 
 
-export default class QueryConditionChain<Table extends QueryTable<any>> extends QueryCondition<Table> {
+export default class QueryConditionChain<Table extends QueryTable<any, any>> extends QueryCondition<Table> {
 
     private _$type: GenericsHelper<Table>;
 
@@ -31,11 +31,11 @@ export default class QueryConditionChain<Table extends QueryTable<any>> extends 
         return this;
     }
 
-    and<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>) {
+    and<Table2 extends QueryTable<any, any>>(condition: QueryCondition<Table2>) {
         return new QueryConditionChain<Table | Table2>(this, condition, 'AND');
     }
 
-    or<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>) {
+    or<Table2 extends QueryTable<any, any>>(condition: QueryCondition<Table2>) {
         return new QueryConditionChain<Table | Table2>(this, condition, 'OR');
     }
 }

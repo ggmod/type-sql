@@ -4,7 +4,7 @@ import GenericsHelper from "./generics-helper";
 import QueryColumnCondition from "./query-column-condition";
 
 
-abstract class QueryColumn<Table extends QueryTable<any>, T> {
+abstract class QueryColumn<Table extends QueryTable<any, any>, T> {
 
     private _$type: GenericsHelper<T>;
     protected _params;

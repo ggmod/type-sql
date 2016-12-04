@@ -4,7 +4,7 @@ import QueryCondition from "./query-condition";
 import QueryConditionChain from "./query-condition-chain";
 
 
-export default class QueryColumnCondition<Table extends QueryTable<any>, T> extends QueryCondition<Table> {
+export default class QueryColumnCondition<Table extends QueryTable<any, any>, T> extends QueryCondition<Table> {
 
     protected _column: QueryColumn<Table, T>;
     protected _type: string;
@@ -17,11 +17,11 @@ export default class QueryColumnCondition<Table extends QueryTable<any>, T> exte
         this._values = values;
     }
 
-    and<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>) {
+    and<Table2 extends QueryTable<any, any>>(condition: QueryCondition<Table2>) {
         return new QueryConditionChain<Table | Table2>(this, condition, 'AND');
     }
 
-    or<Table2 extends QueryTable<any>>(condition: QueryCondition<Table2>) {
+    or<Table2 extends QueryTable<any, any>>(condition: QueryCondition<Table2>) {
         return new QueryConditionChain<Table | Table2>(this, condition, 'OR');
     }
 }

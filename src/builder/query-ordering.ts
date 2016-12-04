@@ -2,7 +2,7 @@ import QueryColumn from "./query-column";
 import QueryTable from "./query-table";
 
 
-export default class QueryOrdering<Table extends QueryTable<any>> {
+export default class QueryOrdering<Table extends QueryTable<any, any>> {
 
     private _column: QueryColumn<Table, any>;
     private _direction: 'ASC' | 'DESC';

@@ -4,7 +4,7 @@ import QueryCondition from "./query-condition";
 import QueryProcessor from "../query-processor";
 
 
-export default class TableQuery<Entity, Table extends QueryTable<Entity>> {
+export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>> {
 
     constructor(queryProcessor: QueryProcessor, table: Table) {
         this._queryProcessor = queryProcessor;

@@ -4,7 +4,7 @@ import NumberColumn from "./number-column";
 import QueryColumnCondition from "./query-column-condition";
 
 
-export default class StringColumn<Table extends QueryTable<any>> extends ComparableColumn<Table, string> {
+export default class StringColumn<Table extends QueryTable<any, any>> extends ComparableColumn<Table, string> {
 
     protected _type = 'string';
 

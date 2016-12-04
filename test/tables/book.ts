@@ -15,7 +15,9 @@ export interface Book {
     data: any
 }
 
-export class BookTable extends QueryTable<Book> {
+export type BookId = number;
+
+export class BookTable extends QueryTable<Book, BookId> {
 
     $name = 'Book';
 

@@ -6,7 +6,9 @@ export interface Author {
     name: string
 }
 
-export class AuthorTable extends QueryTable<Author> {
+export type AuthorId = number;
+
+export class AuthorTable extends QueryTable<Author, AuthorId> {
     $name = "Author";
 
     id = new NumberColumn(this, {
