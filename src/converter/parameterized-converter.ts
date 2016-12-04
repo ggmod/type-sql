@@ -1,15 +1,15 @@
 import { convertQuery } from "./query-converter";
 
 
-function convertSingleParam(param, params) {
+function convertSingleParam(param: any, params: any[]): string {
     params.push(param);
     return '$' + params.length;
 }
 
-export function convertQueryToParameterizedSQL(query, lineBreaks: boolean) {
-    let params = [];
+export function convertQueryToParameterizedSQL(query: any, lineBreaks: boolean) {
+    let params: any[] = [];
 
-    let sql = convertQuery(query, param => convertSingleParam(param, params), lineBreaks);
+    let sql = convertQuery(query, (param: any) => convertSingleParam(param, params), lineBreaks);
 
     return { sql, params };
 }

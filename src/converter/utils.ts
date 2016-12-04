@@ -1,18 +1,18 @@
 
-export function number(param) {
+export function number(param: any): number {
     let result = Number(param);
     if (Number.isNaN(result)) throw new Error('Invalid number parameter in SQL query: ' + param);
     return result;
 }
 
-export function boolean(param) {
-    if (typeof param === 'boolean' || param instanceof Boolean) return param;
+export function boolean(param: any): boolean {
+    if (typeof param === 'boolean' || param instanceof Boolean) return <boolean>param;
     if (param === 'true') return true;
     if (param === 'false') return false;
     throw new Error('Invalid boolean parameter in SQL query: ' + param);
 }
 
-export function date(param) {
+export function date(param: any): Date {
     if (param instanceof Date) return param;
     if (typeof param === 'number' || param instanceof Number) return new Date(param);
     if (typeof param === 'string' || param instanceof String) {
@@ -22,7 +22,7 @@ export function date(param) {
     throw new Error('Invalid date parameter in SQL query: ' + param);
 }
 
-export function string(param) {
-    if (typeof param === 'string' || param instanceof String) return param;
+export function string(param: any): string {
+    if (typeof param === 'string' || param instanceof String) return <string>param;
     throw new Error('Invalid string parameter in SQL query: ' + param);
 }
