@@ -10,10 +10,7 @@ abstract class QueryTable<Entity, Id> {
     abstract readonly $name: string;
     // abstract readonly $id; // FIXME
 
-    $all = new BasicQueryColumn<this, Entity>(this, {
-        special: '*'
-    });
-
+    $all = new BasicQueryColumn<this, Entity>(this, '*');
 
     innerJoin<JoinTable extends QueryTable<any, any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
         return new JoinedTablesChain<this | JoinTable>(table, 'inner', this);

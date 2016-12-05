@@ -15,15 +15,9 @@ export interface BookOrderId {
 export class BookOrderTable extends QueryTable<BookOrder, BookOrderId> {
     $name = 'BookOrder';
 
-    bookId = new NumberColumn(this, {
-        name: 'bookId'
-    });
-    orderId = new NumberColumn(this, {
-        name: 'orderId'
-    });
-    count = new NumberColumn(this, {
-        name: 'count'
-    });
+    bookId = new NumberColumn(this, 'bookId');
+    orderId = new NumberColumn(this, 'orderId');
+    count = new NumberColumn(this, 'count');
 
     $id = {
         bookId: this.bookId,

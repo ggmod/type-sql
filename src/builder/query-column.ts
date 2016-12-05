@@ -2,21 +2,19 @@ import QueryTable from "./query-table";
 import NumberColumn from "./number-column";
 import GenericsHelper from "./generics-helper";
 import QueryColumnCondition from "./query-column-condition";
+import {ColumnModifier, ColumnParams} from "./internal-types";
 
 
 abstract class QueryColumn<Table extends QueryTable<any, any>, T> {
 
     private _$type: GenericsHelper<T>;
-    protected _params;
-    protected _modifiers;
-    protected _table: Table;
     protected _type: string;
 
-    constructor(table: Table, params, modifiers = []) {
-        this._table = table;
-        this._params = params;
-        this._modifiers = modifiers;
-    }
+    constructor(
+        protected _table: Table,
+        protected _params: ColumnParams,
+        protected _modifiers: ColumnModifier[] = []
+    ) {}
 
     abstract count(): NumberColumn<Table>; // TODO I had to copy-paste the implementation to every child class to avoid a circular dependency
 

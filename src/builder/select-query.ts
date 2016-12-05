@@ -3,27 +3,25 @@ import QueryOrdering from "./query-ordering";
 import QueryTable from "./query-table";
 import QueryColumn from "./query-column";
 import QueryProcessor from "../query-processor";
+import { QueryAction } from "./internal-types";
 
 
 export default class SelectQuery<Entity, Table extends QueryTable<Entity, any>> {
 
-    constructor(queryProcessor: QueryProcessor, tables: Table[]) {
-        this._queryProcessor = queryProcessor;
-        this._tables = tables;
-    }
+    constructor(
+        private _queryProcessor: QueryProcessor,
+        private _tables: Table[]
+    ) {}
 
-    private _queryProcessor;
-
-    private _tables;
     private _distinct = false;
-    private _offset;
-    private _limit;
-    private _conditions = [];
-    private _groupBy = [];
-    private _having = [];
-    private _orderings = [];
-    private _columns = [];
-    private _action: string;
+    private _offset: number;
+    private _limit: number;
+    private _conditions: QueryCondition<Table>[] = [];
+    private _groupBy: QueryColumn<Table, any>[] = [];
+    private _having: QueryCondition<Table>[] = [];
+    private _orderings: (QueryColumn<Table, any> | QueryOrdering<Table>)[] = [];
+    private _columns: QueryColumn<Table, any>[] = [];
+    private _action: QueryAction;
 
     offset(offset: number): this {
         this._offset = offset;

@@ -11,12 +11,8 @@ export type BookTypeId = string;
 export class BookTypeTable extends QueryTable<BookType, BookTypeId> {
     $name = 'BookType';
 
-    name = new StringColumn(this, {
-        name: 'name'
-    });
-    description = new StringColumn(this, {
-        name: 'description'
-    });
+    name = new StringColumn(this, 'name');
+    description = new StringColumn(this, 'description');
 
     $id = this.name
 }

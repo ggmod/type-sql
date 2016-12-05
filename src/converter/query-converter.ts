@@ -148,7 +148,7 @@ function convertTable(table: any): string {
 
 function convertColumn(column: any): string {
     let s = convertTable(column._table) + '.';
-    s += column._params.special ? column._params.special : '"' + column._params.name + '"';
+    s += column._params === '*' ? column._params : '"' + column._params + '"';
     if (column._modifiers) {
         column._modifiers.forEach((modifier: any) => {
             let name = modifier.name;
@@ -197,7 +197,7 @@ function convertCondition(condition: any, root = false): string {
         s += convertCondition(condition._child);
     }
     if (condition._sibling) {
-        s = convertCondition(condition._sibling, root) + ' ' + condition._chainType + ' ' + s;
+        s = convertCondition(condition._sibling, root) + ' ' + condition._chainType.toUpperCase() + ' ' + s;
     }
     if (condition._parenthesis || ((!root || condition._negation) && condition._child)) {
         s = '( ' + s + ' )';

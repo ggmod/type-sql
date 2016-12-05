@@ -4,11 +4,12 @@ import QueryTable from "./query-table";
 import QueryColumn from "./query-column";
 import QueryCondition from "./query-condition";
 import QueryJoinCondition from "./query-join-condition";
+import {ColumnModifier, ColumnParams} from "./internal-types";
 
 
 abstract class ValueColumn<Table extends QueryTable<any, any>, T> extends QueryColumn<Table, T> {
 
-    constructor(table: Table, params, modifiers = []) {
+    constructor(table: Table, params: ColumnParams, modifiers: ColumnModifier[] = []) {
         super(table, params, modifiers);
     }
 

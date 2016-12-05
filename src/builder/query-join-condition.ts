@@ -17,11 +17,11 @@ export default class QueryJoinCondition<Table1 extends QueryTable<any, any>, Tab
         this._otherColumn = otherColumn;
     }
 
-    and<Table3 extends QueryTable<any, any>>(condition: QueryCondition<Table3>) {
-        return new QueryConditionChain<Table1 | Table2 | Table3>(this, condition, 'AND');
+    and<Table3 extends QueryTable<any, any>>(condition: QueryCondition<Table3>): QueryConditionChain<Table1 | Table2 | Table3>  {
+        return new QueryConditionChain<Table1 | Table2 | Table3>(this, condition, 'and');
     }
 
-    or<Table3 extends QueryTable<any, any>>(condition: QueryCondition<Table3>) {
-        return new QueryConditionChain<Table1 | Table2 | Table3>(this, condition, 'OR');
+    or<Table3 extends QueryTable<any, any>>(condition: QueryCondition<Table3>): QueryConditionChain<Table1 | Table2 | Table3>  {
+        return new QueryConditionChain<Table1 | Table2 | Table3>(this, condition, 'or');
     }
 }

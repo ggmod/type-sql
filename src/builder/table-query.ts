@@ -4,55 +4,54 @@ import QueryCondition from "./query-condition";
 import QueryProcessor from "../query-processor";
 import ValueColumn from "./value-column";
 import QueryColumn from "./query-column";
+import {QueryAction} from "./internal-types";
 
 
 export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>> {
 
-    constructor(queryProcessor: QueryProcessor, table: Table) {
-        this._queryProcessor = queryProcessor;
-        this._table = table;
-    }
+    constructor(
+        protected _queryProcessor: QueryProcessor,
+        protected _table: Table
+    ) {}
 
-    private _queryProcessor;
-    private _table: Table;
     private _entity: Entity | Entity[];
-    private _action: string;
+    private _action: QueryAction;
     private _columns: QueryColumn<Table, any>[] = [];
 
-    where(...conditions: QueryCondition<Table>[]): TableConditionQuery<Entity, Table> {
+    where(...conditions: QueryCondition<Table>[]) {
         return new TableConditionQuery<Entity, Table>(this._queryProcessor, this._table, conditions);
     }
 
-    insert(entity: Entity)
-    insert(entities: Entity[])
-    insert(param: any) {
+    insert(entity: Entity): Promise<any>
+    insert(entities: Entity[]): Promise<any>
+    insert(param: any): Promise<any> {
         this._entity = param;
         this._action = 'insert';
         return this._queryProcessor.execute(this);
     }
 
-    deleteAll() {
+    deleteAll(): Promise<any> {
         this._action = 'delete';
         return this._queryProcessor.execute(this);
     }
 
-    updateAll(entity: Entity) {
+    updateAll(entity: Entity): Promise<any> {
         this._entity = entity;
         this._action = 'update';
         return this._queryProcessor.execute(this);
     }
 
-    countAll() {
+    countAll(): Promise<number> {
         this._columns = [this._table.$all.count()];
         this._action = 'select';
         return this._queryProcessor.execute(this);
     }
 
-    delete(id: Id) {
+    delete(id: Id): Promise<any> {
         return this._whereId(id).delete();
     }
 
-    update(id: Id, entity: Entity) {
+    update(id: Id, entity: Entity): Promise<any> {
         return this._whereId(id).update(entity);
     }
 
@@ -62,11 +61,12 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
     }
 
     _whereId(id: Id): TableConditionQuery<Entity, Table> {
-        let $id = (this._table as any).$id; // FIXME
+        // FIXME assertions
+        let $id = (this._table as any).$id;
         if ($id instanceof ValueColumn) {
             return this.where($id.eq(id));
         } else {
-            return this.where(...Object.keys($id).map(key => this._table[key].eq(id[key])));
+            return this.where(...Object.keys($id).map(key => ((this._table as any)[key] as ValueColumn<Table, any>).eq((id as any)[key] as any)));
         }
     }
 }

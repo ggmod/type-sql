@@ -1,11 +1,12 @@
 import QueryColumnCondition from "./query-column-condition";
 import QueryTable from "./query-table";
 import ValueColumn from "./value-column";
+import {ColumnModifier, ColumnParams} from "./internal-types";
 
 
 abstract class ComparableColumn<Table extends QueryTable<any, any>, T> extends ValueColumn<Table, T> {
 
-    constructor(table: Table, params, modifiers = []) {
+    constructor(table: Table, params: ColumnParams, modifiers: ColumnModifier[] = []) {
         super(table, params, modifiers);
     }
 

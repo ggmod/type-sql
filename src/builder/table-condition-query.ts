@@ -2,36 +2,33 @@ import QueryTable from "./query-table";
 import QueryProcessor from "../query-processor";
 import QueryCondition from "./query-condition";
 import QueryColumn from "./query-column";
+import {QueryAction} from "./internal-types";
 
 
 export default class TableConditionQuery<Entity, Table extends QueryTable<Entity, any>> {
 
-    constructor(queryProcessor: QueryProcessor, table: Table, conditions: QueryCondition<Table>[]) {
-        this._queryProcessor = queryProcessor;
-        this._table = table;
-        this._conditions = conditions;
-    }
+    constructor(
+        protected _queryProcessor: QueryProcessor,
+        protected _table: Table,
+        protected _conditions: QueryCondition<Table>[]
+    ) {}
 
-    private _queryProcessor;
-    private _table: Table;
-    private _conditions = [];
     private _columns: QueryColumn<Table, any>[] = [];
-    private _action: string;
-
+    private _action: QueryAction;
     protected _entity: Entity;
 
-    update(entity: Entity) { // TODO Partial<Entity>
+    update(entity: Entity): Promise<any> { // TODO Partial<Entity>
         this._entity = entity;
         this._action = 'update';
         return this._queryProcessor.execute(this);
     }
 
-    delete() {
+    delete(): Promise<any> {
         this._action = 'delete';
         return this._queryProcessor.execute(this);
     }
 
-    count() {
+    count(): Promise<number> {
         this._columns = [this._table.$all.count()];
         this._action = 'select';
         return this._queryProcessor.execute(this);

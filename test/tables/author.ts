@@ -12,13 +12,8 @@ export type AuthorId = number;
 export class AuthorTable extends QueryTable<Author, AuthorId> {
     $name = "Author";
 
-    id = new NumberColumn(this, {
-        name: 'id'
-    });
-
-    name = new StringColumn(this, {
-        name: 'name'
-    });
+    id = new NumberColumn(this, 'id');
+    name = new StringColumn(this, 'name');
 
     $id = this.id
 }
