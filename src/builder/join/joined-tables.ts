@@ -1,6 +1,6 @@
-import QueryTable from "./query-table";
+import QueryTable from "../query-table";
 import JoinedTablesChain from "./joined-tables-chain";
-import QueryJoinCondition from "./query-join-condition";
+import QueryJoinCondition from "../condition/query-join-condition";
 
 
 export default class JoinedTables<Tables extends QueryTable<any, any>> {

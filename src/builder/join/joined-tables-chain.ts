@@ -1,5 +1,5 @@
-import QueryTable from "./query-table";
-import QueryJoinCondition from "./query-join-condition";
+import QueryTable from "../query-table";
+import QueryJoinCondition from "../condition/query-join-condition";
 import JoinedTables from "./joined-tables";
 
 

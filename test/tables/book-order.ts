@@ -1,5 +1,5 @@
 import QueryTable from "../../src/builder/query-table";
-import NumberColumn from "../../src/builder/number-column";
+import NumberColumn from "../../src/builder/column/number-column";
 
 export interface BookOrder {
     bookId: number,

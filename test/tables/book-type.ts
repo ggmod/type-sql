@@ -1,5 +1,5 @@
 import QueryTable from "../../src/builder/query-table";
-import StringColumn from "../../src/builder/string-column";
+import StringColumn from "../../src/builder/column/string-column";
 
 export interface BookType {
     name: string,

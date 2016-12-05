@@ -1,9 +1,9 @@
-import QueryCondition from "./query-condition";
-import QueryOrdering from "./query-ordering";
-import QueryTable from "./query-table";
-import QueryColumn from "./query-column";
-import QueryProcessor from "../query-processor";
-import { QueryAction } from "./internal-types";
+import QueryCondition from "../condition/query-condition";
+import QueryOrdering from "../other/query-ordering";
+import QueryTable from "../query-table";
+import QueryColumn from "../column/query-column";
+import QueryProcessor from "../../query-processor";
+import { QueryAction } from "../internal-types";
 
 
 export default class SelectQuery<Entity, Table extends QueryTable<Entity, any>> {

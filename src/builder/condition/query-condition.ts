@@ -1,4 +1,4 @@
-import QueryTable from "./query-table";
+import QueryTable from "../query-table";
 import QueryConditionChain from "./query-condition-chain";
 
 // TODO I had to copy-paste the method implementations to every child class to avoid circular dependencies

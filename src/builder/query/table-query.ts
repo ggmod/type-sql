@@ -1,10 +1,10 @@
-import QueryTable from "./query-table";
+import QueryTable from "../query-table";
 import TableConditionQuery from "./table-condition-query";
-import QueryCondition from "./query-condition";
-import QueryProcessor from "../query-processor";
-import ValueColumn from "./value-column";
-import QueryColumn from "./query-column";
-import {QueryAction} from "./internal-types";
+import QueryCondition from "../condition/query-condition";
+import QueryProcessor from "../../query-processor";
+import ValueColumn from "../column/value-column";
+import QueryColumn from "../column/query-column";
+import {QueryAction} from "../internal-types";
 
 
 export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>> {

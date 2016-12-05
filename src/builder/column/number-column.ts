@@ -1,6 +1,6 @@
-import QueryTable from "./query-table";
+import QueryTable from "../query-table";
 import ComparableColumn from "./comparable-column";
-import {ColumnModifier, ColumnParams} from "./internal-types";
+import {ColumnModifier, ColumnParams} from "../internal-types";
 
 
 export default class NumberColumn<Table extends QueryTable<any, any>> extends ComparableColumn<Table, number> {

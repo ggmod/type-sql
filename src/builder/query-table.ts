@@ -1,6 +1,6 @@
-import BasicQueryColumn from "./basic-column";
+import BasicQueryColumn from "./column/basic-column";
 import GenericsHelper from "./generics-helper";
-import JoinedTablesChain from "./joined-tables-chain";
+import JoinedTablesChain from "./join/joined-tables-chain";
 
 
 abstract class QueryTable<Entity, Id> {

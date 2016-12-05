@@ -1,8 +1,8 @@
 import QueryTable from './query-table';
-import SelectQuery from './select-query';
+import SelectQuery from './query/select-query';
 import QueryProcessor from "../query-processor";
-import JoinedTables from "./joined-tables";
-import TableQuery from "./table-query";
+import JoinedTables from "./join/joined-tables";
+import TableQuery from "./query/table-query";
 
 
 export default class QuerySource {

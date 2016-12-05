@@ -1,8 +1,8 @@
-import QueryTable from "./query-table";
+import QueryTable from "../query-table";
 import ComparableColumn from "./comparable-column";
 import NumberColumn from "./number-column";
-import QueryColumnCondition from "./query-column-condition";
-import {ColumnModifier, ColumnParams} from "./internal-types";
+import QueryColumnCondition from "../condition/query-column-condition";
+import {ColumnModifier, ColumnParams} from "../internal-types";
 
 
 export default class StringColumn<Table extends QueryTable<any, any>> extends ComparableColumn<Table, string> {

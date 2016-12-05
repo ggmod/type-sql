@@ -1,7 +1,7 @@
-import QueryTable from "./query-table";
+import QueryTable from "../query-table";
 import NumberColumn from "./number-column";
 import ValueColumn from "./value-column";
-import {ColumnModifier, ColumnParams} from "./internal-types";
+import {ColumnModifier, ColumnParams} from "../internal-types";
 
 
 export default class BooleanColumn<Table extends QueryTable<any, any>> extends ValueColumn<Table, boolean> {

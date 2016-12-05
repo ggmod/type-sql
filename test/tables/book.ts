@@ -1,9 +1,9 @@
-import NumberColumn from "../../src/builder/number-column";
-import StringColumn from "../../src/builder/string-column";
+import NumberColumn from "../../src/builder/column/number-column";
+import StringColumn from "../../src/builder/column/string-column";
 import QueryTable from '../../src/builder/query-table';
-import BooleanColumn from "../../src/builder/boolean-column";
-import DateColumn from "../../src/builder/date-column";
-import BasicQueryColumn from "../../src/builder/basic-column";
+import BooleanColumn from "../../src/builder/column/boolean-column";
+import DateColumn from "../../src/builder/column/date-column";
+import BasicQueryColumn from "../../src/builder/column/basic-column";
 
 export interface Book {
     id: number,

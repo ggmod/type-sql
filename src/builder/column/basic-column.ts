@@ -1,7 +1,7 @@
-import QueryTable from "./query-table";
+import QueryTable from "../query-table";
 import QueryColumn from "./query-column";
 import NumberColumn from "./number-column";
-import {ColumnModifier, ColumnParams} from "./internal-types";
+import {ColumnModifier, ColumnParams} from "../internal-types";
 
 // This file is only needed because the QueryColumn can't implement its count method b. of circular dependencies
 

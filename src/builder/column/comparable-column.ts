@@ -1,7 +1,7 @@
-import QueryColumnCondition from "./query-column-condition";
-import QueryTable from "./query-table";
+import QueryColumnCondition from "../condition/query-column-condition";
+import QueryTable from "../query-table";
 import ValueColumn from "./value-column";
-import {ColumnModifier, ColumnParams} from "./internal-types";
+import {ColumnModifier, ColumnParams} from "../internal-types";
 
 
 abstract class ComparableColumn<Table extends QueryTable<any, any>, T> extends ValueColumn<Table, T> {
