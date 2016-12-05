@@ -1,9 +1,4 @@
-import NumberColumn from "../../src/builder/column/number-column";
-import StringColumn from "../../src/builder/column/string-column";
-import QueryTable from '../../src/builder/query-table';
-import BooleanColumn from "../../src/builder/column/boolean-column";
-import DateColumn from "../../src/builder/column/date-column";
-import BasicQueryColumn from "../../src/builder/column/basic-column";
+import { QueryTable, StringColumn, NumberColumn, BooleanColumn, DateColumn, BasicColumn } from "../../dist";
 
 export interface Book {
     id: number,
@@ -28,7 +23,7 @@ export class BookTable extends QueryTable<Book, BookId> {
     price = new NumberColumn(this, 'price');
     date = new DateColumn(this, 'date');
     available = new BooleanColumn(this, 'available');
-    data = new BasicQueryColumn<this, any>(this, 'data');
+    data = new BasicColumn<this, any>(this, 'data');
 
     $id = this.id
 }

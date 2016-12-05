@@ -1,4 +1,4 @@
-import DefaultQueryProcessor from "../../src/defeault-processor";
+import { DefaultQueryProcessor } from "../../dist";
 import BOOK from '../tables/book';
 import AUTHOR from '../tables/author';
 import { TestQuerySource} from "../utils";

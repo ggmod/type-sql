@@ -1,5 +1,4 @@
-import QueryTable from "../../src/builder/query-table";
-import NumberColumn from "../../src/builder/column/number-column";
+import { QueryTable, NumberColumn } from "../../dist";
 
 export interface BookOrder {
     bookId: number,

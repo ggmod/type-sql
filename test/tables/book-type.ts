@@ -1,5 +1,4 @@
-import QueryTable from "../../src/builder/query-table";
-import StringColumn from "../../src/builder/column/string-column";
+import { QueryTable, StringColumn } from "../../dist";
 
 export interface BookType {
     name: string,

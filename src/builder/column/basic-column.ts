@@ -5,7 +5,7 @@ import {ColumnModifier, ColumnParams} from "../internal-types";
 
 // This file is only needed because the QueryColumn can't implement its count method b. of circular dependencies
 
-export default class BasicQueryColumn<Table extends QueryTable<any, any>, T> extends QueryColumn<Table, T> {
+export default class BasicColumn<Table extends QueryTable<any, any>, T> extends QueryColumn<Table, T> {
 
     constructor(table: Table, params: ColumnParams, modifiers: ColumnModifier[] = []) {
         super(table, params, modifiers);

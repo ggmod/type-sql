@@ -1,6 +1,4 @@
-import NumberColumn from "../../src/builder/column/number-column";
-import StringColumn from "../../src/builder/column/string-column";
-import QueryTable from '../../src/builder/query-table';
+import { QueryTable, NumberColumn, StringColumn } from "../../dist";
 
 export interface Author {
     id: number,

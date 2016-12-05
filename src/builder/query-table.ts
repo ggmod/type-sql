@@ -1,4 +1,4 @@
-import BasicQueryColumn from "./column/basic-column";
+import BasicColumn from "./column/basic-column";
 import GenericsHelper from "./generics-helper";
 import JoinedTablesChain from "./join/joined-tables-chain";
 
@@ -10,7 +10,7 @@ abstract class QueryTable<Entity, Id> {
     abstract readonly $name: string;
     // abstract readonly $id; // FIXME
 
-    $all = new BasicQueryColumn<this, Entity>(this, '*');
+    $all = new BasicColumn<this, Entity>(this, '*');
 
     innerJoin<JoinTable extends QueryTable<any, any>>(table: JoinTable): JoinedTablesChain<this | JoinTable> {
         return new JoinedTablesChain<this | JoinTable>(table, 'inner', this);

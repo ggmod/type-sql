@@ -1,7 +1,7 @@
 import BOOK from '../tables/book';
 import AUTHOR from '../tables/author';
 import { TestQuerySource } from '../utils';
-import DefaultQueryProcessor from "../../src/defeault-processor";
+import { DefaultQueryProcessor } from "../../dist";
 
 let db = new TestQuerySource(new DefaultQueryProcessor({ parameterized: true }));
 

@@ -1,5 +1,4 @@
-import QuerySource from "../src/builder/query-source";
-import DefaultQueryProcessor from "../src/defeault-processor";
+import { QuerySource, DefaultQueryProcessor } from "../dist";
 
 export class TestQuerySource extends QuerySource {
     get sql() { return (<DefaultQueryProcessor>this._queryProcessor).sql; }

@@ -10,8 +10,8 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist/* && tsc -v && tsc",
-    "prepublish": "npm run build",
-    "test": "rm -rf build-test; cd test; tsc; cd ..; node --harmony --harmony-default-parameters ./node_modules/.bin/jasmine-node --captureExceptions --matchall ./build-test/test/**/*.js"
+    "test": "rm -rf dist/*; tsc -v; tsc; rm -rf build-test; cd test; tsc; cd ..; jasmine-node --captureExceptions --matchall ./build-test/**/*.js",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git"
