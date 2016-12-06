@@ -1,4 +1,4 @@
-import { convertQuery } from "./query-converter";
+import { createQueryConverter } from "./query-converter";
 
 
 function escapeString(param: string): string {
@@ -19,5 +19,5 @@ function convertSingleParam(param: any): string {
 }
 
 export function convertQueryToSQL(query: any, lineBreaks: boolean): string {
-    return convertQuery(query, (param: any) => convertSingleParam(param), lineBreaks);
+    return createQueryConverter((param: any) => convertSingleParam(param), lineBreaks)(query);
 }
