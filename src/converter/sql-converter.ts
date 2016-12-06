@@ -7,9 +7,9 @@ function escapeString(param: string): string {
 
 function convertSingleParam(param: any): string {
     if (typeof param === 'string' || param instanceof String) {
-        return `'${escapeString(<string>param)}'`;
+        return `'${escapeString(String(param))}'`;
     } else if (typeof param === 'boolean' || param instanceof Boolean) {
-        return param ? 'TRUE': 'FALSE';
+        return String(param).toUpperCase();
     } else if (param instanceof Date) {
         return `'${param.toISOString()}'`;
     } else if (typeof param === 'number' || param instanceof Number) {
