@@ -2,9 +2,12 @@ import { string, number, date, boolean } from './utils';
 
 export type ParamConverter = (param: any) => string;
 
-export function createQueryConverter(paramConverter: ParamConverter, lineBreaks = false) {
+export interface QueryOptions {
+    lineBreak: string,
+    nameEscape: string
+}
 
-    let separator = lineBreaks ? '\n' : ' ';
+export function createQueryConverter(paramConverter: ParamConverter, options: QueryOptions) {
 
     return convertQuery;
 
@@ -46,8 +49,8 @@ export function createQueryConverter(paramConverter: ParamConverter, lineBreaks 
         let keys = Array.from(keySet).sort();
 
         let s = 'INSERT INTO ' + convertTable(query._table) + ' ';
-        s += '(' + keys.map(key => '"' + key + '"').join(', ') + ')';
-        s += separator + 'VALUES ';
+        s += '(' + keys.map(key => options.nameEscape + key + options.nameEscape).join(', ') + ')';
+        s += options.lineBreak + 'VALUES ';
         s += items.map((item: any) => convertInsertItem(query._table, item, keys))
             .map((row: string) => '(' + row + ')').join(', ');
         return s;
@@ -73,7 +76,7 @@ export function createQueryConverter(paramConverter: ParamConverter, lineBreaks 
             s += query._columns.map((column: any) => convertColumn(column)).join(', ');
         }
 
-        s += separator + 'FROM ';
+        s += options.lineBreak + 'FROM ';
         if (query._tables) {
             s+= query._tables.map((table: any) => table._parent ? convertJoin(table) : convertTable(table)).join(', ');
         } else {
@@ -83,20 +86,20 @@ export function createQueryConverter(paramConverter: ParamConverter, lineBreaks 
         s += convertConditions(query._conditions);
 
         if (query._groupBy && query._groupBy.length > 0) {
-            s += separator + 'GROUP BY ';
+            s += options.lineBreak + 'GROUP BY ';
             s += query._groupBy.map((column: any) => convertColumn(column)).join(', ');
         }
         s += convertConditions(query._having, 'HAVING');
 
         if (query._orderings && query._orderings.length > 0) {
-            s += separator + 'ORDER BY ';
+            s += options.lineBreak + 'ORDER BY ';
             s += query._orderings.map((ordering: any) => convertOrdering(ordering)).join(', ');
         }
         if (query._offset != null) {
-            s += separator + 'OFFSET ' + number(query._offset);
+            s += options.lineBreak + 'OFFSET ' + number(query._offset);
         }
         if (query._limit != null) {
-            s += separator + 'LIMIT ' + number(query._limit);
+            s += options.lineBreak + 'LIMIT ' + number(query._limit);
         }
         return s;
     }
@@ -104,7 +107,7 @@ export function createQueryConverter(paramConverter: ParamConverter, lineBreaks 
     function convertConditions(conditions: any, keyword = 'WHERE'): string {
         let s = '';
         if (conditions && conditions.length > 0) {
-            s += separator + keyword + ' ';
+            s += options.lineBreak + keyword + ' ';
             preprocessConditions(conditions);
             s += conditions.map((condition: any) => convertCondition(condition, true)).join(' AND ');
         }
@@ -149,12 +152,12 @@ export function createQueryConverter(paramConverter: ParamConverter, lineBreaks 
     }
 
     function convertTable(table: any): string {
-        return '"' + table.$name + '"';
+        return options.nameEscape + table.$name + options.nameEscape;
     }
 
     function convertColumn(column: any): string {
         let s = convertTable(column._table) + '.';
-        s += column._params === '*' ? column._params : '"' + column._params + '"';
+        s += column._params === '*' ? column._params : options.nameEscape + column._params + options.nameEscape;
         if (column._modifiers) {
             column._modifiers.forEach((modifier: any) => {
                 let name = modifier.name;
@@ -165,7 +168,7 @@ export function createQueryConverter(paramConverter: ParamConverter, lineBreaks 
                 else if (name === 'avg') s = 'AVG(' + s + ')';
                 else if (name === 'min') s = 'MIN(' + s + ')';
                 else if (name === 'max') s = 'MAX(' + s + ')';
-                else if (name === 'as') s = s + ' AS "' + modifier.params + '"';
+                else if (name === 'as') s = s + ' AS ' + options.nameEscape + modifier.params + options.nameEscape;
             });
         }
         return s + '';
