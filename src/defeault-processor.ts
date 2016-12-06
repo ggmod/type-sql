@@ -2,6 +2,7 @@ import QueryProcessor from "./query-processor";
 import { convertQueryToParameterizedSQL } from './converter/parameterized-converter';
 import { convertQueryToSQL } from './converter/sql-converter';
 
+// TODO default options, Partial<>
 
 export interface QueryProcessorOptions {
     lineBreaks?: boolean,
@@ -20,11 +21,11 @@ export default class DefaultQueryProcessor implements QueryProcessor {
 
     execute<T>(query: any): Promise<T> {
         if (this._options.parameterized) {
-            let result = convertQueryToParameterizedSQL(query, this._options.lineBreaks);
+            let result = convertQueryToParameterizedSQL(query, this._options.lineBreaks || false);
             this._sql = result.sql;
             this._params = result.params;
         } else {
-            this._sql = convertQueryToSQL(query, this._options.lineBreaks);
+            this._sql = convertQueryToSQL(query, this._options.lineBreaks || false);
         }
         return Promise.resolve();
     }

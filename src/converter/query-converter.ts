@@ -9,6 +9,7 @@ export function convertQuery(query: any, paramConverter: ParamConverter, lineBre
     else if (query._action === 'delete') return convertDeleteQuery(query, paramConverter, separator);
     else if (query._action === 'update') return convertUpdateQuery(query, paramConverter, separator);
     else if (query._action === 'insert') return convertInsertQuery(query, paramConverter, separator);
+    else throw new Error('Unknown query type:' + query._action);
 }
 
 function convertDeleteQuery(query: any, paramConverter: ParamConverter, separator: string): string {
@@ -119,7 +120,7 @@ function convertJoin(joinChain: any): string {
         let table = items[i]._table;
         let modifier = items[i]._modifier;
         let condition = items[i - 1]._condition;
-        let param = getConditionParam(condition, null);
+        let param = convertColumn(condition._otherColumn);
         s += ' ' + modifier.toUpperCase() + ' JOIN ' + convertTable(table) + ' ON ' +
             convertColumnCondition(condition, param);
     }

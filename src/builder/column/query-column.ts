@@ -23,11 +23,11 @@ abstract class QueryColumn<Table extends QueryTable<any, any>, T> {
     }
 
     isNull() {
-        return new QueryColumnCondition<Table, T>(this, 'is-null', null);
+        return new QueryColumnCondition<Table, T>(this, 'is-null');
     }
 
     isNotNull() {
-        return new QueryColumnCondition<Table, T>(this, 'is-not-null', null);
+        return new QueryColumnCondition<Table, T>(this, 'is-not-null');
     }
 }
 

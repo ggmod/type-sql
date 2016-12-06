@@ -34,11 +34,11 @@ describe('UPDATE', () => {
     });
 
     it('set to null', () => {
-        let e = { title: null } as Book;
+        let e = { title: null } as any as Book;
         db.table(BOOK).updateAll(e);
         expect(db.sql).toEqual(`UPDATE "Book" SET "Book"."title" = NULL`);
 
-        let e2 = { author: undefined } as Book;
+        let e2 = { author: undefined } as any as Book;
         db.table(BOOK).updateAll(e2);
         expect(db.sql).toEqual(`UPDATE "Book" SET "Book"."author" = NULL`);
     });

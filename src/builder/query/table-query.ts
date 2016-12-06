@@ -55,7 +55,7 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
         return this._whereId(id).update(entity);
     }
 
-    get(id: Id): Promise<Entity> {
+    get(id: Id): Promise<Entity | undefined> {
         let query = this._whereId(id);
         return this._queryProcessor.execute(Object.assign({ _action: 'select' }, query)); // TODO replace Object.assign
     }

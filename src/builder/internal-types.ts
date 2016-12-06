@@ -22,3 +22,7 @@ export type ConditionChainType = 'or' | 'and';
 
 export type ConditionType = 'eq' | 'ne' | 'lt' | 'lte' | 'gt' | 'gte' | 'in' | 'not-in' | 'between' | 'not-between'
     | 'like' | 'not-like' | 'is-null' | 'is-not-null';
+
+// joins:
+
+export type JoinType = 'inner' | 'left' | 'right' | 'full';
