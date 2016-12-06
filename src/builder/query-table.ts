@@ -5,7 +5,7 @@ import JoinedTablesChain from "./join/joined-tables-chain";
 
 abstract class QueryTable<Entity, Id> {
 
-    private _$type: GenericsHelper<Entity>;
+    protected _$type: GenericsHelper<Entity>;
 
     abstract readonly $name: string;
     // abstract readonly $id; // FIXME

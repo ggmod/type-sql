@@ -9,19 +9,19 @@ import { QueryAction } from "../internal-types";
 export default class SelectQuery<Entity, Table extends QueryTable<Entity, any>> {
 
     constructor(
-        private _queryProcessor: QueryProcessor,
-        private _tables: Table[]
+        protected _queryProcessor: QueryProcessor,
+        protected _tables: Table[]
     ) {}
 
-    private _distinct = false;
-    private _offset: number;
-    private _limit: number;
-    private _conditions: QueryCondition<Table>[] = [];
-    private _groupBy: QueryColumn<Table, any>[] = [];
-    private _having: QueryCondition<Table>[] = [];
-    private _orderings: (QueryColumn<Table, any> | QueryOrdering<Table>)[] = [];
-    private _columns: QueryColumn<Table, any>[] = [];
-    private _action: QueryAction;
+    protected _distinct = false;
+    protected _offset: number;
+    protected _limit: number;
+    protected _conditions: QueryCondition<Table>[] = [];
+    protected _groupBy: QueryColumn<Table, any>[] = [];
+    protected _having: QueryCondition<Table>[] = [];
+    protected _orderings: (QueryColumn<Table, any> | QueryOrdering<Table>)[] = [];
+    protected _columns: QueryColumn<Table, any>[] = [];
+    protected _action: QueryAction;
 
     offset(offset: number): this {
         this._offset = offset;

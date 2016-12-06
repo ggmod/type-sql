@@ -7,7 +7,7 @@ import {ColumnModifier, ColumnParams} from "../internal-types";
 
 abstract class QueryColumn<Table extends QueryTable<any, any>, T> {
 
-    private _$type: GenericsHelper<T>;
+    protected _$type: GenericsHelper<T>;
     protected _type: string;
 
     constructor(

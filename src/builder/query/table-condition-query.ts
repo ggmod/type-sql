@@ -13,8 +13,8 @@ export default class TableConditionQuery<Entity, Table extends QueryTable<Entity
         protected _conditions: QueryCondition<Table>[]
     ) {}
 
-    private _columns: QueryColumn<Table, any>[] = [];
-    private _action: QueryAction;
+    protected _columns: QueryColumn<Table, any>[] = [];
+    protected _action: QueryAction;
     protected _entity: Entity;
 
     update(entity: Entity): Promise<any> { // TODO Partial<Entity>

@@ -14,9 +14,9 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
         protected _table: Table
     ) {}
 
-    private _entity: Entity | Entity[];
-    private _action: QueryAction;
-    private _columns: QueryColumn<Table, any>[] = [];
+    protected _entity: Entity | Entity[];
+    protected _action: QueryAction;
+    protected _columns: QueryColumn<Table, any>[] = [];
 
     where(...conditions: QueryCondition<Table>[]) {
         return new TableConditionQuery<Entity, Table>(this._queryProcessor, this._table, conditions);

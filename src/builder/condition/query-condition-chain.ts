@@ -6,7 +6,7 @@ import {ConditionChainType} from "../internal-types";
 
 export default class QueryConditionChain<Table extends QueryTable<any, any>> extends QueryCondition<Table> {
 
-    private _$type: GenericsHelper<Table>;
+    protected _$type: GenericsHelper<Table>;
 
     protected _sibling: QueryCondition<any>;
     protected _child: QueryCondition<any>;
