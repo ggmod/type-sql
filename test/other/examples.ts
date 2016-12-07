@@ -1,5 +1,4 @@
-import BOOK from '../tables/book';
-import AUTHOR from '../tables/author';
+import { BOOK } from '../tables/book';
 import { db } from '../utils';
 
 

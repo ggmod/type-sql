@@ -1,6 +1,6 @@
-import BOOK from '../tables/book';
-import AUTHOR from "../tables/author";
-import BOOK_TYPE from "../tables/book-type";
+import { BOOK } from '../tables/book';
+import { AUTHOR } from "../tables/author";
+import { BOOK_TYPE } from "../tables/book-type";
 import { db } from '../utils';
 
 describe('SQL injection', () => {

@@ -5,9 +5,10 @@ import JoinedTablesChain from "./join/joined-tables-chain";
 
 abstract class QueryTable<Entity, Id> {
 
+    constructor(protected _$name: string) {}
+
     protected _$type: GenericsHelper<Entity>;
 
-    abstract readonly $name: string;
     // abstract readonly $id; // FIXME
 
     $all = new BasicColumn<this, Entity>(this, '*');

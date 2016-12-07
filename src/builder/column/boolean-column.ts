@@ -1,19 +1,19 @@
 import QueryTable from "../query-table";
 import NumberColumn from "./number-column";
 import ValueColumn from "./value-column";
-import {ColumnModifier, ColumnParams} from "../internal-types";
+import {ColumnModifier} from "../internal-types";
 
 
 export default class BooleanColumn<Table extends QueryTable<any, any>> extends ValueColumn<Table, boolean> {
 
     protected _type = 'boolean';
 
-    constructor(table: Table, params: ColumnParams, modifiers: ColumnModifier[] = []) {
-        super(table, params, modifiers);
+    constructor(table: Table, name: string, modifiers: ColumnModifier[] = []) {
+        super(table, name, modifiers);
     }
 
     count(): NumberColumn<Table> {
-        return new NumberColumn(this._table, this._params, this._modifiers.concat({ name: 'count' }));
+        return new NumberColumn(this._table, this._name, this._modifiers.concat({ name: 'count' }));
     }
 
 }

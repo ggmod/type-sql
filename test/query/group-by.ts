@@ -1,4 +1,4 @@
-import BOOK from '../tables/book';
+import { BOOK } from '../tables/book';
 import { db } from '../utils';
 
 describe('GROUP BY', () => {

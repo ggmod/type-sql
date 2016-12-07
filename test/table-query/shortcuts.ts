@@ -1,6 +1,6 @@
-import BOOK, { Book } from '../tables/book';
-import BOOK_TYPE, { BookType } from '../tables/book-type';
-import BOOK_ORDER, { BookOrder } from '../tables/book-order';
+import { BOOK, Book } from '../tables/book';
+import { BOOK_TYPE, BookType } from '../tables/book-type';
+import { BOOK_ORDER, BookOrder } from '../tables/book-order';
 import { db } from '../utils';
 
 describe('Shortcuts for query by ID', () => {

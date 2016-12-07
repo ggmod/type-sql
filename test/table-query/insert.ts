@@ -1,4 +1,4 @@
-import BOOK, { Book } from '../tables/book';
+import { BOOK, Book } from '../tables/book';
 import { db } from '../utils';
 
 describe('INSERT', () => {

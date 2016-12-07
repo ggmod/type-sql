@@ -152,12 +152,12 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
     }
 
     function convertTable(table: any): string {
-        return options.nameEscape + table.$name + options.nameEscape;
+        return options.nameEscape + table._$name + options.nameEscape;
     }
 
     function convertColumn(column: any): string {
         let s = convertTable(column._table) + '.';
-        s += column._params === '*' ? column._params : options.nameEscape + column._params + options.nameEscape;
+        s += column._name === '*' ? column._name : options.nameEscape + column._name + options.nameEscape;
         if (column._modifiers) {
             column._modifiers.forEach((modifier: any) => {
                 let name = modifier.name;

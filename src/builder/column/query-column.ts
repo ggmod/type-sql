@@ -2,7 +2,7 @@ import QueryTable from "../query-table";
 import NumberColumn from "./number-column";
 import GenericsHelper from "../generics-helper";
 import QueryColumnCondition from "../condition/query-column-condition";
-import {ColumnModifier, ColumnParams} from "../internal-types";
+import {ColumnModifier} from "../internal-types";
 
 
 abstract class QueryColumn<Table extends QueryTable<any, any>, T> {
@@ -12,14 +12,14 @@ abstract class QueryColumn<Table extends QueryTable<any, any>, T> {
 
     constructor(
         protected _table: Table,
-        protected _params: ColumnParams,
+        protected _name: string,
         protected _modifiers: ColumnModifier[] = []
     ) {}
 
     abstract count(): NumberColumn<Table>; // TODO I had to copy-paste the implementation to every child class to avoid a circular dependency
 
     as(alias: string): this {
-        return new (<any>this.constructor)(this._table, this._params, this._modifiers.concat({ name: 'as', params: alias }));
+        return new (<any>this.constructor)(this._table, this._name, this._modifiers.concat({ name: 'as', params: alias }));
     }
 
     isNull() {

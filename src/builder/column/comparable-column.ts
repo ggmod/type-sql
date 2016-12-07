@@ -1,13 +1,13 @@
 import QueryColumnCondition from "../condition/query-column-condition";
 import QueryTable from "../query-table";
 import ValueColumn from "./value-column";
-import {ColumnModifier, ColumnParams} from "../internal-types";
+import {ColumnModifier} from "../internal-types";
 
 
 abstract class ComparableColumn<Table extends QueryTable<any, any>, T> extends ValueColumn<Table, T> {
 
-    constructor(table: Table, params: ColumnParams, modifiers: ColumnModifier[] = []) {
-        super(table, params, modifiers);
+    constructor(table: Table, name: string, modifiers: ColumnModifier[] = []) {
+        super(table, name, modifiers);
     }
 
     lt(value: T) {
@@ -45,11 +45,11 @@ abstract class ComparableColumn<Table extends QueryTable<any, any>, T> extends V
     // min/max exists for text columns too, not just numeric and date
 
     min(): this {
-        return (<any>this.constructor)(this._table, this._params, this._modifiers.concat({ name: 'min' }));
+        return (<any>this.constructor)(this._table, this._name, this._modifiers.concat({ name: 'min' }));
     }
 
     max(): this {
-        return (<any>this.constructor)(this._table, this._params, this._modifiers.concat({ name: 'max' }));
+        return (<any>this.constructor)(this._table, this._name, this._modifiers.concat({ name: 'max' }));
     }
 }
 

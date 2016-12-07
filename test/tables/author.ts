@@ -5,17 +5,11 @@ export interface Author {
     name: string
 }
 
-export type AuthorId = number;
-
-export class AuthorTable extends QueryTable<Author, AuthorId> {
-    $name = "Author";
-
+export class AuthorTable extends QueryTable<Author, number> {
     id = new NumberColumn(this, 'id');
     name = new StringColumn(this, 'name');
 
     $id = this.id
 }
 
-export const AUTHOR = new AuthorTable();
-
-export default AUTHOR;
+export const AUTHOR = new AuthorTable('Author');

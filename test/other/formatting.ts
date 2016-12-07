@@ -1,6 +1,5 @@
 import { DefaultQueryProcessor } from "../../dist";
-import BOOK from '../tables/book';
-import AUTHOR from '../tables/author';
+import { BOOK } from '../tables/book';
 import { TestQuerySource} from "../utils";
 
 let db = new TestQuerySource(new DefaultQueryProcessor({ lineBreaks: true }));

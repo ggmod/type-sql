@@ -11,11 +11,7 @@ export interface Book {
     data: any
 }
 
-export type BookId = number;
-
-export class BookTable extends QueryTable<Book, BookId> {
-    $name = 'Book';
-
+export class BookTable extends QueryTable<Book, number> {
     id = new NumberColumn(this, 'id');
     title = new StringColumn(this, 'title');
     author = new StringColumn(this,'author');
@@ -28,6 +24,4 @@ export class BookTable extends QueryTable<Book, BookId> {
     $id = this.id
 }
 
-export const BOOK = new BookTable();
-
-export default BOOK;
+export const BOOK = new BookTable('Book');

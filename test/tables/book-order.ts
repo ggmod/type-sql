@@ -12,8 +12,6 @@ export interface BookOrderId {
 }
 
 export class BookOrderTable extends QueryTable<BookOrder, BookOrderId> {
-    $name = 'BookOrder';
-
     bookId = new NumberColumn(this, 'bookId');
     orderId = new NumberColumn(this, 'orderId');
     count = new NumberColumn(this, 'count');
@@ -24,6 +22,4 @@ export class BookOrderTable extends QueryTable<BookOrder, BookOrderId> {
     };
 }
 
-export const BOOK_ORDER = new BookOrderTable();
-
-export default BOOK_ORDER;
+export const BOOK_ORDER = new BookOrderTable('BookOrder');

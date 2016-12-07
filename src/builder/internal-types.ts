@@ -12,8 +12,6 @@ export interface ColumnModifier {
     params?: any
 }
 
-export type ColumnParams = string; // TODO I planned for more params than just the name
-
 export type ColumnType = 'boolean' | 'number' | 'string' | 'date'; // FIXME TS bug
 
 // conditions:
