@@ -2,7 +2,7 @@ import QueryTable from "../query-table";
 import ComparableColumn from "./comparable-column";
 import NumberColumn from "./number-column";
 import QueryColumnCondition from "../condition/query-column-condition";
-import {ColumnModifier} from "../internal-types";
+import {ColumnModifier} from "../helpers/internal-types";
 
 
 export default class StringColumn<Table extends QueryTable<any, any>> extends ComparableColumn<Table, string> {

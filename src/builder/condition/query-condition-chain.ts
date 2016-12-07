@@ -1,7 +1,7 @@
 import QueryTable from "../query-table";
 import QueryCondition from "./query-condition";
-import GenericsHelper from "../generics-helper";
-import {ConditionChainType} from "../internal-types";
+import GenericsHelper from "../helpers/generics-helper";
+import {ConditionChainType} from "../helpers/internal-types";
 
 
 export default class QueryConditionChain<Table extends QueryTable<any, any>> extends QueryCondition<Table> {

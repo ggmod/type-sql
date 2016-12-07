@@ -4,7 +4,7 @@ import QueryTable from "../query-table";
 import QueryColumn from "./query-column";
 import QueryCondition from "../condition/query-condition";
 import QueryJoinCondition from "../condition/query-join-condition";
-import {ColumnModifier} from "../internal-types";
+import {ColumnModifier} from "../helpers/internal-types";
 
 
 abstract class ValueColumn<Table extends QueryTable<any, any>, T> extends QueryColumn<Table, T> {

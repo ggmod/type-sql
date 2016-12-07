@@ -12,7 +12,7 @@ export interface ColumnModifier {
     params?: any
 }
 
-export type ColumnType = 'boolean' | 'number' | 'string' | 'date'; // FIXME TS bug
+export type ColumnType = 'boolean' | 'number' | 'string' | 'date'; // FIXME TS bug?
 
 // conditions:
 

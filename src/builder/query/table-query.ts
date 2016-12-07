@@ -4,7 +4,7 @@ import QueryCondition from "../condition/query-condition";
 import QueryProcessor from "../../query-processor";
 import ValueColumn from "../column/value-column";
 import QueryColumn from "../column/query-column";
-import {QueryAction} from "../internal-types";
+import {QueryAction} from "../helpers/internal-types";
 
 
 export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>> {

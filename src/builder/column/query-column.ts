@@ -1,8 +1,8 @@
 import QueryTable from "../query-table";
 import NumberColumn from "./number-column";
-import GenericsHelper from "../generics-helper";
+import GenericsHelper from "../helpers/generics-helper";
 import QueryColumnCondition from "../condition/query-column-condition";
-import {ColumnModifier} from "../internal-types";
+import {ColumnModifier} from "../helpers/internal-types";
 
 
 abstract class QueryColumn<Table extends QueryTable<any, any>, T> {

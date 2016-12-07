@@ -1,7 +1,7 @@
 import QueryTable from "../query-table";
 import ComparableColumn from "./comparable-column";
 import NumberColumn from "./number-column";
-import {ColumnModifier} from "../internal-types";
+import {ColumnModifier} from "../helpers/internal-types";
 
 
 export default class DateColumn<Table extends QueryTable<any, any>> extends ComparableColumn<Table, Date> {

@@ -2,7 +2,7 @@ import QueryColumn from "../column/query-column";
 import QueryTable from "../query-table";
 import QueryCondition from "./query-condition";
 import QueryConditionChain from "./query-condition-chain";
-import {ConditionType} from "../internal-types";
+import {ConditionType} from "../helpers/internal-types";
 
 
 export default class QueryColumnCondition<Table extends QueryTable<any, any>, T> extends QueryCondition<Table> {

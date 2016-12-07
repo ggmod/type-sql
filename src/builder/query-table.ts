@@ -1,5 +1,5 @@
 import BasicColumn from "./column/basic-column";
-import GenericsHelper from "./generics-helper";
+import GenericsHelper from "./helpers/generics-helper";
 import JoinedTablesChain from "./join/joined-tables-chain";
 
 
