@@ -4,7 +4,7 @@ import { db } from '../utils';
 describe('UPDATE', () => {
 
     it('conditions', () => {
-        let e = { title: 'qwe' } as Book; // TODO no assertion needed for Partial<Entity>
+        let e = { title: 'qwe' };
 
         db.table(BOOK).where(BOOK.title.eq('asd')).update(e);
         expect(db.sql).toEqual(`UPDATE "Book" SET "Book"."title" = 'qwe' WHERE "Book"."title" = 'asd'`);
@@ -17,13 +17,13 @@ describe('UPDATE', () => {
     });
 
     it('all', () => {
-        let e = { title: 'qwe' } as Book;
+        let e = { title: 'qwe' };
         db.table(BOOK).updateAll(e);
         expect(db.sql).toEqual(`UPDATE "Book" SET "Book"."title" = 'qwe'`);
     });
 
     it('multiple field types', () => {
-        let e = <Book>{
+        let e = {
             title: 'asd',
             price: 10,
             available: true,
@@ -44,7 +44,7 @@ describe('UPDATE', () => {
     });
 
     it('json fields', () => {
-        let e = <Book>{
+        let e = {
             data: { x: 2, y: 10 }
         };
         db.table(BOOK).updateAll(e);

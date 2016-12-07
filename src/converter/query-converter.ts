@@ -43,7 +43,7 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
 
     function convertInsertQuery(query: any): string {
         let items: any[] = Array.isArray(query._entity) ? query._entity : [query._entity];
-        let keySet: Set<string> = items.reduce((set: Set<string>, item: any) => {
+        let keySet: Set<string> = items.reduce((set: Set<string>, item) => {
             Object.keys(item).forEach(key => set.add(key)); return set;
         }, new Set<string>());
         let keys = Array.from(keySet).sort();
@@ -51,7 +51,7 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
         let s = 'INSERT INTO ' + convertTable(query._table) + ' ';
         s += '(' + keys.map(key => options.nameEscape + key + options.nameEscape).join(', ') + ')';
         s += options.lineBreak + 'VALUES ';
-        s += items.map((item: any) => convertInsertItem(query._table, item, keys))
+        s += items.map(item => convertInsertItem(query._table, item, keys))
             .map((row: string) => '(' + row + ')').join(', ');
         return s;
     }
@@ -104,12 +104,12 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
         return s;
     }
 
-    function convertConditions(conditions: any, keyword = 'WHERE'): string {
+    function convertConditions(conditions: any[], keyword = 'WHERE'): string {
         let s = '';
         if (conditions && conditions.length > 0) {
             s += options.lineBreak + keyword + ' ';
             preprocessConditions(conditions);
-            s += conditions.map((condition: any) => convertCondition(condition, true)).join(' AND ');
+            s += conditions.map(condition => convertCondition(condition, true)).join(' AND ');
         }
         return s;
     }
@@ -174,8 +174,8 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
         return s + '';
     }
 
-    function preprocessConditions(conditions: any): void {
-        conditions.forEach((condition: any) => {
+    function preprocessConditions(conditions: any[]): void {
+        conditions.forEach(condition => {
             if (conditions.length > 1 && condition._sibling) {
                 condition._parenthesis = true;
             }

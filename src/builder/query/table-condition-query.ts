@@ -15,9 +15,9 @@ export default class TableConditionQuery<Entity, Table extends QueryTable<Entity
 
     protected _columns: QueryColumn<Table, any>[] = [];
     protected _action: QueryAction;
-    protected _entity: Entity;
+    protected _entity: Entity | Partial<Entity>;
 
-    update(entity: Entity): Promise<any> { // TODO Partial<Entity>
+    update(entity: Partial<Entity>): Promise<any> {
         this._entity = entity;
         this._action = 'update';
         return this._queryProcessor.execute(this);

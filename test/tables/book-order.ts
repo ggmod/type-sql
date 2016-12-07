@@ -6,10 +6,7 @@ export interface BookOrder {
     count: number
 }
 
-export interface BookOrderId {
-    bookId: number,
-    orderId: number
-}
+export type BookOrderId = Pick<BookOrder, 'bookId' | 'orderId'>;
 
 export class BookOrderTable extends QueryTable<BookOrder, BookOrderId> {
     bookId = new NumberColumn(this, 'bookId');

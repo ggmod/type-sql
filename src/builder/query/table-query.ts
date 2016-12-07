@@ -14,7 +14,7 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
         protected _table: Table
     ) {}
 
-    protected _entity: Entity | Entity[];
+    protected _entity: Entity | Entity[] | Partial<Entity>;
     protected _action: QueryAction;
     protected _columns: QueryColumn<Table, any>[] = [];
 
@@ -35,7 +35,7 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
         return this._queryProcessor.execute(this);
     }
 
-    updateAll(entity: Entity): Promise<any> {
+    updateAll(entity: Partial<Entity>): Promise<any> {
         this._entity = entity;
         this._action = 'update';
         return this._queryProcessor.execute(this);
@@ -51,13 +51,13 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
         return this._whereId(id).delete();
     }
 
-    update(id: Id, entity: Entity): Promise<any> {
+    update(id: Id, entity: Partial<Entity>): Promise<any> {
         return this._whereId(id).update(entity);
     }
 
     get(id: Id): Promise<Entity | undefined> {
         let query = this._whereId(id);
-        return this._queryProcessor.execute(Object.assign({ _action: 'select' }, query)); // TODO replace Object.assign
+        return this._queryProcessor.execute<Entity | undefined>({ _action: 'select', ...query });
     }
 
     _whereId(id: Id): TableConditionQuery<Entity, Table> {
