@@ -8,6 +8,7 @@ abstract class QueryTable<Entity, Id> {
     constructor(protected _$name: string) {}
 
     protected _$type: GenericsHelper<Entity>;
+    protected _$idType: GenericsHelper<Id>;
 
     // abstract readonly $id; // FIXME
 

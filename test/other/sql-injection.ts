@@ -84,7 +84,7 @@ describe('SQL injection', () => {
     });
 
     it('ID', () => { // the same ID logic is used for 'get' and 'update'
-        expect(() => db.table(BOOK).delete(`11';DROP_TABLE users`)).toThrow();
+        expect(() => db.table(BOOK).delete(`11';DROP_TABLE users` as any)).toThrow();
 
         db.table(BOOK_TYPE).delete(`';DROP_TABLE users`);
         expect(db.sql).toEqual(`DELETE FROM "BookType" WHERE "BookType"."name" = ''';DROP_TABLE users'`);
