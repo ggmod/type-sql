@@ -30,7 +30,7 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
         return this._queryProcessor.execute(this);
     }
 
-    deleteAll(): Promise<any> {
+    deleteAll(): Promise<number> {
         this._action = 'delete';
         return this._queryProcessor.execute(this);
     }
@@ -44,11 +44,11 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
     countAll(): Promise<number> {
         this._columns = [this._table.$all.count()];
         this._action = 'select';
-        return this._queryProcessor.execute(this);
+        return this._queryProcessor.execute(this).then((rows: any[]) => Number(rows[0])); // node-postgres returns a string count
     }
 
-    delete(id: Id): Promise<any> {
-        return this._whereId(id).delete();
+    delete(id: Id): Promise<boolean> {
+        return this._whereId(id).delete().then(count => count > 0);
     }
 
     update(id: Id, entity: Partial<Entity>): Promise<any> {

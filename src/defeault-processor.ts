@@ -35,6 +35,6 @@ export default class DefaultQueryProcessor implements QueryProcessor {
         } else {
             this._sql = convertQueryToSQL(query, this._queryOptions);
         }
-        return Promise.resolve() as any;
+        return Promise.resolve({}) as any;
     }
 }

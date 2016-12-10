@@ -42,6 +42,7 @@ CREATE TABLE "Author" (
 const BEFORE_EACH = `
 DELETE FROM "Book";
 DELETE FROM "Author";
+ALTER SEQUENCE "test_sequence" RESTART WITH 1;
 `;
 
 export { db, client, BEFORE_ALL, BEFORE_EACH };
