@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist/* && tsc -v && tsc",
-    "test": "rm -rf dist/*; tsc -v; tsc; rm -rf build-test; cd test; tsc; cd ..; jasmine-node --captureExceptions --matchall ./build-test/**/*.js",
+    "test": "rm -rf dist/*; tsc -v; tsc; rm -rf build-test; cd test; tsc; cd ..; jasmine ./build-test/**/*.js",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -18,6 +18,9 @@
   },
   "devDependencies": {
     "@types/jasmine": "^2.2.34",
+    "@types/pg": "^6.1.34",
+    "jasmine-core": "^2.5.2",
+    "pg": "^6.1.0",
     "typescript": "^2.1.*"
   }
 }

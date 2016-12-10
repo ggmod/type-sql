@@ -31,3 +31,4 @@ export { default as QueryTable } from './builder/query-table';
 
 export { default as QueryProcessor } from './query-processor';
 export { default as DefaultQueryProcessor, QueryProcessorOptions } from './defeault-processor';
+export { default as PgQueryProcessor } from './pg/pg-processor';
