@@ -22,7 +22,7 @@ export default class PgQueryProcessor implements QueryProcessor {
         }
     }
 
-    execute<T>(query: any): Promise<T> {
+    execute(query: any): Promise<any> {
         if (this._options.parameterized) {
             let { sql, params } = convertQueryToParameterizedSQL(query, this._queryOptions);
             return this.client.query(sql, params).then((result: any) => {

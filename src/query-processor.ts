@@ -1,6 +1,6 @@
 
 interface QueryProcessor {
-    execute<T>(query: any): Promise<T>;
+    execute(query: any): Promise<any>;
 }
 
 export default QueryProcessor;

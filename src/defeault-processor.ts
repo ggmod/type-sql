@@ -27,7 +27,7 @@ export default class DefaultQueryProcessor implements QueryProcessor {
     private _params: any[];
     get params() { return this._params; }
 
-    execute<T>(query: any): Promise<T> {
+    execute(query: any): Promise<any> {
         if (this._options.parameterized) {
             let result = convertQueryToParameterizedSQL(query, this._queryOptions);
             this._sql = result.sql;

@@ -57,7 +57,8 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
 
     get(id: Id): Promise<Entity | undefined> {
         let query = this._whereId(id);
-        return this._queryProcessor.execute<Entity | undefined>({ _action: 'select', ...query });
+        return this._queryProcessor.execute({ _action: 'select', ...query })
+            .then((rows: Entity[]) => rows[0]);
     }
 
     _whereId(id: Id): TableConditionQuery<Entity, Table> {
