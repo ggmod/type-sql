@@ -29,12 +29,12 @@ describe('Shortcuts for query by ID', () => {
 
     it('UPDATE',  () => {
         db.table(BOOK).update(123, { title: 'qwe'});
-        expect(db.sql).toEqual(`UPDATE "Book" SET "Book"."title" = 'qwe' WHERE "Book"."id" = 123`);
+        expect(db.sql).toEqual(`UPDATE "Book" SET "title" = 'qwe' WHERE "Book"."id" = 123`);
 
         db.table(BOOK_TYPE).update('123', { description:  'asdf'});
-        expect(db.sql).toEqual(`UPDATE "BookType" SET "BookType"."description" = 'asdf' WHERE "BookType"."name" = '123'`);
+        expect(db.sql).toEqual(`UPDATE "BookType" SET "description" = 'asdf' WHERE "BookType"."name" = '123'`);
 
         db.table(BOOK_ORDER).update({ bookId: 123, orderId: 456 }, { count: 9});
-        expect(db.sql).toEqual(`UPDATE "BookOrder" SET "BookOrder"."count" = 9 WHERE "BookOrder"."bookId" = 123 AND "BookOrder"."orderId" = 456`);
+        expect(db.sql).toEqual(`UPDATE "BookOrder" SET "count" = 9 WHERE "BookOrder"."bookId" = 123 AND "BookOrder"."orderId" = 456`);
     });
 });

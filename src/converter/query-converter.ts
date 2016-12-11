@@ -37,7 +37,7 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
         return Object.keys(entity).sort().map(key => {
             let value = entity[key];
             let column = table[key];
-            return convertColumn(column) + ' = ' + convertParam(column, value);
+            return convertColumnName(column) + ' = ' + convertParam(column, value);
         }).join(', ');
     }
 
@@ -157,7 +157,7 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
 
     function convertColumn(column: any): string {
         let s = convertTable(column._table) + '.';
-        s += column._name === '*' ? column._name : options.nameEscape + column._name + options.nameEscape;
+        s += column._name === '*' ? column._name : convertColumnName(column);
         if (column._modifiers) {
             column._modifiers.forEach((modifier: any) => {
                 let name = modifier.name;
@@ -172,6 +172,10 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
             });
         }
         return s + '';
+    }
+
+    function convertColumnName(column: any): string {
+        return options.nameEscape + column._name + options.nameEscape;
     }
 
     function preprocessConditions(conditions: any[]): void {

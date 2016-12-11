@@ -10,6 +10,8 @@ export function convertResult(query: any, result: any): any {
         }
     } else if (query._action === 'delete') {
         return result.rowCount;
+    } else if (query._action === 'update') {
+        return result.rowCount;
     } else {
         return result;
     }

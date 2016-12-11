@@ -35,7 +35,7 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
         return this._queryProcessor.execute(this);
     }
 
-    updateAll(entity: Partial<Entity>): Promise<any> {
+    updateAll(entity: Partial<Entity>): Promise<number> {
         this._entity = entity;
         this._action = 'update';
         return this._queryProcessor.execute(this);
@@ -51,8 +51,8 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
         return this._whereId(id).delete().then(count => count > 0);
     }
 
-    update(id: Id, entity: Partial<Entity>): Promise<any> {
-        return this._whereId(id).update(entity);
+    update(id: Id, entity: Partial<Entity>): Promise<boolean> {
+        return this._whereId(id).update(entity).then(count => count > 0);
     }
 
     get(id: Id): Promise<Entity | undefined> {

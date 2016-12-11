@@ -77,10 +77,10 @@ describe('SQL injection', () => {
         expect(() => db.table(BOOK).update(13, { price: `);DROP_TABLE users` } as any)).toThrow();
 
         db.table(BOOK).update(14, { title: `';DROP_TABLE users` } as any);
-        expect(db.sql).toEqual(`UPDATE "Book" SET "Book"."title" = ''';DROP_TABLE users' WHERE "Book"."id" = 14`);
+        expect(db.sql).toEqual(`UPDATE "Book" SET "title" = ''';DROP_TABLE users' WHERE "Book"."id" = 14`);
 
         db.table(BOOK).update(15, { data: `';DROP_TABLE users` } as any);
-        expect(db.sql).toEqual(`UPDATE "Book" SET "Book"."data" = ''';DROP_TABLE users' WHERE "Book"."id" = 15`);
+        expect(db.sql).toEqual(`UPDATE "Book" SET "data" = ''';DROP_TABLE users' WHERE "Book"."id" = 15`);
     });
 
     it('ID', () => { // the same ID logic is used for 'get' and 'update'
