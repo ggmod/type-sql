@@ -12,7 +12,7 @@ describe('INSERT postgres binding', () => {
     }));
 
     it('single item', sync(async () => {
-        await db.table(BOOK).insert({ title: 'Book Title', author: 'Book Author' } as Book);
+        await db.table(BOOK).insert({ title: 'Book Title', author: 'Book Author' });
 
         let items = await db.from(BOOK).select();
         expect(JSON.stringify(items[0])).toEqual(JSON.stringify(
@@ -21,8 +21,8 @@ describe('INSERT postgres binding', () => {
     }));
 
     it('multiple values', sync(async() => {
-        let e = { title: 'qwe', author: 'xy'} as Book;
-        let e2 = { title: 'asd', author: 'ab' } as Book;
+        let e = { title: 'qwe', author: 'xy'};
+        let e2 = { title: 'asd', author: 'ab' };
         await db.table(BOOK).insert([e, e2]);
 
         let items = await db.from(BOOK).select();
@@ -33,8 +33,8 @@ describe('INSERT postgres binding', () => {
     }));
 
     it('multiple values with different columns', sync(async () => {
-        let e = { title: 'qwe', author: 'xy', price: 10} as Book;
-        let e2 = { title: 'asd', author: 'ab', available: true } as Book;
+        let e = { title: 'qwe', author: 'xy', price: 10};
+        let e2 = { title: 'asd', author: 'ab', available: true };
         await db.table(BOOK).insert([e, e2]);
 
         let items = await db.from(BOOK).select();

@@ -18,7 +18,7 @@ describe('COUNT postgres binding', () => {
         await db.table(BOOK).insert([
             { title: 'Book 1', author: 'xy' },
             { title: 'Book 2', author: 'abc' }
-        ] as Book[]);
+        ]);
 
         let count2: number = await db.table(BOOK).countAll();
         expect(count2).toBe(2);
@@ -31,7 +31,7 @@ describe('COUNT postgres binding', () => {
         await db.table(BOOK).insert([
             { title: 'Book 1', author: 'xy' },
             { title: 'Book 2', author: 'abc' }
-        ] as Book[]);
+        ]);
 
         let count2: number = await db.table(BOOK).where(BOOK.title.startsWith('Book')).count();
         expect(count2).toBe(2);

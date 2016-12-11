@@ -17,7 +17,7 @@ describe('GET postgres binding', () => {
     }));
 
     it('GET item', sync(async () => {
-        await db.table(BOOK).insert({ title: 'my book', author: 'my author' } as Book);
+        await db.table(BOOK).insert({ title: 'my book', author: 'my author' });
 
         let item: Book | undefined = await db.table(BOOK).get(1);
         expect(JSON.stringify(item)).toEqual(JSON.stringify(

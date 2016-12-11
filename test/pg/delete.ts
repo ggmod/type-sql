@@ -15,7 +15,7 @@ describe('DELETE postgres binding', () => {
         await db.table(BOOK).insert([
             { title: 'Book 1', author: 'xy' },
             { title: 'Book 2', author: 'abc' }
-        ] as Book[]);
+        ]);
 
         let count: number = await db.table(BOOK).deleteAll();
         expect(count).toBe(2);
@@ -28,7 +28,7 @@ describe('DELETE postgres binding', () => {
         await db.table(BOOK).insert([
             { title: 'Book 1', author: 'xy' },
             { title: 'Book 2', author: 'abc' }
-        ] as Book[]);
+        ]);
 
         let count: number = await db.table(BOOK).where(BOOK.title.startsWith('Book')).delete();
         expect(count).toBe(2);
@@ -41,7 +41,7 @@ describe('DELETE postgres binding', () => {
         await db.table(BOOK).insert([
             { title: 'Book 1', author: 'xy' },
             { title: 'Book 2', author: 'abc' }
-        ] as Book[]);
+        ]);
 
         let deleted: boolean = await db.table(BOOK).delete(1);
         expect(deleted).toBe(true);

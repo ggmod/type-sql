@@ -26,7 +26,7 @@ describe('SELECT postgres binding', () => {
         await db.table(BOOK).insert([
             { title: 'Book 1', author: 'xy' },
             { title: 'Book 2', author: 'abc' }
-        ] as Book[]); // TODO show nullable fields on interface
+        ]);
 
         let inserted: Book[] = await db.from(BOOK).select();
         expect(Array.isArray(inserted)).toBe(true);
@@ -41,7 +41,7 @@ describe('SELECT postgres binding', () => {
         await db.table(BOOK).insert([
             { title: 'Book 1', author: 'xy' },
             { title: 'Book 2', author: 'abc' }
-        ] as Book[]);
+        ]);
 
         let titles: string[] = await db.from(BOOK).select(BOOK.title);
         expect(Array.isArray(titles)).toBe(true);
@@ -58,7 +58,7 @@ describe('SELECT postgres binding', () => {
         await db.table(BOOK).insert([
             { title: 'Book 1', author: 'xy' },
             { title: 'Book 2', author: 'abc' }
-        ] as Book[]);
+        ]);
 
         // custom column selection:
         let columns: any[] = await db.from(BOOK).select(BOOK.title, BOOK.author);
