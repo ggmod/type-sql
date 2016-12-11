@@ -2,7 +2,7 @@ import { QueryTable, StringColumn } from "../../dist";
 
 export interface BookType {
     name: string,
-    description: string
+    description?: string
 }
 
 export class BookTypeTable extends QueryTable<BookType, string> {
