@@ -16,7 +16,7 @@ describe('INSERT postgres binding', () => {
 
         let items = await db.from(BOOK).select();
         expect(JSON.stringify(items[0])).toEqual(JSON.stringify(
-            { id: 1, title: 'Book Title', author: 'Book Author', author_id: null, price: null, available: null, date: null, data: null }
+            { id: 1, title: 'Book Title', author: 'Book Author', price: null, available: null, date: null, data: null }
         ));
     }));
 
@@ -27,8 +27,8 @@ describe('INSERT postgres binding', () => {
 
         let items = await db.from(BOOK).select();
         expect(JSON.stringify(items)).toEqual(JSON.stringify([
-            { id: 1, title: 'qwe', author: 'xy', author_id: null, price: null, available: null, date: null, data: null },
-            { id: 2, title: 'asd', author: 'ab', author_id: null, price: null, available: null, date: null, data: null }
+            { id: 1, title: 'qwe', author: 'xy', price: null, available: null, date: null, data: null },
+            { id: 2, title: 'asd', author: 'ab', price: null, available: null, date: null, data: null }
         ]));
     }));
 
@@ -39,8 +39,8 @@ describe('INSERT postgres binding', () => {
 
         let items = await db.from(BOOK).select();
         expect(JSON.stringify(items)).toEqual(JSON.stringify([
-            { id: 1, title: 'qwe', author: 'xy', author_id: null, price: 10, available: null, date: null, data: null },
-            { id: 2, title: 'asd', author: 'ab', author_id: null, price: null, available: true, date: null, data: null }
+            { id: 1, title: 'qwe', author: 'xy', price: 10, available: null, date: null, data: null },
+            { id: 2, title: 'asd', author: 'ab', price: null, available: true, date: null, data: null }
         ]));
     }));
 });

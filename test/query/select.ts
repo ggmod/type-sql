@@ -1,5 +1,5 @@
 import { BOOK } from '../tables/book';
-import { AUTHOR } from '../tables/author';
+import { ORDER } from '../tables/order';
 import { db } from '../utils';
 
 describe('SELECT', () => {
@@ -26,12 +26,12 @@ describe('SELECT', () => {
     });
 
     it('multiple tables', () => {
-        db.from(BOOK, AUTHOR).select(BOOK.title.lower(), AUTHOR.name, BOOK.price);
-        expect(db.sql).toEqual('SELECT LOWER("Book"."title"), "Author"."name", "Book"."price" FROM "Book", "Author"');
-        db.from(BOOK, AUTHOR).select(AUTHOR.name.upper(), BOOK.$all.count(), BOOK.price.sum());
-        expect(db.sql).toEqual('SELECT UPPER("Author"."name"), COUNT("Book".*), SUM("Book"."price") FROM "Book", "Author"');
-        db.from(BOOK, AUTHOR).select(AUTHOR.name.upper(), BOOK.$all);
-        expect(db.sql).toEqual('SELECT UPPER("Author"."name"), "Book".* FROM "Book", "Author"');
+        db.from(BOOK, ORDER).select(BOOK.title.lower(), ORDER.quantity, BOOK.price);
+        expect(db.sql).toEqual('SELECT LOWER("Book"."title"), "Order"."quantity", "Book"."price" FROM "Book", "Order"');
+        db.from(BOOK, ORDER).select(ORDER.quantity.max(), BOOK.$all.count(), BOOK.price.sum());
+        expect(db.sql).toEqual('SELECT MAX("Order"."quantity"), COUNT("Book".*), SUM("Book"."price") FROM "Book", "Order"');
+        db.from(BOOK, ORDER).select(ORDER.quantity.max(), BOOK.$all);
+        expect(db.sql).toEqual('SELECT MAX("Order"."quantity"), "Book".* FROM "Book", "Order"');
     });
 
     it('"as" keyword', () => {

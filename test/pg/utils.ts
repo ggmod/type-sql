@@ -15,9 +15,8 @@ export function sync(fn) {
 
 const BEFORE_ALL = `
 DROP TABLE IF EXISTS "Book";
-DROP TABLE IF EXISTS "Author";
-DROP TABLE IF EXISTS "BookOrder";
-DROP TABLE IF EXISTS "BookType";
+DROP TABLE IF EXISTS "Customer";
+DROP TABLE IF EXISTS "Order";
 DROP SEQUENCE IF EXISTS "test_sequence";
 
 CREATE SEQUENCE "test_sequence";
@@ -26,7 +25,6 @@ CREATE TABLE "Book" (
 	"id" Integer DEFAULT nextval('test_sequence'::regclass) NOT NULL,
 	"title" Character Varying( 2044 ) NOT NULL,
 	"author" Character Varying( 2044 ),
-	"author_id" Integer,
 	"price" Integer,
 	"available" Boolean,
 	"date" Timestamp With Time Zone,
@@ -34,31 +32,25 @@ CREATE TABLE "Book" (
 	PRIMARY KEY ( "id" ) 
 );
 
-CREATE TABLE "Author" (
-    "id" Integer DEFAULT nextval('test_sequence'::regclass) NOT NULL,
+CREATE TABLE "Customer" (
 	"name" Character Varying( 2044 ) NOT NULL,
-	PRIMARY KEY ( "id" ) 
-);
-
-CREATE TABLE "BookOrder" (
-    "bookId" Integer NOT NULL,
-	"orderId" Integer NOT NULL,
-	"count" Integer NOT NULL,
-	PRIMARY KEY ( "bookId", "orderId" ) 
-);
-
-CREATE TABLE "BookType" (
-	"name" Character Varying( 2044 ) NOT NULL,
-	"description" Character Varying( 2044 ),
+	"email" Character Varying( 2044 ) NOT NULL,
 	PRIMARY KEY ( "name" ) 
 );
+
+CREATE TABLE "Order" (
+    "bookId" Integer NOT NULL,
+	"customerId" Character Varying( 2044 ) NOT NULL,
+	"quantity" Integer NOT NULL,
+	PRIMARY KEY ( "bookId", "customerId" ) 
+);
+
 `;
 
 const BEFORE_EACH = `
 DELETE FROM "Book";
-DELETE FROM "Author";
-DELETE FROM "BookOrder";
-DELETE FROM "BookType";
+DELETE FROM "Customer";
+DELETE FROM "Order";
 ALTER SEQUENCE "test_sequence" RESTART WITH 1;
 `;
 

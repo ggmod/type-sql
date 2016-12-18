@@ -1,7 +1,6 @@
-import {BOOK, Book} from '../tables/book';
-import { AUTHOR } from '../tables/author';
-import { BOOK_ORDER } from '../tables/book-order';
-import { BOOK_TYPE } from '../tables/book-type';
+import { BOOK, Book } from '../tables/book';
+import { CUSTOMER } from '../tables/customer';
+import { ORDER } from '../tables/order';
 import { TestQuerySource } from '../utils';
 import { DefaultQueryProcessor } from "../../dist";
 
@@ -69,17 +68,17 @@ describe('Parameterized queries', () => {
     });
 
     it('ID types', () => {
-        db.table(AUTHOR).get(12345);
-        expect(db.sql).toEqual(`SELECT * FROM "Author" WHERE "Author"."id" = $1`);
+        db.table(BOOK).get(12345);
+        expect(db.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."id" = $1`);
         expect(db.params).toEqual([12345]);
 
-        db.table(BOOK_TYPE).get('1-1-1-1');
-        expect(db.sql).toEqual(`SELECT * FROM "BookType" WHERE "BookType"."name" = $1`);
+        db.table(CUSTOMER).get('1-1-1-1');
+        expect(db.sql).toEqual(`SELECT * FROM "Customer" WHERE "Customer"."name" = $1`);
         expect(db.params).toEqual(['1-1-1-1']);
 
-        db.table(BOOK_ORDER).get({ bookId: 11, orderId: 22 });
-        expect(db.sql).toEqual(`SELECT * FROM "BookOrder" WHERE "BookOrder"."bookId" = $1 AND "BookOrder"."orderId" = $2`);
-        expect(db.params).toEqual([11, 22]);
+        db.table(ORDER).get({ bookId: 11, customerId: 'xy' });
+        expect(db.sql).toEqual(`SELECT * FROM "Order" WHERE "Order"."bookId" = $1 AND "Order"."customerId" = $2`);
+        expect(db.params).toEqual([11, 'xy']);
     });
 
     it('INSERT multiple values with different columns', () => {

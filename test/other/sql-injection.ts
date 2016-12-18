@@ -1,6 +1,6 @@
 import { BOOK } from '../tables/book';
-import { AUTHOR } from "../tables/author";
-import { BOOK_TYPE } from "../tables/book-type";
+import { CUSTOMER } from "../tables/customer";
+import { ORDER } from "../tables/order";
 import { db } from '../utils';
 
 describe('SQL injection', () => {
@@ -55,8 +55,8 @@ describe('SQL injection', () => {
     });
 
     it('join parameters', () => {
-        expect(() => db.from(BOOK.innerJoin(AUTHOR).on(<any>BOOK.authorId.eq(<any>`asdf' OR '1'='1'`))).select()).toThrow();
-        expect(() => db.from(BOOK.innerJoin(AUTHOR).on(<any>BOOK.title.eq(`asdf' OR '1'='1'`))).select()).toThrow();
+        expect(() => db.from(BOOK.innerJoin(ORDER).on(<any>BOOK.id.eq(<any>`asdf' OR '1'='1'`))).select()).toThrow();
+        expect(() => db.from(BOOK.innerJoin(ORDER).on(<any>BOOK.title.eq(`asdf' OR '1'='1'`))).select()).toThrow();
     });
 
     it('insert', () => {
@@ -86,7 +86,7 @@ describe('SQL injection', () => {
     it('ID', () => { // the same ID logic is used for 'get' and 'update'
         expect(() => db.table(BOOK).delete(`11';DROP_TABLE users` as any)).toThrow();
 
-        db.table(BOOK_TYPE).delete(`';DROP_TABLE users`);
-        expect(db.sql).toEqual(`DELETE FROM "BookType" WHERE "BookType"."name" = ''';DROP_TABLE users'`);
+        db.table(CUSTOMER).delete(`';DROP_TABLE users`);
+        expect(db.sql).toEqual(`DELETE FROM "Customer" WHERE "Customer"."name" = ''';DROP_TABLE users'`);
     });
 });

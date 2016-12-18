@@ -1,5 +1,5 @@
 import { BOOK } from '../tables/book';
-import { AUTHOR } from '../tables/author';
+import { ORDER } from '../tables/order';
 import { db } from '../utils';
 
 describe('WHERE', () => {
@@ -143,10 +143,10 @@ describe('WHERE', () => {
     });
 
     it('multiple tables', () => {
-        db.from(BOOK, AUTHOR).where(BOOK.price.lt(300), AUTHOR.name.eq('xy')).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book", "Author" WHERE "Book"."price" < 300 AND "Author"."name" = 'xy'`);
-        db.from(BOOK, AUTHOR).where(BOOK.price.lt(300).and(AUTHOR.name.eq('xy'))).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book", "Author" WHERE "Book"."price" < 300 AND "Author"."name" = 'xy'`);
+        db.from(BOOK, ORDER).where(BOOK.price.lt(300), ORDER.quantity.eq(2)).select();
+        expect(db.sql).toEqual(`SELECT * FROM "Book", "Order" WHERE "Book"."price" < 300 AND "Order"."quantity" = 2`);
+        db.from(BOOK, ORDER).where(BOOK.price.lt(300).and(ORDER.quantity.eq(2))).select();
+        expect(db.sql).toEqual(`SELECT * FROM "Book", "Order" WHERE "Book"."price" < 300 AND "Order"."quantity" = 2`);
     });
 
     it('multi-level nesting', () => {
@@ -155,10 +155,10 @@ describe('WHERE', () => {
     });
 
     it('join condition', () => {
-        db.from(BOOK, AUTHOR).where(BOOK.authorId.eq(AUTHOR.id)).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book", "Author" WHERE "Book"."author_id" = "Author"."id"`);
-        db.from(BOOK, AUTHOR).where(AUTHOR.id.eq(BOOK.authorId)).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book", "Author" WHERE "Author"."id" = "Book"."author_id"`);
+        db.from(BOOK, ORDER).where(BOOK.id.eq(ORDER.bookId)).select();
+        expect(db.sql).toEqual(`SELECT * FROM "Book", "Order" WHERE "Book"."id" = "Order"."bookId"`);
+        db.from(BOOK, ORDER).where(ORDER.bookId.eq(BOOK.id)).select();
+        expect(db.sql).toEqual(`SELECT * FROM "Book", "Order" WHERE "Order"."bookId" = "Book"."id"`);
     });
 
     it('negation operator', () => {

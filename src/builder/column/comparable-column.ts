@@ -45,11 +45,11 @@ abstract class ComparableColumn<Table extends QueryTable<any, any>, T> extends V
     // min/max exists for text columns too, not just numeric and date
 
     min(): this {
-        return (<any>this.constructor)(this._table, this._name, this._modifiers.concat({ name: 'min' }));
+        return new (<any>this.constructor)(this._table, this._name, this._modifiers.concat({ name: 'min' }));
     }
 
     max(): this {
-        return (<any>this.constructor)(this._table, this._name, this._modifiers.concat({ name: 'max' }));
+        return new (<any>this.constructor)(this._table, this._name, this._modifiers.concat({ name: 'max' }));
     }
 }
 

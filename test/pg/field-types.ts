@@ -1,7 +1,6 @@
-import { BOOK } from '../tables/book';
-import { AUTHOR } from '../tables/author';
-import { BOOK_ORDER } from '../tables/book-order';
-import { BOOK_TYPE } from '../tables/book-type';
+import { BOOK, Book } from '../tables/book';
+import { CUSTOMER } from '../tables/customer';
+import { ORDER } from '../tables/order';
 import { db, client, BEFORE_EACH, BEFORE_ALL, sync } from './utils';
 
 describe('field types postgres binding', () => {
@@ -29,7 +28,6 @@ describe('field types postgres binding', () => {
             id: 1,
             title: 'asd',
             author: 'xy',
-            author_id: null,
             price: 10,
             available: true,
             date: new Date('2016-10-23T19:11:25.342Z'),
@@ -51,7 +49,6 @@ describe('field types postgres binding', () => {
             id: 1,
             title: 'asdf',
             author: 'xyz',
-            author_id: null,
             price: 11,
             available: false,
             date: new Date('2016-11-23T19:11:25.342Z'),
@@ -61,17 +58,17 @@ describe('field types postgres binding', () => {
     }));
 
     it('ID types', sync(async () => {
-        await db.table(AUTHOR).insert({ id: 12345, name: 'X Y' });
-        await db.table(BOOK_TYPE).insert({ name: '1-1-1-1', description: 'type desc' });
-        await db.table(BOOK_ORDER).insert({ bookId: 11, orderId: 22, count: 10 });
+        await db.table(BOOK).insert({ id: 12345, title: 'My book' } as Book);
+        await db.table(CUSTOMER).insert({ name: 'X Y', email: 'x@y.com' });
+        await db.table(ORDER).insert({ bookId: 11, customerId: 'X Y', quantity: 10 });
 
-        let author = await db.table(AUTHOR).get(12345);
-        let type = await db.table(BOOK_TYPE).get('1-1-1-1');
-        let order = await db.table(BOOK_ORDER).get({ bookId: 11, orderId: 22 });
+        let book = await db.table(BOOK).get(12345);
+        let customer = await db.table(CUSTOMER).get('X Y');
+        let order = await db.table(ORDER).get({ bookId: 11, customerId: 'X Y' });
 
-        expect(author!.id).toBe(12345);
-        expect(type!.name).toBe('1-1-1-1');
+        expect(book!.id).toBe(12345);
+        expect(customer!.name).toBe('X Y');
         expect(order!.bookId).toBe(11);
-        expect(order!.orderId).toBe(22);
+        expect(order!.customerId).toBe('X Y');
     }));
 });

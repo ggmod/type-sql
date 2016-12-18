@@ -1,5 +1,5 @@
 import { BOOK } from '../tables/book';
-import { AUTHOR } from '../tables/author';
+import { ORDER } from '../tables/order';
 import { db } from '../utils';
 
 describe('ORDER BY', () => {
@@ -41,9 +41,9 @@ describe('ORDER BY', () => {
     });
 
     it('multiple tables', () => {
-        db.from(BOOK, AUTHOR).orderBy(BOOK.title, AUTHOR.name).select();
-        expect(db.sql).toEqual('SELECT * FROM "Book", "Author" ORDER BY "Book"."title", "Author"."name"');
-        db.from(BOOK, AUTHOR).orderBy(BOOK.title, AUTHOR.name.lower().asc(), BOOK.id.desc()).select();
-        expect(db.sql).toEqual('SELECT * FROM "Book", "Author" ORDER BY "Book"."title", LOWER("Author"."name") ASC, "Book"."id" DESC');
+        db.from(BOOK, ORDER).orderBy(BOOK.title, ORDER.quantity).select();
+        expect(db.sql).toEqual('SELECT * FROM "Book", "Order" ORDER BY "Book"."title", "Order"."quantity"');
+        db.from(BOOK, ORDER).orderBy(BOOK.title, ORDER.quantity.max().asc(), BOOK.id.desc()).select();
+        expect(db.sql).toEqual('SELECT * FROM "Book", "Order" ORDER BY "Book"."title", MAX("Order"."quantity") ASC, "Book"."id" DESC');
     });
 });

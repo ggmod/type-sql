@@ -21,7 +21,7 @@ describe('GET postgres binding', () => {
 
         let item: Book | undefined = await db.table(BOOK).get(1);
         expect(JSON.stringify(item)).toEqual(JSON.stringify(
-            { id: 1, title: 'my book', author: 'my author', author_id: null, price: null, available: null, date: null, data: null }
+            { id: 1, title: 'my book', author: 'my author', price: null, available: null, date: null, data: null }
         ));
     }));
 });
