@@ -1,7 +1,11 @@
 import { BOOK, Book } from '../tables/book';
 import { CUSTOMER } from '../tables/customer';
 import { ORDER } from '../tables/order';
-import { db, client, BEFORE_EACH, BEFORE_ALL, sync } from './utils';
+import { getDB  } from '../config/db';
+import { BEFORE_EACH, BEFORE_ALL } from '../config/ddl';
+import { sync } from '../config/utils';
+
+let { db, client } = getDB(true);
 
 describe('field types postgres binding', () => {
 

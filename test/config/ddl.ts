@@ -1,17 +1,3 @@
-import { Client } from 'pg';
-import { PgQueryProcessor, QuerySource } from "../../dist";
-import PG_CONFIG from '../pg-config';
-
-let client = new Client(PG_CONFIG);
-client.connect();
-
-let db = new QuerySource(new PgQueryProcessor(client, { parameterized: true }));
-
-export function sync(fn) {
-    return done => {
-        fn().then(() => { done(); }, err => { done.fail(err) });
-    }
-}
 
 const BEFORE_ALL = `
 DROP TABLE IF EXISTS "Book";
@@ -54,4 +40,4 @@ DELETE FROM "Order";
 ALTER SEQUENCE "test_sequence" RESTART WITH 1;
 `;
 
-export { db, client, BEFORE_ALL, BEFORE_EACH };
+export { BEFORE_ALL, BEFORE_EACH };

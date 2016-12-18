@@ -1,7 +1,8 @@
 import { BOOK } from '../tables/book';
 import { ORDER } from '../tables/order';
-import { db } from '../utils';
+import { getDB } from '../config/db';
 
+let { db, log } = getDB();
 
 // "select" return types:
 let q1 = db.from(BOOK).select();                    // Book[]

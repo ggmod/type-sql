@@ -1,7 +1,9 @@
 import { BOOK } from '../tables/book';
 import { CUSTOMER } from "../tables/customer";
 import { ORDER } from "../tables/order";
-import { db } from '../utils';
+import { getDB } from '../config/db';
+
+let { db, log } = getDB();
 
 describe('SQL injection', () => {
 
@@ -34,24 +36,24 @@ describe('SQL injection', () => {
 
     it('string parameter', () => {
         db.from(BOOK).where(BOOK.title.eq(`asdf' OR '1'='1'`)).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" = 'asdf'' OR ''1''=''1'''`);
+        expect(log.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" = 'asdf'' OR ''1''=''1'''`);
         db.from(BOOK).where(BOOK.title.ne(`'; DELETE FROM users;`)).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" <> '''; DELETE FROM users;'`);
+        expect(log.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" <> '''; DELETE FROM users;'`);
         db.from(BOOK).where(BOOK.title.like(`%x%'; DELETE FROM users;`)).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" LIKE '%x%''; DELETE FROM users;'`);
+        expect(log.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" LIKE '%x%''; DELETE FROM users;'`);
         db.from(BOOK).where(BOOK.title.in(['xy', 'abc', `'; DELETE FROM users;`])).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" IN ('xy', 'abc', '''; DELETE FROM users;')`);
+        expect(log.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" IN ('xy', 'abc', '''; DELETE FROM users;')`);
     });
 
     it('string parameter - having', () => {
         db.from(BOOK).having(BOOK.title.eq(`asdf' OR '1'='1'`)).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book" HAVING "Book"."title" = 'asdf'' OR ''1''=''1'''`);
+        expect(log.sql).toEqual(`SELECT * FROM "Book" HAVING "Book"."title" = 'asdf'' OR ''1''=''1'''`);
         db.from(BOOK).having(BOOK.title.ne(`'; DELETE FROM users;`)).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book" HAVING "Book"."title" <> '''; DELETE FROM users;'`);
+        expect(log.sql).toEqual(`SELECT * FROM "Book" HAVING "Book"."title" <> '''; DELETE FROM users;'`);
         db.from(BOOK).having(BOOK.title.like(`%x%'; DELETE FROM users;`)).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book" HAVING "Book"."title" LIKE '%x%''; DELETE FROM users;'`);
+        expect(log.sql).toEqual(`SELECT * FROM "Book" HAVING "Book"."title" LIKE '%x%''; DELETE FROM users;'`);
         db.from(BOOK).having(BOOK.title.in(['xy', 'abc', `'; DELETE FROM users;`])).select();
-        expect(db.sql).toEqual(`SELECT * FROM "Book" HAVING "Book"."title" IN ('xy', 'abc', '''; DELETE FROM users;')`);
+        expect(log.sql).toEqual(`SELECT * FROM "Book" HAVING "Book"."title" IN ('xy', 'abc', '''; DELETE FROM users;')`);
     });
 
     it('join parameters', () => {
@@ -65,10 +67,10 @@ describe('SQL injection', () => {
         expect(() => db.table(BOOK).insert({ price: `);DROP_TABLE users` } as any)).toThrow();
 
         db.table(BOOK).insert({ title: `');DROP_TABLE users` } as any);
-        expect(db.sql).toEqual(`INSERT INTO "Book" ("title") VALUES (''');DROP_TABLE users')`);
+        expect(log.sql).toEqual(`INSERT INTO "Book" ("title") VALUES (''');DROP_TABLE users')`);
 
         db.table(BOOK).insert({ data: `');DROP_TABLE users` } as any);
-        expect(db.sql).toEqual(`INSERT INTO "Book" ("data") VALUES (''');DROP_TABLE users')`);
+        expect(log.sql).toEqual(`INSERT INTO "Book" ("data") VALUES (''');DROP_TABLE users')`);
     });
 
     it('update', () => {
@@ -77,16 +79,16 @@ describe('SQL injection', () => {
         expect(() => db.table(BOOK).update(13, { price: `);DROP_TABLE users` } as any)).toThrow();
 
         db.table(BOOK).update(14, { title: `';DROP_TABLE users` } as any);
-        expect(db.sql).toEqual(`UPDATE "Book" SET "title" = ''';DROP_TABLE users' WHERE "Book"."id" = 14`);
+        expect(log.sql).toEqual(`UPDATE "Book" SET "title" = ''';DROP_TABLE users' WHERE "Book"."id" = 14`);
 
         db.table(BOOK).update(15, { data: `';DROP_TABLE users` } as any);
-        expect(db.sql).toEqual(`UPDATE "Book" SET "data" = ''';DROP_TABLE users' WHERE "Book"."id" = 15`);
+        expect(log.sql).toEqual(`UPDATE "Book" SET "data" = ''';DROP_TABLE users' WHERE "Book"."id" = 15`);
     });
 
     it('ID', () => { // the same ID logic is used for 'get' and 'update'
         expect(() => db.table(BOOK).delete(`11';DROP_TABLE users` as any)).toThrow();
 
         db.table(CUSTOMER).delete(`';DROP_TABLE users`);
-        expect(db.sql).toEqual(`DELETE FROM "Customer" WHERE "Customer"."name" = ''';DROP_TABLE users'`);
+        expect(log.sql).toEqual(`DELETE FROM "Customer" WHERE "Customer"."name" = ''';DROP_TABLE users'`);
     });
 });

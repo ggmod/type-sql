@@ -1,4 +1,4 @@
-import { QueryTable, NumberColumn, StringColumn } from "../../dist";
+import { QueryTable, StringColumn } from "../../dist";
 
 export interface Customer {
     name: string,

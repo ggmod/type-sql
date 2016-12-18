@@ -1,6 +1,7 @@
 import { BOOK } from '../tables/book';
-import { db } from '../utils';
+import { getDB } from '../config/db';
 
+let { db, log } = getDB();
 
 describe('Random examples', () => {
     it('basic queries', () => {
@@ -14,7 +15,7 @@ describe('Random examples', () => {
 
         let s1 = `SELECT "Book"."id", LOWER("Book"."title") FROM "Book" WHERE "Book"."author" = 'xy' ORDER BY "Book"."title" ASC OFFSET 10 LIMIT 2`;
 
-        expect(db.sql).toEqual(s1);
+        expect(log.sql).toEqual(s1);
     });
 });
 

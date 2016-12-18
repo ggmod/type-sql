@@ -1,8 +1,7 @@
-import { DefaultQueryProcessor } from "../../dist";
 import { BOOK } from '../tables/book';
-import { TestQuerySource} from "../utils";
+import { createDb } from '../config/db';
 
-let db = new TestQuerySource(new DefaultQueryProcessor({ lineBreaks: true }));
+let { db, log } = createDb({ lineBreaks: true, parameterized: false });
 
 db.from(BOOK)
     .where(BOOK.author.eq('xy'))
@@ -21,7 +20,7 @@ LIMIT 2`;
 
 describe('Formatting', () => {
     it('examples', () => {
-        expect(db.sql).toEqual(s1);
+        expect(log.sql).toEqual(s1);
     });
 });
 
