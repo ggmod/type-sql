@@ -44,7 +44,7 @@ describe('SQL injection', () => {
         expect(log.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" LIKE '%x%''; DELETE FROM users;'`);
         db.from(BOOK).where(BOOK.title.in(['xy', 'abc', `'; DELETE FROM users;`])).select();
         expect(log.sql).toEqual(`SELECT * FROM "Book" WHERE "Book"."title" IN ('xy', 'abc', '''; DELETE FROM users;')`);
-    });
+    }));
 
     it('string parameter - having', sync(async () => {
         db.from(BOOK).having(BOOK.title.eq(`asdf' OR '1'='1'`)).select();

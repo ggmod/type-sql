@@ -1,7 +1,7 @@
 import QueryTable from "../query-table";
 import TableConditionQuery from "./table-condition-query";
 import QueryCondition from "../condition/query-condition";
-import QueryProcessor from "../../query-processor";
+import { QueryProcessor } from "../../binding/query-processor";
 import ValueColumn from "../column/value-column";
 import QueryColumn from "../column/query-column";
 import {QueryAction} from "../helpers/internal-types";
@@ -27,24 +27,24 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
     insert(param: any): Promise<any> {
         this._entity = param;
         this._action = 'insert';
-        return this._queryProcessor.execute(this);
+        return this._queryProcessor(this);
     }
 
     deleteAll(): Promise<number> {
         this._action = 'delete';
-        return this._queryProcessor.execute(this);
+        return this._queryProcessor(this);
     }
 
     updateAll(entity: Partial<Entity>): Promise<number> {
         this._entity = entity;
         this._action = 'update';
-        return this._queryProcessor.execute(this);
+        return this._queryProcessor(this);
     }
 
     countAll(): Promise<number> {
         this._columns = [this._table.$all.count()];
         this._action = 'select';
-        return this._queryProcessor.execute(this).then((rows: any[]) => Number(rows[0])); // node-postgres returns a string count
+        return this._queryProcessor(this).then((rows: any[]) => Number(rows[0])); // node-postgres returns a string count
     }
 
     delete(id: Id): Promise<boolean> {
@@ -57,7 +57,7 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
 
     get(id: Id): Promise<Entity | undefined> {
         let query = this._whereId(id);
-        return this._queryProcessor.execute({ _action: 'select', ...query })
+        return this._queryProcessor({ _action: 'select', ...query })
             .then((rows: Entity[]) => rows[0]);
     }
 

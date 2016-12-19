@@ -1,16 +1,20 @@
-import { QuerySource, PgQueryProcessor, QueryProcessorOptions } from "../../dist";
+import { QuerySource, QueryProcessorOptions, createQueryProcessor } from "../../dist";
 import { Client } from 'pg';
+import mysql = require('mysql');
 import PG_CONFIG from '../pg-config';
-
+import MYSQL_CONFIG from '../mysql-config';
 
 let dummyPgClient = {
-    query() {
-        return Promise.resolve({ rows: [] });
+    query(sql, paramsOrCb, cb) {
+        (cb || paramsOrCb)(null, { rows: [] });
     }
 };
 
 let pgClient = new Client(PG_CONFIG);
 pgClient.connect();
+
+let mysqlClient = mysql.createConnection(MYSQL_CONFIG);
+mysqlClient.connect();
 
 interface SqlLog {
     sql: string,
@@ -34,7 +38,7 @@ function createDb(options: QueryProcessorOptions, client?: any): TestDB {
     });
 
     client = client || dummyPgClient;
-    let db = new QuerySource(new PgQueryProcessor(client, options));
+    let db = new QuerySource(createQueryProcessor(client, options));
     return { db, log, client };
 }
 

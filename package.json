@@ -17,10 +17,12 @@
     "type": "git"
   },
   "devDependencies": {
-    "@types/jasmine": "^2.2.34",
-    "@types/pg": "^6.1.34",
     "@types/debug": "0.0.29",
-    "jasmine-core": "^2.5.2",
+    "@types/jasmine": "^2.2.34",
+    "@types/mysql": "0.0.30",
+    "@types/pg": "^6.1.34",
+    "jasmine": "^2.5.2",
+    "mysql": "^2.12.0",
     "pg": "^6.1.0",
     "typescript": "^2.1.*"
   },

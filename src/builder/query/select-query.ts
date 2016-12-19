@@ -2,7 +2,7 @@ import QueryCondition from "../condition/query-condition";
 import QueryOrdering from "../other/query-ordering";
 import QueryTable from "../query-table";
 import QueryColumn from "../column/query-column";
-import QueryProcessor from "../../query-processor";
+import { QueryProcessor } from "../../binding/query-processor";
 import { QueryAction } from "../helpers/internal-types";
 
 
@@ -64,6 +64,6 @@ export default class SelectQuery<Entity, Table extends QueryTable<Entity, any>> 
     select(...columns: QueryColumn<Table, any>[]): Promise<any[]> {
         this._columns = columns;
         this._action = 'select';
-        return this._queryProcessor.execute(this);
+        return this._queryProcessor(this);
     }
 }
