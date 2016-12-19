@@ -1,9 +1,10 @@
 import { BOOK } from '../tables/book';
 import { createDb } from '../config/db';
+import { sync } from '../config/utils';
 
 let { db, log } = createDb({ lineBreaks: true, parameterized: false });
 
-db.from(BOOK)
+let q1 = db.from(BOOK)
     .where(BOOK.author.eq('xy'))
     .offset(10)
     .limit(2)
@@ -19,8 +20,9 @@ OFFSET 10
 LIMIT 2`;
 
 describe('Formatting', () => {
-    it('examples', () => {
+    it('examples', sync(async() => {
+        await q1;
         expect(log.sql).toEqual(s1);
-    });
+    }));
 });
 

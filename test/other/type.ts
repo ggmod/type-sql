@@ -2,7 +2,7 @@ import { BOOK } from '../tables/book';
 import { ORDER } from '../tables/order';
 import { getDB } from '../config/db';
 
-let { db, log } = getDB();
+let { db } = getDB();
 
 // "select" return types:
 let q1 = db.from(BOOK).select();                    // Book[]
