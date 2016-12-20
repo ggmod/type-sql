@@ -1,8 +1,8 @@
 import { BOOK } from '../tables/book';
 import { ORDER } from '../tables/order';
-import { getDB } from '../config/db';
+import { QuerySource } from "../../dist";
 
-let { db } = getDB();
+let db = new QuerySource(() => Promise.resolve({}));
 
 // "select" return types:
 let q1 = db.from(BOOK).select();                    // Book[]

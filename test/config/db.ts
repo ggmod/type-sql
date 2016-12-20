@@ -1,34 +1,17 @@
 import { QuerySource, QueryProcessorOptions, createQueryProcessor } from "../../dist";
-import { Client } from 'pg';
-import mysql = require('mysql');
-import PG_CONFIG from '../pg-config';
-import MYSQL_CONFIG from '../mysql-config';
 
-let dummyPgClient = {
-    query(sql, paramsOrCb, cb) {
-        (cb || paramsOrCb)(null, { rows: [] });
-    }
-};
-
-let pgClient = new Client(PG_CONFIG);
-pgClient.connect();
-
-let mysqlClient = mysql.createConnection(MYSQL_CONFIG);
-mysqlClient.connect();
-
-interface SqlLog {
+export interface TestLog {
     sql: string,
     params: any[] | undefined
 }
 
 interface TestDB {
     db: QuerySource,
-    log: SqlLog,
-    client: any
+    log: TestLog
 }
 
-function createDb(options: QueryProcessorOptions, client?: any): TestDB {
-    let log = {} as SqlLog;
+function createDb(client: any, options: QueryProcessorOptions): TestDB {
+    let log = {} as TestLog;
 
     Object.assign(options, {
         logger: (sql: string, params?: any[]) => {
@@ -36,18 +19,8 @@ function createDb(options: QueryProcessorOptions, client?: any): TestDB {
             log.params = params;
         }
     });
-
-    client = client || dummyPgClient;
     let db = new QuerySource(createQueryProcessor(client, options));
-    return { db, log, client };
+    return { db, log };
 }
 
-let dummyDB = createDb({ parameterized: false });
-
-let pgDB = createDb({}, pgClient);
-
-function getDB(pg = false): TestDB {
-    return pg ? pgDB : dummyDB;
-}
-
-export { getDB, createDb };
+export { createDb };
