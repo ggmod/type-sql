@@ -48,8 +48,8 @@ export default (db: QuerySource, log: TestLog) => {
         it('multiple tables', sync(async () => {
             await db.from(BOOK, ORDER).orderBy(BOOK.title, ORDER.quantity).select();
             expect(log.sql).toEqual('SELECT * FROM "Book", "Order" ORDER BY "Book"."title", "Order"."quantity"');
-            await db.from(BOOK, ORDER).orderBy(BOOK.title, ORDER.quantity.max().asc(), BOOK.id.desc()).select();
-            expect(log.sql).toEqual('SELECT * FROM "Book", "Order" ORDER BY "Book"."title", MAX("Order"."quantity") ASC, "Book"."id" DESC');
+            await db.from(BOOK, ORDER).orderBy(BOOK.title.upper(), ORDER.quantity.asc(), BOOK.id.desc()).select();
+            expect(log.sql).toEqual('SELECT * FROM "Book", "Order" ORDER BY UPPER("Book"."title"), "Order"."quantity" ASC, "Book"."id" DESC');
         }));
     });
 

@@ -10,12 +10,12 @@ interface TestDB {
     log: TestLog
 }
 
-function createDb(client: any, options: QueryProcessorOptions): TestDB {
+function createDb(client: any, options: QueryProcessorOptions, substituteFn?: (sql: string, params: any[]) => string): TestDB {
     let log = {} as TestLog;
 
     Object.assign(options, {
         logger: (sql: string, params?: any[]) => {
-            log.sql = sql;
+            log.sql = substituteFn ? substituteFn(sql, params!) : sql;
             log.params = params;
         }
     });

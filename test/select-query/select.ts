@@ -1,4 +1,5 @@
 import { BOOK } from '../tables/book';
+import { CUSTOMER } from '../tables/customer';
 import { ORDER } from '../tables/order';
 import { sync } from "../config/utils";
 import { QuerySource } from "../../dist";
@@ -26,8 +27,8 @@ export default (db: QuerySource, log: TestLog) => {
         it('multiple columns', sync(async () => {
             await db.from(BOOK).select(BOOK.title.lower(), BOOK.author, BOOK.price);
             expect(log.sql).toEqual('SELECT LOWER("Book"."title"), "Book"."author", "Book"."price" FROM "Book"');
-            await db.from(BOOK).select(BOOK.title, BOOK.$all.count(), BOOK.price.sum());
-            expect(log.sql).toEqual('SELECT "Book"."title", COUNT("Book".*), SUM("Book"."price") FROM "Book"');
+            await db.from(BOOK).select(BOOK.$all.count(), BOOK.price.sum());
+            expect(log.sql).toEqual('SELECT COUNT("Book".*), SUM("Book"."price") FROM "Book"');
         }));
 
         it('multiple tables', sync(async () => {
@@ -35,8 +36,8 @@ export default (db: QuerySource, log: TestLog) => {
             expect(log.sql).toEqual('SELECT LOWER("Book"."title"), "Order"."quantity", "Book"."price" FROM "Book", "Order"');
             await db.from(BOOK, ORDER).select(ORDER.quantity.max(), BOOK.$all.count(), BOOK.price.sum());
             expect(log.sql).toEqual('SELECT MAX("Order"."quantity"), COUNT("Book".*), SUM("Book"."price") FROM "Book", "Order"');
-            await db.from(BOOK, ORDER).select(ORDER.quantity.max(), BOOK.$all);
-            expect(log.sql).toEqual('SELECT MAX("Order"."quantity"), "Book".* FROM "Book", "Order"');
+            await db.from(BOOK, ORDER).select(ORDER.$all, BOOK.$all);
+            expect(log.sql).toEqual('SELECT "Order".*, "Book".* FROM "Book", "Order"');
         }));
 
         it('"as" keyword', sync(async () => {
@@ -47,8 +48,8 @@ export default (db: QuerySource, log: TestLog) => {
         }));
 
         it('"distinct" keyword', sync(async () => {
-            await db.from(BOOK).distinct().select();
-            expect(log.sql).toEqual('SELECT DISTINCT * FROM "Book"');
+            await db.from(CUSTOMER).distinct().select();
+            expect(log.sql).toEqual('SELECT DISTINCT * FROM "Customer"');
             await db.from(BOOK).distinct().select(BOOK.author);
             expect(log.sql).toEqual('SELECT DISTINCT "Book"."author" FROM "Book"');
         }));

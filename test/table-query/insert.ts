@@ -47,10 +47,11 @@ export default (db: QuerySource, log: TestLog) => {
 
         it('json fields', sync(async () => {
             let e = <Book>{
+                title: 'abc',
                 data: { x: 2, y: 10 }
             };
             await db.table(BOOK).insert(e);
-            expect(log.sql).toEqual(`INSERT INTO "Book" ("data") VALUES ('{"x":2,"y":10}')`);
+            expect(log.sql).toEqual(`INSERT INTO "Book" ("data", "title") VALUES ('{"x":2,"y":10}', 'abc')`);
         }));
     });
 }

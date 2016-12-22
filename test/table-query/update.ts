@@ -38,9 +38,9 @@ export default (db: QuerySource, log: TestLog) => {
         }));
 
         it('set to null', sync(async () => {
-            let e = { title: null } as any as Book;
+            let e = { author: null } as any as Book;
             await db.table(BOOK).updateAll(e);
-            expect(log.sql).toEqual(`UPDATE "Book" SET "title" = NULL`);
+            expect(log.sql).toEqual(`UPDATE "Book" SET "author" = NULL`);
 
             let e2 = { author: undefined } as any as Book;
             await db.table(BOOK).updateAll(e2);
