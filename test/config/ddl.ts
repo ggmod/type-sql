@@ -42,35 +42,35 @@ CREATE TABLE "Book" (
 	"title" VarChar( 2044 ) NOT NULL,
 	"author" VarChar( 2044 ),
 	"price" Int,
-	"available" BIT( 1 ),
-	"date" DATETIME,
-	"data" TEXT,
+	"available" BOOLEAN,
+	"date" DATETIME(3),
+	"data" JSON,
 	PRIMARY KEY ( "id" ) 
 )
 AUTO_INCREMENT = 1;
 
 CREATE TABLE "Customer" (
-	"name" VarChar( 2044 ) NOT NULL,
+	"name" VarChar( 255 ) NOT NULL,
 	"email" VarChar( 2044 ) NOT NULL,
 	PRIMARY KEY ( "name" ) 
 );
 
 CREATE TABLE "Order" (
     "bookId" Int NOT NULL,
-	"customerId" VarChar( 2044 ) NOT NULL,
+	"customerId" VarChar( 255 ) NOT NULL,
 	"quantity" Int NOT NULL,
 	PRIMARY KEY ( "bookId", "customerId" ) 
 );
-`;
+`.replace(/"/g, '`');
 
 const BEFORE_EACH_SHARED = `
 DELETE FROM "Book";
 DELETE FROM "Customer";
-DELETE FROM "Order";`;
+DELETE FROM "Order";
+`;
 
-const BEFORE_EACH_PG = BEFORE_EACH_SHARED + `
-ALTER SEQUENCE "test_sequence" RESTART WITH 1;`;
+const BEFORE_EACH_PG = BEFORE_EACH_SHARED + 'ALTER SEQUENCE "test_sequence" RESTART WITH 1;';
 
-const BEFORE_EACH_MYSQL = BEFORE_EACH_SHARED;
+const BEFORE_EACH_MYSQL = BEFORE_EACH_SHARED.replace(/"/g, '`') + 'ALTER TABLE `Book` AUTO_INCREMENT = 1';
 
 export { BEFORE_ALL_PG, BEFORE_EACH_PG, BEFORE_ALL_MYSQL, BEFORE_EACH_MYSQL };

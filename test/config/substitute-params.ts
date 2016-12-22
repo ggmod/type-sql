@@ -42,6 +42,25 @@ export function substitutePgParams(sql: string, params: any[]) {
     return result.join('');
 }
 
+
+export function substituteMySqlParams(sql: string, params: any[]) {
+    let result: string[] = [];
+    let paramIndex = 0;
+
+    for (let i = 0; i < sql.length; i++) {
+        let c = sql[i];
+
+        if (c === '?') {
+            let param = convertParam(params[paramIndex++]);
+            result.splice(result.length, 0, ...param);
+        } else {
+            result.push(c);
+        }
+    }
+
+    return result.join('');
+}
+
 // describe('pg substitution', () => {
 //     fit('check', () => {
 //         console.log(substitutePgParams("test $1 asdfgh '$2' $2 qwerty $3", [123, 'xy', 44]));

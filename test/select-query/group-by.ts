@@ -12,9 +12,9 @@ export default (db: QuerySource, log: TestLog) => {
             await db.from(BOOK).groupBy(BOOK.author).select(BOOK.author);
             expect(log.sql).toEqual('SELECT "Book"."author" FROM "Book" GROUP BY "Book"."author"');
             await db.from(BOOK).groupBy(BOOK.author).select(BOOK.author, BOOK.$all.count());
-            expect(log.sql).toEqual('SELECT "Book"."author", COUNT("Book".*) FROM "Book" GROUP BY "Book"."author"');
+            expect(log.sql).toEqual('SELECT "Book"."author", COUNT(*) FROM "Book" GROUP BY "Book"."author"');
             await db.from(BOOK).groupBy(BOOK.author, BOOK.available).select(BOOK.author, BOOK.$all.count());
-            expect(log.sql).toEqual('SELECT "Book"."author", COUNT("Book".*) FROM "Book" GROUP BY "Book"."author", "Book"."available"');
+            expect(log.sql).toEqual('SELECT "Book"."author", COUNT(*) FROM "Book" GROUP BY "Book"."author", "Book"."available"');
         }));
 
         it('having conditions', sync(async () => {

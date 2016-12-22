@@ -6,31 +6,31 @@ import SQL_INJECTION_LOCAL from '../other/sql-injection-local';
 import SQL_INJECTION_REMOTE from '../other/sql-injection-remote';
 import { createDb } from '../config/db';
 
-const dummyPgClient = {
-    query(sql, paramsOrCb, cb) {
-        (cb || paramsOrCb)(null, { rows: [] });
+const dummyMySqlClient = {
+    query(options, cb) {
+        cb(null, []);
     }
 };
 
-describe('PG Dummy', () => {
+describe('MySQL Dummy', () => {
 
     describe('Not parameterized', () => {
-        let { db, log } = createDb(dummyPgClient, { parameterized: false }, 'pg');
+        let { db, log } = createDb(dummyMySqlClient, { parameterized: false }, 'mysql', sql => sql.replace(/`/g, '"'));
 
-        SELECT_QUERY(db, log, 'pg');
+        SELECT_QUERY(db, log, 'mysql');
         TABLE_QUERY(db, log);
         SQL_INJECTION_LOCAL(db);
     });
 
     describe('Parameterized', () => {
-        let { db, log } = createDb(dummyPgClient, { parameterized: true }, 'pg');
+        let { db, log } = createDb(dummyMySqlClient, { parameterized: true }, 'mysql');
 
-        SQL_INJECTION_REMOTE(db, log, 'pg');
-        PARAMETERIZED(db, log, 'pg');
+        SQL_INJECTION_REMOTE(db, log, 'mysql');
+        PARAMETERIZED(db, log, 'mysql');
     });
 
     describe('Formatted', () => {
-        let { db, log } = createDb(dummyPgClient, { parameterized: false, lineBreaks: true }, 'pg');
+        let { db, log } = createDb(dummyMySqlClient, { parameterized: false, lineBreaks: true }, 'mysql', sql => sql.replace(/`/g, '"'));
 
         FORMATTING(db, log);
     });

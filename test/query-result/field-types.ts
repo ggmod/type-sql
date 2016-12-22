@@ -52,6 +52,16 @@ export default (db: QuerySource) => {
             expect(item2!.date instanceof Date).toBe(true);
         }));
 
+        it('JSON array', sync(async () => {
+            await db.table(BOOK).insert({ title: 'My book', data: [12, { x: 2 }, 'xy'] as any } as Book);
+            let data = await db.table(BOOK).get(1);
+            expect(data!.data).toEqual([12, { x: 2 }, 'xy']);
+
+            await db.table(BOOK).update(1, { data: [3, 2, 1] as any });
+            let data2 = await db.table(BOOK).get(1);
+            expect(data2!.data).toEqual([3, 2, 1]);
+        }));
+
         it('ID types', sync(async () => {
             await db.table(BOOK).insert({ id: 12345, title: 'My book' } as Book);
             await db.table(CUSTOMER).insert({ name: 'X Y', email: 'x@y.com' });

@@ -29,4 +29,4 @@ export { default as QueryTable } from './builder/query-table';
 
 // Implementation:
 
-export { createQueryProcessor, QueryProcessor, QueryProcessorOptions } from './binding/query-processor';
+export { createQueryProcessor, QueryProcessor, QueryProcessorOptions, QueryEngine } from './binding/query-processor';

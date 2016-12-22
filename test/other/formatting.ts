@@ -19,8 +19,8 @@ export default (db: QuerySource, log: TestLog) => {
 FROM "Book"
 WHERE "Book"."author" = 'xy'
 ORDER BY "Book"."title" ASC
-OFFSET 10
-LIMIT 2`;
+LIMIT 2
+OFFSET 10`;
             expect(log.sql).toEqual(s1);
         }));
     });

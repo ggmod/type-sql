@@ -1,14 +1,22 @@
 import QUERY_RESULT from '../query-result';
+import SELECT_QUERY from '../select-query';
+import TABLE_QUERY from '../table-query';
+import SQL_INJECTION_LOCAL from '../other/sql-injection-local';
+import SQL_INJECTION_REMOTE from '../other/sql-injection-remote';
+import PARAMETERIZED from '../other/parameterized';
 import { createDb } from '../config/db';
 import { BEFORE_ALL_MYSQL, BEFORE_EACH_MYSQL } from "../config/ddl";
 import mysql = require('mysql');
 import MYSQL_CONFIG from '../mysql-config';
+import {substituteMySqlParams} from "../config/substitute-params";
 
-describe('PG', () => {
-    let client = mysql.createConnection(MYSQL_CONFIG);
+describe('MySQL', () => {
+    let client = mysql.createConnection({
+        ...MYSQL_CONFIG,
+        multipleStatements: true,
+        timezone: 'Z'
+    });
     client.connect();
-
-    let { db } = createDb(client, {});
 
     beforeAll((done) => {
         client.query(BEFORE_ALL_MYSQL, (err) => err ? done.fail(err) : done());
@@ -18,5 +26,29 @@ describe('PG', () => {
         client.query(BEFORE_EACH_MYSQL, (err) => err ? done.fail(err) : done());
     });
 
-    // QUERY_RESULT(db); // TODO
+    describe('Non parameterized', () => {
+        let { db, log } = createDb(client, { parameterized: false }, 'mysql', sql => sql.replace(/`/g, '"'));
+
+        QUERY_RESULT(db);
+        SELECT_QUERY(db, log, 'mysql');
+        TABLE_QUERY(db, log);
+        SQL_INJECTION_LOCAL(db);
+    });
+
+    describe('Parameterized', () => {
+        let { db, log } = createDb(client, { parameterized: true }, 'mysql', (sql, params) =>
+            substituteMySqlParams(sql, params).replace(/`/g, '"'));
+
+        QUERY_RESULT(db);
+        SELECT_QUERY(db, log, 'mysql');
+        TABLE_QUERY(db, log);
+        SQL_INJECTION_LOCAL(db);
+    });
+
+    describe('Parameterized - without substitution', () => {
+        let { db, log } = createDb(client, { parameterized: true }, 'mysql');
+
+        SQL_INJECTION_REMOTE(db, log, 'mysql');
+        PARAMETERIZED(db, log, 'mysql');
+    });
 });

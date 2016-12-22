@@ -24,27 +24,27 @@ describe('PG', () => {
     }));
 
     describe('Non parameterized', () => {
-        let { db, log } = createDb(client, { parameterized: false });
+        let { db, log } = createDb(client, { parameterized: false }, 'pg');
 
         QUERY_RESULT(db);
-        SELECT_QUERY(db, log);
+        SELECT_QUERY(db, log, 'pg');
         TABLE_QUERY(db, log);
         SQL_INJECTION_LOCAL(db);
     });
 
     describe('Parameterized', () => {
-        let { db, log } = createDb(client, { parameterized: true }, substitutePgParams);
+        let { db, log } = createDb(client, { parameterized: true }, 'pg', substitutePgParams);
 
         QUERY_RESULT(db);
-        SELECT_QUERY(db, log);
+        SELECT_QUERY(db, log, 'pg');
         TABLE_QUERY(db, log);
         SQL_INJECTION_LOCAL(db);
     });
 
     describe('Parameterized - without substitution', () => {
-        let { db, log } = createDb(client, { parameterized: true });
+        let { db, log } = createDb(client, { parameterized: true }, 'pg');
 
-        SQL_INJECTION_REMOTE(db, log);
-        PARAMETERIZED(db, log);
+        SQL_INJECTION_REMOTE(db, log, 'pg');
+        PARAMETERIZED(db, log, 'pg');
     });
 });

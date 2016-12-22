@@ -42,7 +42,7 @@ export default (db: QuerySource, log: TestLog) => {
             await db.table(BOOK).updateAll(e);
             expect(log.sql).toEqual(`UPDATE "Book" SET "author" = NULL`);
 
-            let e2 = { author: undefined } as any as Book;
+            let e2 = { author: undefined } as any as Book; // TODO should undefined be ignored instead?
             await db.table(BOOK).updateAll(e2);
             expect(log.sql).toEqual(`UPDATE "Book" SET "author" = NULL`);
         }));

@@ -95,11 +95,11 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
             s += options.lineBreak + 'ORDER BY ';
             s += query._orderings.map((ordering: any) => convertOrdering(ordering)).join(', ');
         }
-        if (query._offset != null) {
-            s += options.lineBreak + 'OFFSET ' + number(query._offset);
-        }
         if (query._limit != null) {
             s += options.lineBreak + 'LIMIT ' + number(query._limit);
+        }
+        if (query._offset != null) {
+            s += options.lineBreak + 'OFFSET ' + number(query._offset);
         }
         return s;
     }
@@ -140,10 +140,12 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
         if (ordering._column) {
             let s = convertColumn(ordering._column);
 
+            if (ordering._nullsPosition != null) { // "NULLS FIRST" only exists in PG, this is the general solution
+                s += ' IS NULL ' + (ordering._nullsPosition === 'FIRST' ? 'DESC' : 'ASC') + ', ' + s;
+            }
+
             if (ordering._direction === 'ASC') s += ' ASC';
             if (ordering._direction === 'DESC') s += ' DESC';
-            if (ordering._nullsPosition === 'FIRST') s += ' NULLS FIRST';
-            if (ordering._nullsPosition === 'LAST') s += ' NULLS LAST';
 
             return s;
         } else {
@@ -156,8 +158,15 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
     }
 
     function convertColumn(column: any): string {
-        let s = convertTable(column._table) + '.';
-        s += column._name === '*' ? column._name : convertColumnName(column);
+        let s = '';
+        if (!(column._name === '*' && column._modifiers.length > 0 && column._modifiers[0].name === 'count')) {
+            s += convertTable(column._table) + '.';
+        }
+        s += convertColumnName(column);
+        return convertColumnModifiers(s, column);
+    }
+
+    function convertColumnModifiers(s: string, column: any): string {
         if (column._modifiers) {
             column._modifiers.forEach((modifier: any) => {
                 let name = modifier.name;
@@ -175,7 +184,7 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
     }
 
     function convertColumnName(column: any): string {
-        return options.nameEscape + column._name + options.nameEscape;
+        return column._name === '*' ? column._name : options.nameEscape + column._name + options.nameEscape;
     }
 
     function preprocessConditions(conditions: any[]): void {

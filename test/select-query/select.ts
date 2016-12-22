@@ -19,7 +19,7 @@ export default (db: QuerySource, log: TestLog) => {
             await db.from(BOOK).select(BOOK.title.lower());
             expect(log.sql).toEqual('SELECT LOWER("Book"."title") FROM "Book"');
             await db.from(BOOK).select(BOOK.$all.count());
-            expect(log.sql).toEqual('SELECT COUNT("Book".*) FROM "Book"');
+            expect(log.sql).toEqual('SELECT COUNT(*) FROM "Book"');
             await db.from(BOOK).select(BOOK.price.sum());
             expect(log.sql).toEqual('SELECT SUM("Book"."price") FROM "Book"');
         }));
@@ -28,14 +28,14 @@ export default (db: QuerySource, log: TestLog) => {
             await db.from(BOOK).select(BOOK.title.lower(), BOOK.author, BOOK.price);
             expect(log.sql).toEqual('SELECT LOWER("Book"."title"), "Book"."author", "Book"."price" FROM "Book"');
             await db.from(BOOK).select(BOOK.$all.count(), BOOK.price.sum());
-            expect(log.sql).toEqual('SELECT COUNT("Book".*), SUM("Book"."price") FROM "Book"');
+            expect(log.sql).toEqual('SELECT COUNT(*), SUM("Book"."price") FROM "Book"');
         }));
 
         it('multiple tables', sync(async () => {
             await db.from(BOOK, ORDER).select(BOOK.title.lower(), ORDER.quantity, BOOK.price);
             expect(log.sql).toEqual('SELECT LOWER("Book"."title"), "Order"."quantity", "Book"."price" FROM "Book", "Order"');
             await db.from(BOOK, ORDER).select(ORDER.quantity.max(), BOOK.$all.count(), BOOK.price.sum());
-            expect(log.sql).toEqual('SELECT MAX("Order"."quantity"), COUNT("Book".*), SUM("Book"."price") FROM "Book", "Order"');
+            expect(log.sql).toEqual('SELECT MAX("Order"."quantity"), COUNT(*), SUM("Book"."price") FROM "Book", "Order"');
             await db.from(BOOK, ORDER).select(ORDER.$all, BOOK.$all);
             expect(log.sql).toEqual('SELECT "Order".*, "Book".* FROM "Book", "Order"');
         }));

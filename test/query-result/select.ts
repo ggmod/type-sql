@@ -63,15 +63,30 @@ export default (db: QuerySource) => {
         }));
 
         it('SELECT joined tables result', sync(async () => {
-            // TODO create example data when authorId issue is resolved
+            await db.table(BOOK).insert([
+                { title: 'Book 1', author: 'xy' },
+                { title: 'Book 2', author: 'abc' }
+            ]);
+            await db.table(ORDER).insert([
+                { bookId: 1, customerId: '111', quantity: 3 },
+                { bookId: 1, customerId: '222', quantity: 1 }
+            ]);
 
             let joined1: any[] = await db.from(BOOK, ORDER).where(BOOK.id.eq(ORDER.bookId)).select();
             expect(Array.isArray(joined1)).toBe(true);
-            expect(joined1.length).toEqual(0);
+            expect(joined1.length).toEqual(2);
+            expect(JSON.stringify(joined1)).toEqual(JSON.stringify([
+                { id: 1, title: 'Book 1', author: 'xy', price: null, available: null, date: null, data: null, bookId: 1, customerId: '111', quantity: 3 },
+                { id: 1, title: 'Book 1', author: 'xy', price: null, available: null, date: null, data: null, bookId: 1, customerId: '222', quantity: 1 }
+            ]));
 
             let joined2: any[] = await db.from(BOOK.innerJoin(ORDER).on(BOOK.id.eq(ORDER.bookId))).select();
             expect(Array.isArray(joined2)).toBe(true);
-            expect(joined2.length).toEqual(0);
+            expect(joined2.length).toEqual(2);
+            expect(JSON.stringify(joined2)).toEqual(JSON.stringify([
+                { id: 1, title: 'Book 1', author: 'xy', price: null, available: null, date: null, data: null, bookId: 1, customerId: '111', quantity: 3 },
+                { id: 1, title: 'Book 1', author: 'xy', price: null, available: null, date: null, data: null, bookId: 1, customerId: '222', quantity: 1 }
+            ]));
         }));
     });
 }
