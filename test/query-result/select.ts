@@ -32,6 +32,21 @@ export default (db: QuerySource) => {
             ]));
         }));
 
+        it('SELECT entity result with *', sync(async () => {
+            await db.table(BOOK).insert([
+                { title: 'Book 1', author: 'xy' },
+                { title: 'Book 2', author: 'abc' }
+            ]);
+
+            let inserted: Book[] = await db.from(BOOK).select(BOOK.$all);
+            expect(Array.isArray(inserted)).toBe(true);
+            expect(inserted.length).toEqual(2);
+            expect(JSON.stringify(inserted)).toEqual(JSON.stringify([
+                { id: 1, title: 'Book 1', author: 'xy', price: null, available: null, date: null, data: null },
+                { id: 2, title: 'Book 2', author: 'abc', price: null, available: null, date: null, data: null }
+            ]));
+        }));
+
         it('SELECT single column result', sync(async () => {
             await db.table(BOOK).insert([
                 { title: 'Book 1', author: 'xy' },

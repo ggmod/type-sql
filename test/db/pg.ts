@@ -4,6 +4,7 @@ import TABLE_QUERY from '../table-query';
 import SQL_INJECTION_LOCAL from '../other/sql-injection-local';
 import SQL_INJECTION_REMOTE from '../other/sql-injection-remote';
 import PARAMETERIZED from '../other/parameterized';
+import ALIAS from '../other/alias';
 import { createDb } from '../config/db';
 import { sync } from '../config/utils';
 import { BEFORE_ALL_PG, BEFORE_EACH_PG } from "../config/ddl";
@@ -30,6 +31,7 @@ describe('PG', () => {
         SELECT_QUERY(db, log, 'pg');
         TABLE_QUERY(db, log);
         SQL_INJECTION_LOCAL(db);
+        ALIAS(db, log);
     });
 
     describe('Parameterized', () => {
@@ -39,6 +41,7 @@ describe('PG', () => {
         SELECT_QUERY(db, log, 'pg');
         TABLE_QUERY(db, log);
         SQL_INJECTION_LOCAL(db);
+        ALIAS(db, log);
     });
 
     describe('Parameterized - without substitution', () => {

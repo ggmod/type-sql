@@ -2,7 +2,7 @@ import QueryTable from "../query-table";
 import NumberColumn from "./number-column";
 import GenericsHelper from "../helpers/generics-helper";
 import QueryColumnCondition from "../condition/query-column-condition";
-import {ColumnModifier} from "../helpers/internal-types";
+import {ColumnModifier, ColumnName} from "../helpers/internal-types";
 
 
 abstract class QueryColumn<Table extends QueryTable<any, any>, T> {
@@ -12,7 +12,7 @@ abstract class QueryColumn<Table extends QueryTable<any, any>, T> {
 
     constructor(
         protected _table: Table,
-        protected _name: string,
+        protected _name: ColumnName,
         protected _modifiers: ColumnModifier[] = []
     ) {}
 

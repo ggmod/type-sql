@@ -21,6 +21,7 @@ CREATE TABLE "Book" (
 CREATE TABLE "Customer" (
 	"name" Character Varying( 2044 ) NOT NULL,
 	"email" Character Varying( 2044 ) NOT NULL,
+	"phone_number" Character Varying( 2044 ),
 	PRIMARY KEY ( "name" ) 
 );
 
@@ -52,6 +53,7 @@ AUTO_INCREMENT = 1;
 CREATE TABLE "Customer" (
 	"name" VarChar( 255 ) NOT NULL,
 	"email" VarChar( 2044 ) NOT NULL,
+	"phone_number" VarChar( 2044 ),
 	PRIMARY KEY ( "name" ) 
 );
 

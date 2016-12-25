@@ -4,6 +4,7 @@ import TABLE_QUERY from '../table-query';
 import SQL_INJECTION_LOCAL from '../other/sql-injection-local';
 import SQL_INJECTION_REMOTE from '../other/sql-injection-remote';
 import PARAMETERIZED from '../other/parameterized';
+import ALIAS from '../other/alias';
 import { createDb } from '../config/db';
 import { BEFORE_ALL_MYSQL, BEFORE_EACH_MYSQL } from "../config/ddl";
 import mysql = require('mysql');
@@ -33,6 +34,7 @@ describe('MySQL', () => {
         SELECT_QUERY(db, log, 'mysql');
         TABLE_QUERY(db, log);
         SQL_INJECTION_LOCAL(db);
+        ALIAS(db, log);
     });
 
     describe('Parameterized', () => {
@@ -43,6 +45,7 @@ describe('MySQL', () => {
         SELECT_QUERY(db, log, 'mysql');
         TABLE_QUERY(db, log);
         SQL_INJECTION_LOCAL(db);
+        ALIAS(db, log);
     });
 
     describe('Parameterized - without substitution', () => {

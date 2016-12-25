@@ -12,6 +12,8 @@ export interface ColumnModifier {
     params?: any
 }
 
+export type ColumnName = string | { name: string, alias: string };
+
 export type ColumnType = 'boolean' | 'number' | 'string' | 'date'; // FIXME TS bug?
 
 // conditions:

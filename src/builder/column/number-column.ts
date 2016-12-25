@@ -1,13 +1,13 @@
 import QueryTable from "../query-table";
 import ComparableColumn from "./comparable-column";
-import {ColumnModifier} from "../helpers/internal-types";
+import {ColumnModifier, ColumnName} from "../helpers/internal-types";
 
 
 export default class NumberColumn<Table extends QueryTable<any, any>> extends ComparableColumn<Table, number> {
 
     protected _type = 'number';
 
-    constructor(table: Table, name: string, modifiers: ColumnModifier[] = []) {
+    constructor(table: Table, name: ColumnName, modifiers: ColumnModifier[] = []) {
         super(table, name, modifiers);
     }
 

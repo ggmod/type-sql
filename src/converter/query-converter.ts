@@ -12,12 +12,11 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
     return convertQuery;
 
     function convertQuery(query: any): string {
-
         if (query._action === 'select') return convertSelectQuery(query);
-        else if (query._action === 'delete') return convertDeleteQuery(query);
-        else if (query._action === 'update') return convertUpdateQuery(query);
-        else if (query._action === 'insert') return convertInsertQuery(query);
-        else throw new Error('Unknown query type:' + query._action);
+        if (query._action === 'delete') return convertDeleteQuery(query);
+        if (query._action === 'update') return convertUpdateQuery(query);
+        if (query._action === 'insert') return convertInsertQuery(query);
+        throw new Error('Unknown query type:' + query._action);
     }
 
     function convertDeleteQuery(query: any): string {
@@ -49,7 +48,7 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
         let keys = Array.from(keySet).sort();
 
         let s = 'INSERT INTO ' + convertTable(query._table) + ' ';
-        s += '(' + keys.map(key => options.nameEscape + key + options.nameEscape).join(', ') + ')';
+        s += '(' + keys.map(key => convertColumnName(query._table[key])).join(', ') + ')';
         s += options.lineBreak + 'VALUES ';
         s += items.map(item => convertInsertItem(query._table, item, keys))
             .map((row: string) => '(' + row + ')').join(', ');
@@ -184,7 +183,9 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
     }
 
     function convertColumnName(column: any): string {
-        return column._name === '*' ? column._name : options.nameEscape + column._name + options.nameEscape;
+        if (column._name === '*') return column._name;
+        let name = typeof column._name === 'string' ? column._name : column._name.name;
+        return options.nameEscape + name + options.nameEscape;
     }
 
     function preprocessConditions(conditions: any[]): void {
