@@ -1,16 +1,18 @@
 import { BOOK, Book } from '../tables/book';
 import { sync } from "../config/utils";
-import { QuerySource } from "../../dist";
+import { QuerySource, QueryEngine } from "../../dist";
 import { TestLog } from "../config/db";
 
-export default (db: QuerySource, log: TestLog) => {
+export default (db: QuerySource, log: TestLog, type: QueryEngine) => {
 
     describe('INSERT', () => {
 
         it('single value', sync(async() => {
             let e = { title: 'qwe' } as Book;
             await db.table(BOOK).insert(e);
-            expect(log.sql).toEqual(`INSERT INTO "Book" ("title") VALUES ('qwe')`);
+            let sql = `INSERT INTO "Book" ("title") VALUES ('qwe')`;
+            if (type === 'pg') expect(log.sql).toEqual(sql + ` RETURNING "id"`);
+            if (type === 'mysql') expect(log.sql).toEqual(sql);
         }));
 
         it('multiple values', sync(async () => {
@@ -42,7 +44,9 @@ export default (db: QuerySource, log: TestLog) => {
                 date: new Date('2016-10-23T19:11:25.342Z'),
             };
             await db.table(BOOK).insert(e);
-            expect(log.sql).toEqual(`INSERT INTO "Book" ("available", "date", "price", "title") VALUES (TRUE, '2016-10-23T19:11:25.342Z', 10, 'asd')`);
+            let sql = `INSERT INTO "Book" ("available", "date", "price", "title") VALUES (TRUE, '2016-10-23T19:11:25.342Z', 10, 'asd')`;
+            if (type === 'pg') expect(log.sql).toEqual(sql + ` RETURNING "id"`);
+            if (type === 'mysql') expect(log.sql).toEqual(sql);
         }));
 
         it('json fields', sync(async () => {
@@ -51,7 +55,9 @@ export default (db: QuerySource, log: TestLog) => {
                 data: { x: 2, y: 10 }
             };
             await db.table(BOOK).insert(e);
-            expect(log.sql).toEqual(`INSERT INTO "Book" ("data", "title") VALUES ('{"x":2,"y":10}', 'abc')`);
+            let sql = `INSERT INTO "Book" ("data", "title") VALUES ('{"x":2,"y":10}', 'abc')`;
+            if (type === 'pg') expect(log.sql).toEqual(sql + ` RETURNING "id"`);
+            if (type === 'mysql') expect(log.sql).toEqual(sql);
         }));
     });
 }

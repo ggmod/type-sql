@@ -1,21 +1,33 @@
+import {QueryEngine} from "./query-processor";
 
-export function convertResult(query: any, result: any): any {
-    if (query._action === 'select') return convertSelectResult(query, result);
-    if (query._action === 'delete') return result.rowCount;
-    if (query._action === 'update') return result.rowCount;
-    if (query._action === 'insert') return result;
+export function convertResult(query: any, result: any, engine: QueryEngine): any {
+    let rows = engine === 'pg' ? result.rows : result;
+    let rowCount = engine === 'pg' ? result.rowCount : result.affectedRows || result.changedRows;
+
+    if (query._action === 'select') return convertSelectResult(query, rows);
+    if (query._action === 'delete') return rowCount;
+    if (query._action === 'update') return rowCount;
+    if (query._action === 'insert') return convertInsertResult(result, engine);
     throw new Error('Unknown query type:' + query._action);
 }
 
-function convertSelectResult(query: any, result: any): any {
+function convertInsertResult(result: any, engine: QueryEngine): any {
+    if (engine === 'mysql') return result.insertId > 0 ? result.insertId : undefined; // mysql returns 0 for tables that have a non-autoincrement ID
+    if (engine === 'pg' && result.rows && result.rows.length === 1) {
+        let columnName = Object.keys(result.rows[0])[0];
+        return result.rows[0][columnName];
+    }
+}
+
+function convertSelectResult(query: any, rows: any[]): any {
     if (query._columns && query._columns.length === 1 &&
         !(query._columns[0]._name === '*' && query._columns[0]._modifiers.length === 0)) {
-        if (result.rows.length == 0) return [];
-        let columnName = Object.keys(result.rows[0])[0]; // easier than reverse engineering from the column modifiers
-        return result.rows.map((row: any) => row[columnName]);
+        if (rows.length == 0) return [];
+        let columnName = Object.keys(rows[0])[0]; // easier than reverse engineering from the column modifiers
+        return rows.map((row: any) => row[columnName]);
     } else {
-        convertAliasFields(query, result.rows);
-        return result.rows;
+        convertAliasFields(query, rows);
+        return rows;
     }
 }
 

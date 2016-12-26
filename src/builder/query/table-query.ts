@@ -22,8 +22,8 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
         return new TableConditionQuery<Entity, Table>(this._queryProcessor, this._table, conditions);
     }
 
-    insert(entity: Entity): Promise<any>
-    insert(entities: Entity[]): Promise<any>
+    insert(entity: Entity): Promise<any> // returns the generated ID, but not other kinds of IDs, so the type is unknown (mysql limitations)
+    insert(entities: Entity[]): Promise<void>
     insert(param: any): Promise<any> {
         this._entity = param;
         this._action = 'insert';

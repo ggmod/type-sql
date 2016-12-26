@@ -18,7 +18,7 @@ describe('MySQL Dummy', () => {
         let { db, log } = createDb(dummyMySqlClient, { parameterized: false }, 'mysql', sql => sql.replace(/`/g, '"'));
 
         SELECT_QUERY(db, log, 'mysql');
-        TABLE_QUERY(db, log);
+        TABLE_QUERY(db, log, 'mysql');
         SQL_INJECTION_LOCAL(db);
     });
 

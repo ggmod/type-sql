@@ -32,7 +32,7 @@ export default (db: QuerySource, log: TestLog, type: QueryEngine) => {
 
         it('table queries', sync(async () => {
             await db.table(BOOK).insert({ title: `');DROP_TABLE users` } as any);
-            if (type === 'pg' ) expect(log.sql).toEqual(`INSERT INTO "Book" ("title") VALUES ($1)`);
+            if (type === 'pg' ) expect(log.sql).toEqual(`INSERT INTO "Book" ("title") VALUES ($1) RETURNING "id"`);
             if (type === 'mysql' ) expect(log.sql).toEqual("INSERT INTO `Book` (`title`) VALUES (?)");
             expect(log.params).toEqual([`');DROP_TABLE users`]);
 

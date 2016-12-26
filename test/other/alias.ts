@@ -10,7 +10,7 @@ export default (db: QuerySource, log: TestLog) => {
 
         it('input and output', sync(async() => {
             await db.table(CUSTOMER).insert({ name: 'xy', email: 'a@b.com', phoneNumber: '1-2-3-4-5' });
-            expect(log.sql).toEqual(`INSERT INTO "Customer" ("email", "name", "phone_number") VALUES ('a@b.com', 'xy', '1-2-3-4-5')`);
+            expect(log.sql.startsWith(`INSERT INTO "Customer" ("email", "name", "phone_number") VALUES ('a@b.com', 'xy', '1-2-3-4-5')`)).toBe(true);
 
             await db.table(ORDER).insert({ customerId: 'xy', bookId: 1, quantity: 1 });
 

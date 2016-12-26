@@ -38,5 +38,15 @@ export default (db: QuerySource) => {
                 { id: 2, title: 'asd', author: 'ab', price: null, available: true, date: null, data: null }
             ]));
         }));
+
+        it('returning generated ID', sync(async () => {
+            let id1: number = await db.table(BOOK).insert({ title: 'Book Title', author: 'Book Author' });
+            let id2: number = await db.table(BOOK).insert({ title: 'Book Title 2', author: 'Book Author 2' });
+            let id3: number = await db.table(BOOK).insert({ title: 'Book Title 3', author: 'Book Author 3' });
+
+            expect(id1).toBe(1);
+            expect(id2).toBe(2);
+            expect(id3).toBe(3);
+        }));
     });
 }

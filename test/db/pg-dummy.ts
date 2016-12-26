@@ -18,7 +18,7 @@ describe('PG Dummy', () => {
         let { db, log } = createDb(dummyPgClient, { parameterized: false }, 'pg');
 
         SELECT_QUERY(db, log, 'pg');
-        TABLE_QUERY(db, log);
+        TABLE_QUERY(db, log, 'pg');
         SQL_INJECTION_LOCAL(db);
     });
 

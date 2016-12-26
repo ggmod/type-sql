@@ -29,7 +29,7 @@ describe('PG', () => {
 
         QUERY_RESULT(db);
         SELECT_QUERY(db, log, 'pg');
-        TABLE_QUERY(db, log);
+        TABLE_QUERY(db, log, 'pg');
         SQL_INJECTION_LOCAL(db);
         ALIAS(db, log);
     });
@@ -39,7 +39,7 @@ describe('PG', () => {
 
         QUERY_RESULT(db);
         SELECT_QUERY(db, log, 'pg');
-        TABLE_QUERY(db, log);
+        TABLE_QUERY(db, log, 'pg');
         SQL_INJECTION_LOCAL(db);
         ALIAS(db, log);
     });

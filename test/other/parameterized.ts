@@ -76,7 +76,7 @@ export default (db: QuerySource, log: TestLog, type: QueryEngine) => {
                 title: 'asd'
             });
 
-            if (type === 'pg') expect(log.sql).toEqual(`INSERT INTO "Book" ("author", "available", "data", "date", "price", "title") VALUES ($1, $2, $3, $4, $5, $6)`);
+            if (type === 'pg') expect(log.sql).toEqual(`INSERT INTO "Book" ("author", "available", "data", "date", "price", "title") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"`);
             if (type === 'mysql') expect(log.sql).toEqual("INSERT INTO `Book` (`author`, `available`, `data`, `date`, `price`, `title`) VALUES (?, ?, ?, ?, ?, ?)");
 
             expect(log.params).toEqual(['xy', true, { x: 2, y: 10 }, new Date('2016-10-23T19:11:25.342Z'), 10, 'asd']);

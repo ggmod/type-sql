@@ -1,4 +1,5 @@
 import { string, number, date, boolean } from './utils';
+import { QueryEngine } from "../binding/query-processor";
 
 export type ParamConverter = (param: any) => string;
 
@@ -7,7 +8,7 @@ export interface QueryOptions {
     nameEscape: string
 }
 
-export function createQueryConverter(paramConverter: ParamConverter, options: QueryOptions) {
+export function createQueryConverter(paramConverter: ParamConverter, options: QueryOptions, engine: QueryEngine) {
 
     return convertQuery;
 
@@ -52,7 +53,18 @@ export function createQueryConverter(paramConverter: ParamConverter, options: Qu
         s += options.lineBreak + 'VALUES ';
         s += items.map(item => convertInsertItem(query._table, item, keys))
             .map((row: string) => '(' + row + ')').join(', ');
+
+        s += getPgInsertReturningIfNeeded(query);
         return s;
+    }
+
+
+    function getPgInsertReturningIfNeeded(query: any): string {
+        if (engine === 'pg' && query._action === 'insert' && !Array.isArray(query._entity) &&
+            query._table.$id && query._table.$id._table && query._table.$id._name) {
+            return ' RETURNING ' + convertColumnName(query._table.$id);
+        }
+        return '';
     }
 
     function convertInsertItem(table: any, entity: any, keys: string[]): string {

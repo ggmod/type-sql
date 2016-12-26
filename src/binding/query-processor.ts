@@ -25,13 +25,6 @@ const DEFAULT_OPTIONS: QueryProcessorOptions = {
     identifierQuote: '"'
 };
 
-function preprocessorMysqlResult(result: any) {
-    return {
-        rows: result, // TODO create a shallow copy to remove non-Array fields?
-        rowCount: result.affectedRows || result.changedRows
-    }
-}
-
 function mySqlTypeCast(field: any, next: any) {
     if (field.type == 'TINY' && field.length == 1) { // Boolean
         let value = field.string();
@@ -65,7 +58,6 @@ export function createQueryProcessor(client: any, _options: QueryProcessorOption
     };
 
     let parameterizedConverter = engine === 'mysql' ? ((index: number) => '?') : ((index: number) => '$' + index);
-    let preprocessResult = engine === 'mysql' ? preprocessorMysqlResult : (result: any) => result;
 
     function processSql(query: any, sql: string, params: any[] | undefined, callback: any): Promise<any> {
         if (options.logging) log(sql);
@@ -74,7 +66,7 @@ export function createQueryProcessor(client: any, _options: QueryProcessorOption
         return new Promise((resolve, reject) => {
             callback(sql, params, (err: any, result: any) => {
                 if (err) reject(err);
-                else resolve(convertResult(query, preprocessResult(result)));
+                else resolve(convertResult(query, result, engine));
             });
         });
     }
@@ -94,10 +86,10 @@ export function createQueryProcessor(client: any, _options: QueryProcessorOption
 
     return (query: any) => {
         if (options.parameterized) {
-            let { sql, params } = convertQueryToParameterizedSQL(query, queryOptions, parameterizedConverter);
+            let { sql, params } = convertQueryToParameterizedSQL(query, queryOptions, engine, parameterizedConverter);
             return processSql(query, sql, params, (sql: string, params: any[], cb: any) => executeSql(sql, params, cb));
         } else {
-            let sql = convertQueryToSQL(query, queryOptions);
+            let sql = convertQueryToSQL(query, queryOptions, engine);
             return processSql(query, sql, undefined, (sql: string, params: undefined, cb: any) => executeSql(sql, undefined, cb));
         }
     };
