@@ -44,7 +44,7 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
     countAll(): Promise<number> {
         this._columns = [this._table.$all.count()];
         this._action = 'select';
-        return this._queryProcessor(this).then((rows: any[]) => Number(rows[0])); // node-postgres returns a string count
+        return this._queryProcessor(this).then((rows: any[]) => rows[0]);
     }
 
     delete(id: Id): Promise<boolean> {

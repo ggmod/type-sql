@@ -103,5 +103,18 @@ export default (db: QuerySource) => {
                 { id: 1, title: 'Book 1', author: 'xy', price: null, available: null, date: null, data: null, bookId: 1, customerId: '222', quantity: 1 }
             ]));
         }));
+
+        it('COUNT', sync(async () => { // PG converts the COUNT values to strings
+            let count: number[] = await db.from(BOOK).select(BOOK.$all.count());
+            expect(count).toEqual([0]);
+
+            await db.table(BOOK).insert([
+                { title: 'Book 1', author: 'xy' },
+                { title: 'Book 2', author: 'abc' }
+            ]);
+
+            let count2: number[] = await db.from(BOOK).select(BOOK.$all.count());
+            expect(count2).toEqual([2]);
+        }));
     });
 }

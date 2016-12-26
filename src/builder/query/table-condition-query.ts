@@ -31,6 +31,6 @@ export default class TableConditionQuery<Entity, Table extends QueryTable<Entity
     count(): Promise<number> {
         this._columns = [this._table.$all.count()];
         this._action = 'select';
-        return this._queryProcessor(this).then((rows: any[]) => Number(rows[0]));
+        return this._queryProcessor(this).then((rows: number[]) => rows[0]);
     }
 }

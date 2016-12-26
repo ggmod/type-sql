@@ -24,7 +24,12 @@ function convertSelectResult(query: any, rows: any[]): any {
         !(query._columns[0]._name === '*' && query._columns[0]._modifiers.length === 0)) {
         if (rows.length == 0) return [];
         let columnName = Object.keys(rows[0])[0]; // easier than reverse engineering from the column modifiers
-        return rows.map((row: any) => row[columnName]);
+        let values = rows.map((row: any) => row[columnName]);
+
+        if (query._columns[0]._name === '*' && query._columns[0]._modifiers.some((m: any) => m.name === 'count')) {
+            return values.map((value: any) => Number(value)); // string to number conversion for PG count values
+        }
+        return values;
     } else {
         convertAliasFields(query, rows);
         return rows;
