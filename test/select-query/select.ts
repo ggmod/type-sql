@@ -1,9 +1,9 @@
 import { BOOK } from '../tables/book';
 import { CUSTOMER } from '../tables/customer';
 import { ORDER } from '../tables/order';
-import { sync } from "../config/utils";
+import { sync } from "../utils/utils";
 import { QuerySource } from "../../dist";
-import { TestLog } from "../config/db";
+import { TestLog } from "../utils/logger";
 
 export default (db: QuerySource, log: TestLog) => {
 

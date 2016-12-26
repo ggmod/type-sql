@@ -1,10 +1,9 @@
 import QueryTable from "../query-table";
 import TableConditionQuery from "./table-condition-query";
 import QueryCondition from "../condition/query-condition";
-import { QueryProcessor } from "../../binding/query-processor";
 import ValueColumn from "../column/value-column";
 import QueryColumn from "../column/query-column";
-import {QueryAction} from "../helpers/internal-types";
+import { QueryProcessor, QueryAction } from "../helpers/internal-types";
 
 
 export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>> {
@@ -62,7 +61,7 @@ export default class TableQuery<Entity, Id, Table extends QueryTable<Entity, Id>
     }
 
     _whereId(id: Id): TableConditionQuery<Entity, Table> {
-        // FIXME assertions
+        // TODO remove assertions if $id typing is fixed
         let $id = (this._table as any).$id;
         if ($id instanceof ValueColumn) {
             return this.where($id.eq(id));

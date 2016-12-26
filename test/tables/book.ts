@@ -1,15 +1,13 @@
 import { QueryTable, StringColumn, NumberColumn, BooleanColumn, DateColumn, BasicColumn } from "../../dist";
 
-// TODO add '| null' to nullable fields?
-
 export interface Book {
     id?: number,
     title: string,
     author: string,
-    price?: number,
-    available?: boolean,
-    date?: Date,
-    data?: { x: number, y: number }
+    price?: number | null,
+    available?: boolean | null,
+    date?: Date | null,
+    data?: { x: number, y: number } | null
 }
 
 export class BookTable extends QueryTable<Book, number> {

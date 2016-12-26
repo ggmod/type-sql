@@ -1,4 +1,4 @@
-import {QueryEngine} from "./query-processor";
+import {QueryEngine} from "./types";
 
 export function convertResult(query: any, result: any, engine: QueryEngine): any {
     let rows = engine === 'pg' ? result.rows : result;

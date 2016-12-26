@@ -1,15 +1,16 @@
 import QUERY_RESULT from '../query-result';
 import SELECT_QUERY from '../select-query';
 import TABLE_QUERY from '../table-query';
-import SQL_INJECTION_LOCAL from '../other/sql-injection-local';
-import SQL_INJECTION_REMOTE from '../other/sql-injection-remote';
-import PARAMETERIZED from '../other/parameterized';
-import ALIAS from '../other/alias';
-import { createDb } from '../config/db';
-import { BEFORE_ALL_MYSQL, BEFORE_EACH_MYSQL } from "../config/ddl";
+import SQL_INJECTION_LOCAL from '../other-query/sql-injection-local';
+import SQL_INJECTION_REMOTE from '../other-query/sql-injection-remote';
+import PARAMETERIZED from '../other-query/parameterized';
+import ALIAS from '../other-query/alias';
+import { createLogger } from '../utils/logger';
+import { substituteMySqlParams } from "../utils/substitution";
+import { BEFORE_ALL_MYSQL, BEFORE_EACH_MYSQL } from "../utils/ddl";
 import mysql = require('mysql');
 import MYSQL_CONFIG from '../mysql-config';
-import {substituteMySqlParams} from "../config/substitute-params";
+import { MySqlQuerySource } from '../../dist';
 
 describe('MySQL', () => {
     let client = mysql.createConnection({
@@ -28,7 +29,8 @@ describe('MySQL', () => {
     });
 
     describe('Non parameterized', () => {
-        let { db, log } = createDb(client, { parameterized: false }, 'mysql', sql => sql.replace(/`/g, '"'));
+        let { logger, log } = createLogger(sql => sql.replace(/`/g, '"'));
+        let db = new MySqlQuerySource(client, { parameterized: false, logger });
 
         QUERY_RESULT(db);
         SELECT_QUERY(db, log, 'mysql');
@@ -38,8 +40,8 @@ describe('MySQL', () => {
     });
 
     describe('Parameterized', () => {
-        let { db, log } = createDb(client, { parameterized: true }, 'mysql', (sql, params) =>
-            substituteMySqlParams(sql, params).replace(/`/g, '"'));
+        let { logger, log } = createLogger((sql, params) => substituteMySqlParams(sql, params).replace(/`/g, '"'));
+        let db = new MySqlQuerySource(client, { parameterized: true, logger });
 
         QUERY_RESULT(db);
         SELECT_QUERY(db, log, 'mysql');
@@ -49,7 +51,8 @@ describe('MySQL', () => {
     });
 
     describe('Parameterized - without substitution', () => {
-        let { db, log } = createDb(client, { parameterized: true }, 'mysql');
+        let { logger, log } = createLogger();
+        let db = new MySqlQuerySource(client, { parameterized: true, logger });
 
         SQL_INJECTION_REMOTE(db, log, 'mysql');
         PARAMETERIZED(db, log, 'mysql');

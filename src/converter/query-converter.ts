@@ -1,14 +1,8 @@
-import { string, number, date, boolean } from './utils';
-import { QueryEngine } from "../binding/query-processor";
+import { string, number, date, boolean } from './type-converter';
+import { QueryEngine, ConverterOptions } from "./types";
 
-export type ParamConverter = (param: any) => string;
 
-export interface QueryOptions {
-    lineBreak: string,
-    nameEscape: string
-}
-
-export function createQueryConverter(paramConverter: ParamConverter, options: QueryOptions, engine: QueryEngine) {
+export function createQueryConverter(paramConverter: (param: any) => string, options: ConverterOptions, engine: QueryEngine) {
 
     return convertQuery;
 

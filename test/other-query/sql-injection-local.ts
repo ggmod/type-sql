@@ -1,6 +1,6 @@
 import { BOOK } from '../tables/book';
 import { ORDER } from "../tables/order";
-import { sync } from '../config/utils';
+import { sync } from '../utils/utils';
 import { QuerySource } from "../../dist";
 
 export default (db: QuerySource) => {

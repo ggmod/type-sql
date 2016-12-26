@@ -1,8 +1,9 @@
 import { BOOK } from '../tables/book';
 import { CUSTOMER } from "../tables/customer";
-import { sync } from '../config/utils';
-import { QuerySource, QueryEngine } from "../../dist";
-import { TestLog } from "../config/db";
+import { sync } from '../utils/utils';
+import { QuerySource } from "../../dist";
+import { TestLog } from "../utils/logger";
+import { QueryEngine } from "../utils/types";
 
 export default (db: QuerySource, log: TestLog, type: QueryEngine) => {
 

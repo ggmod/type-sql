@@ -1,6 +1,6 @@
 import QueryTable from './query-table';
 import SelectQuery from './query/select-query';
-import { QueryProcessor } from "../binding/query-processor";
+import { QueryProcessor } from "./helpers/internal-types";
 import JoinedTables from "./join/joined-tables";
 import TableQuery from "./query/table-query";
 

@@ -1,4 +1,4 @@
-import { convertParam } from '../../dist/converter/param-converter';
+import { convertSubstitutionParam } from '../../dist/converter/param-converter';
 
 enum State {
     STRING,
@@ -25,7 +25,7 @@ export function substitutePgParams(sql: string, params: any[]) {
             if (Number.isNaN(parseInt(c))) {
                 state = State.SQL;
                 let paramIndex = Number(sql.substring(paramStart + 1, i)) - 1;
-                let param = convertParam(params[paramIndex]);
+                let param = convertSubstitutionParam(params[paramIndex]);
                 result.splice(result.length, 0, ...param);
             }
         } else if (state === State.STRING) {
@@ -51,7 +51,7 @@ export function substituteMySqlParams(sql: string, params: any[]) {
         let c = sql[i];
 
         if (c === '?') {
-            let param = convertParam(params[paramIndex++]);
+            let param = convertSubstitutionParam(params[paramIndex++]);
             result.splice(result.length, 0, ...param);
         } else {
             result.push(c);
@@ -60,9 +60,3 @@ export function substituteMySqlParams(sql: string, params: any[]) {
 
     return result.join('');
 }
-
-// describe('pg substitution', () => {
-//     fit('check', () => {
-//         console.log(substitutePgParams("test $1 asdfgh '$2' $2 qwerty $3", [123, 'xy', 44]));
-//     })
-// });

@@ -14,7 +14,7 @@ export interface ColumnModifier {
 
 export type ColumnName = string | { name: string, alias: string };
 
-export type ColumnType = 'boolean' | 'number' | 'string' | 'date'; // FIXME TS bug?
+export type ColumnType = 'boolean' | 'number' | 'string' | 'date'; // FIXME use this in the columns, but it causes type errors
 
 // conditions:
 
@@ -26,3 +26,7 @@ export type ConditionType = 'eq' | 'ne' | 'lt' | 'lte' | 'gt' | 'gte' | 'in' | '
 // joins:
 
 export type JoinType = 'inner' | 'left' | 'right' | 'full';
+
+// processor:
+
+export type QueryProcessor = (query: any) => Promise<any>;

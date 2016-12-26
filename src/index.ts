@@ -27,6 +27,9 @@ export { default as TableConditionQuery } from './builder/query/table-condition-
 export { default as QuerySource } from './builder/query-source';
 export { default as QueryTable } from './builder/query-table';
 
-// Implementation:
+// Client:
 
-export { createQueryProcessor, QueryProcessor, QueryProcessorOptions, QueryEngine } from './binding/query-processor';
+export { default as MySqlQuerySource } from './client/mysql';
+export { default as PgQuerySource } from './client/pg';
+
+export { QueryProcessorOptions } from './client/query-processor';

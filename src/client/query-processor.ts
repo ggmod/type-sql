@@ -1,14 +1,11 @@
+import debug = require('debug');
 import {convertQueryToParameterizedSQL} from '../converter/parameterized-converter';
 import {convertQueryToSQL} from '../converter/sql-converter';
-import {QueryOptions} from "../converter/query-converter";
-import {convertResult} from "./result-converter";
-import debug = require('debug');
+import {convertResult} from "../converter/result-converter";
+import {QueryEngine, ConverterOptions} from '../converter/types';
+import {QueryProcessor} from '../builder/helpers/internal-types';
 
 const log = debug('ts-sql');
-
-export type QueryProcessor = (query: any) => Promise<any>;
-
-export type QueryEngine = 'pg' | 'mysql';
 
 export interface QueryProcessorOptions {
     lineBreaks?: boolean,
@@ -38,26 +35,14 @@ function mySqlTypeCast(field: any, next: any) {
     return next();
 }
 
-// node mysql doesn't have an typeCast equivalent solution for the other direction
-// node-postgres: https://github.com/brianc/node-postgres/issues/442
-function convertParam(param: any) {
-    if (typeof param === 'object' && !(param == null || param instanceof String || param instanceof Number ||
-        param instanceof Boolean || param instanceof Date)) {
-        return JSON.stringify(param);
-    }
-    return param;
-}
-
 export function createQueryProcessor(client: any, _options: QueryProcessorOptions = {}, engine: QueryEngine = 'pg'): QueryProcessor {
 
     let options: QueryProcessorOptions = Object.assign({}, DEFAULT_OPTIONS, _options);
 
-    let queryOptions: QueryOptions = {
+    let queryOptions: ConverterOptions = {
         lineBreak: options.lineBreaks ? '\n' : ' ',
         nameEscape: _options.identifierQuote || (engine === 'mysql' ? '`' : '"')
     };
-
-    let parameterizedConverter = engine === 'mysql' ? ((index: number) => '?') : ((index: number) => '$' + index);
 
     function processSql(query: any, sql: string, params: any[] | undefined, callback: any): Promise<any> {
         if (options.logging) log(sql);
@@ -72,7 +57,6 @@ export function createQueryProcessor(client: any, _options: QueryProcessorOption
     }
 
     function executeSql(sql: string, params: any[] | undefined, cb: any) {
-        if (params) params = params.map(convertParam);
         if (engine === 'pg') {
             client.query(sql, params || cb, params ? cb : undefined);
         } else if (engine === 'mysql') {
@@ -86,7 +70,7 @@ export function createQueryProcessor(client: any, _options: QueryProcessorOption
 
     return (query: any) => {
         if (options.parameterized) {
-            let { sql, params } = convertQueryToParameterizedSQL(query, queryOptions, engine, parameterizedConverter);
+            let { sql, params } = convertQueryToParameterizedSQL(query, queryOptions, engine);
             return processSql(query, sql, params, (sql: string, params: any[], cb: any) => executeSql(sql, params, cb));
         } else {
             let sql = convertQueryToSQL(query, queryOptions, engine);

@@ -1,9 +1,10 @@
 import { BOOK, Book } from '../tables/book';
 import { CUSTOMER } from '../tables/customer';
 import { ORDER } from '../tables/order';
-import { sync } from '../config/utils';
-import { QuerySource, QueryEngine } from "../../dist";
-import { TestLog } from "../config/db";
+import { sync } from '../utils/utils';
+import { QuerySource } from "../../dist";
+import { TestLog } from "../utils/logger";
+import { QueryEngine } from "../utils/types";
 
 export default (db: QuerySource, log: TestLog, type: QueryEngine) => {
 
@@ -79,7 +80,7 @@ export default (db: QuerySource, log: TestLog, type: QueryEngine) => {
             if (type === 'pg') expect(log.sql).toEqual(`INSERT INTO "Book" ("author", "available", "data", "date", "price", "title") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"`);
             if (type === 'mysql') expect(log.sql).toEqual("INSERT INTO `Book` (`author`, `available`, `data`, `date`, `price`, `title`) VALUES (?, ?, ?, ?, ?, ?)");
 
-            expect(log.params).toEqual(['xy', true, { x: 2, y: 10 }, new Date('2016-10-23T19:11:25.342Z'), 10, 'asd']);
+            expect(log.params).toEqual(['xy', true, '{"x":2,"y":10}', new Date('2016-10-23T19:11:25.342Z'), 10, 'asd']);
 
             await db.table(BOOK).update(12, {
                 author: 'xy',
@@ -92,7 +93,7 @@ export default (db: QuerySource, log: TestLog, type: QueryEngine) => {
 
             if (type === 'pg') expect(log.sql).toEqual(`UPDATE "Book" SET "author" = $1, "available" = $2, "data" = $3, "date" = $4, "price" = $5, "title" = $6 WHERE "Book"."id" = $7`);
             if (type === 'mysql') expect(log.sql).toEqual("UPDATE `Book` SET `author` = ?, `available` = ?, `data` = ?, `date` = ?, `price` = ?, `title` = ? WHERE `Book`.`id` = ?");
-            expect(log.params).toEqual(['xy', true, { x: 2, y: 10 }, new Date('2016-10-23T19:11:25.342Z'), 10, 'asd', 12]);
+            expect(log.params).toEqual(['xy', true, '{"x":2,"y":10}', new Date('2016-10-23T19:11:25.342Z'), 10, 'asd', 12]);
         }));
 
         it('ID types', sync(async () => {

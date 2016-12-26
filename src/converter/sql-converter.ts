@@ -1,7 +1,7 @@
-import {createQueryConverter, QueryOptions} from "./query-converter";
-import {convertParam} from './param-converter';
-import {QueryEngine} from "../binding/query-processor";
+import {createQueryConverter} from "./query-converter";
+import {convertSubstitutionParam} from './param-converter';
+import {QueryEngine, ConverterOptions} from "./types";
 
-export function convertQueryToSQL(query: any, options: QueryOptions, engine: QueryEngine): string {
-    return createQueryConverter((param: any) => convertParam(param), options, engine)(query);
+export function convertQueryToSQL(query: any, options: ConverterOptions, engine: QueryEngine): string {
+    return createQueryConverter((param: any) => convertSubstitutionParam(param), options, engine)(query);
 }

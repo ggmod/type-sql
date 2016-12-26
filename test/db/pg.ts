@@ -1,16 +1,17 @@
 import QUERY_RESULT from '../query-result';
 import SELECT_QUERY from '../select-query';
 import TABLE_QUERY from '../table-query';
-import SQL_INJECTION_LOCAL from '../other/sql-injection-local';
-import SQL_INJECTION_REMOTE from '../other/sql-injection-remote';
-import PARAMETERIZED from '../other/parameterized';
-import ALIAS from '../other/alias';
-import { createDb } from '../config/db';
-import { sync } from '../config/utils';
-import { BEFORE_ALL_PG, BEFORE_EACH_PG } from "../config/ddl";
+import SQL_INJECTION_LOCAL from '../other-query/sql-injection-local';
+import SQL_INJECTION_REMOTE from '../other-query/sql-injection-remote';
+import PARAMETERIZED from '../other-query/parameterized';
+import ALIAS from '../other-query/alias';
+import { createLogger } from '../utils/logger';
+import { substitutePgParams } from "../utils/substitution";
+import { sync } from '../utils/utils';
+import { BEFORE_ALL_PG, BEFORE_EACH_PG } from "../utils/ddl";
 import { Client } from 'pg';
 import PG_CONFIG from '../pg-config';
-import { substitutePgParams } from "../config/substitute-params";
+import { PgQuerySource } from "../../dist";
 
 describe('PG', () => {
     let client = new Client(PG_CONFIG);
@@ -25,7 +26,8 @@ describe('PG', () => {
     }));
 
     describe('Non parameterized', () => {
-        let { db, log } = createDb(client, { parameterized: false }, 'pg');
+        let { logger, log } = createLogger();
+        let db = new PgQuerySource(client, { parameterized: false, logger });
 
         QUERY_RESULT(db);
         SELECT_QUERY(db, log, 'pg');
@@ -35,7 +37,8 @@ describe('PG', () => {
     });
 
     describe('Parameterized', () => {
-        let { db, log } = createDb(client, { parameterized: true }, 'pg', substitutePgParams);
+        let { logger, log } = createLogger(substitutePgParams);
+        let db = new PgQuerySource(client, { parameterized: true, logger });
 
         QUERY_RESULT(db);
         SELECT_QUERY(db, log, 'pg');
@@ -45,7 +48,8 @@ describe('PG', () => {
     });
 
     describe('Parameterized - without substitution', () => {
-        let { db, log } = createDb(client, { parameterized: true }, 'pg');
+        let { logger, log } = createLogger();
+        let db = new PgQuerySource(client, { parameterized: true, logger });
 
         SQL_INJECTION_REMOTE(db, log, 'pg');
         PARAMETERIZED(db, log, 'pg');

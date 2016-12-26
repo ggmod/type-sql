@@ -10,7 +10,7 @@ abstract class QueryTable<Entity, Id> {
     protected _$type: GenericsHelper<Entity>;
     protected _$idType: GenericsHelper<Id>;
 
-    // abstract readonly $id; // FIXME
+    // abstract readonly $id; // FIXME I got a dozen incomprehensible type errors
 
     $all = new BasicColumn<this, Entity>(this, '*');
 

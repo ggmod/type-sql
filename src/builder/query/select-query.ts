@@ -2,8 +2,7 @@ import QueryCondition from "../condition/query-condition";
 import QueryOrdering from "../other/query-ordering";
 import QueryTable from "../query-table";
 import QueryColumn from "../column/query-column";
-import { QueryProcessor } from "../../binding/query-processor";
-import { QueryAction } from "../helpers/internal-types";
+import { QueryProcessor, QueryAction } from "../helpers/internal-types";
 
 
 export default class SelectQuery<Entity, Table extends QueryTable<Entity, any>> {

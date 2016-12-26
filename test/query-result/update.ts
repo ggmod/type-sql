@@ -1,5 +1,5 @@
 import { BOOK, Book } from '../tables/book';
-import { sync } from '../config/utils';
+import { sync } from '../utils/utils';
 import { QuerySource } from "../../dist";
 
 export default (db: QuerySource) => {

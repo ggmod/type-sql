@@ -1,8 +1,7 @@
 import QueryTable from "../query-table";
-import { QueryProcessor } from "../../binding/query-processor";
 import QueryCondition from "../condition/query-condition";
 import QueryColumn from "../column/query-column";
-import {QueryAction} from "../helpers/internal-types";
+import { QueryProcessor, QueryAction } from "../helpers/internal-types";
 
 
 export default class TableConditionQuery<Entity, Table extends QueryTable<Entity, any>> {
