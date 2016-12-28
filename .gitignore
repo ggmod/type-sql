@@ -1,7 +1,5 @@
 node_modules
-build
 dist
-typings
 build-test
 .idea
 npm-debug.log

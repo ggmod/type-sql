@@ -5,6 +5,7 @@ import SQL_INJECTION_LOCAL from '../other-query/sql-injection-local';
 import SQL_INJECTION_REMOTE from '../other-query/sql-injection-remote';
 import PARAMETERIZED from '../other-query/parameterized';
 import ALIAS from '../other-query/alias';
+import EXAMPLES from '../other-query/examples';
 import { createLogger } from '../utils/logger';
 import { substitutePgParams } from "../utils/substitution";
 import { sync } from '../utils/utils';
@@ -34,6 +35,7 @@ describe('PG', () => {
         TABLE_QUERY(db, log, 'pg');
         SQL_INJECTION_LOCAL(db);
         ALIAS(db, log);
+        EXAMPLES(db, log);
     });
 
     describe('Parameterized', () => {
@@ -45,6 +47,7 @@ describe('PG', () => {
         TABLE_QUERY(db, log, 'pg');
         SQL_INJECTION_LOCAL(db);
         ALIAS(db, log);
+        EXAMPLES(db, log);
     });
 
     describe('Parameterized - without substitution', () => {

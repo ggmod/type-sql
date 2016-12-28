@@ -5,7 +5,7 @@ import {convertResult} from "../converter/result-converter";
 import {QueryEngine, ConverterOptions} from '../converter/types';
 import {QueryProcessor} from '../builder/helpers/internal-types';
 
-const log = debug('ts-sql');
+const log = debug('type-sql');
 
 export interface QueryProcessorOptions {
     lineBreaks?: boolean,

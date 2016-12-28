@@ -5,6 +5,7 @@ import SQL_INJECTION_LOCAL from '../other-query/sql-injection-local';
 import SQL_INJECTION_REMOTE from '../other-query/sql-injection-remote';
 import PARAMETERIZED from '../other-query/parameterized';
 import ALIAS from '../other-query/alias';
+import EXAMPLES from '../other-query/examples';
 import { createLogger } from '../utils/logger';
 import { substituteMySqlParams } from "../utils/substitution";
 import { BEFORE_ALL_MYSQL, BEFORE_EACH_MYSQL } from "../utils/ddl";
@@ -37,6 +38,7 @@ describe('MySQL', () => {
         TABLE_QUERY(db, log, 'mysql');
         SQL_INJECTION_LOCAL(db);
         ALIAS(db, log);
+        EXAMPLES(db, log);
     });
 
     describe('Parameterized', () => {
@@ -48,6 +50,7 @@ describe('MySQL', () => {
         TABLE_QUERY(db, log, 'mysql');
         SQL_INJECTION_LOCAL(db);
         ALIAS(db, log);
+        EXAMPLES(db, log);
     });
 
     describe('Parameterized - without substitution', () => {

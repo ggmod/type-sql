@@ -1,9 +1,8 @@
 {
-  "name": "ts-query",
-  "private": true,
+  "name": "type-sql",
   "version": "0.1.0",
-  "description": "",
-  "keywords": [],
+  "description": "A type-safe SQL query builder in TypeScript with Postgres and MySQL bindings.",
+  "keywords": ["typesql", "type-sql", "type sql", "type-safe sql", "sql", "postgres", "postgresql", "mysql"],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "ggmod",
@@ -14,7 +13,8 @@
     "prepublish": "npm run build"
   },
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/ggmod/type-sql.git"
   },
   "devDependencies": {
     "@types/debug": "0.0.29",
